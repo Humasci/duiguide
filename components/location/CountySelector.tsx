@@ -35,39 +35,17 @@ export function CountySelector({
     const fetchCounties = async () => {
       setIsLoading(true);
       try {
-        // This will be implemented when we have the API endpoint
-        // For now, we'll use mock data
-        const mockCounties: County[] = [
-          {
-            id: "1",
-            state_id: "1",
-            name: "Harris County",
-            slug: "harris",
-            is_active: true,
-            has_partner_coverage: true,
-            content_status: "published",
-            public_defender_available: true,
-            dui_court_available: false,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          },
-          {
-            id: "2",
-            state_id: "1",
-            name: "Dallas County",
-            slug: "dallas",
-            is_active: true,
-            has_partner_coverage: true,
-            content_status: "published",
-            public_defender_available: true,
-            dui_court_available: false,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          },
-        ];
-        setCounties(mockCounties);
+        const response = await fetch(`/api/counties/${stateSlug}`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch counties");
+        }
+
+        const data = await response.json();
+        setCounties(data.counties || []);
       } catch (error) {
         console.error("Error fetching counties:", error);
+        setCounties([]);
       } finally {
         setIsLoading(false);
       }

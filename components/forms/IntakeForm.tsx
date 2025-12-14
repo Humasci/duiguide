@@ -85,11 +85,28 @@ export function IntakeForm() {
   const onSubmit = async (data: IntakeFormData) => {
     setIsSubmitting(true);
     try {
-      // TODO: Implement actual API call
-      console.log("Form submitted:", data);
+      // Submit to API
+      const response = await fetch("/api/lead", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          source: "web_form",
+          sourcePage: window.location.pathname,
+          sourceUrl: window.location.href,
+          referrer: document.referrer || undefined,
+          ...data,
+        }),
+      });
 
-      // Mock API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to submit form");
+      }
+
+      const result = await response.json();
+      console.log("Lead submitted successfully:", result);
 
       setIsSuccess(true);
     } catch (error) {
