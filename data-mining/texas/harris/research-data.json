@@ -1,0 +1,140 @@
+{
+  "county": "Harris County",
+  "state": "TX",
+  "lastUpdated": "2025-12-17T23:50:45.578Z",
+  "sources": [
+    {
+      "type": "jail_bonding",
+      "url": "https://harriscountyso.org/JailInfo/inmateinfoinmatebondingprocess",
+      "title": "Harris County Sheriff - Inmate Bonding Process",
+      "downloaded": false
+    },
+    {
+      "type": "jail_faq",
+      "url": "https://www.harriscountyso.org/JailInfo/inmateinfoinmatefaqs",
+      "title": "Harris County Sheriff - Inmate FAQs",
+      "downloaded": false
+    },
+    {
+      "type": "bail_schedule_misdemeanor",
+      "url": "https://www.ccl.hctx.net/criminal/Misdemeanor%20Bail%20Schedule.pdf",
+      "title": "Harris County Misdemeanor Bail Schedule",
+      "downloaded": false,
+      "pdfPath": "pdfs/misdemeanor-bail-schedule.pdf"
+    },
+    {
+      "type": "vehicle_release_texas",
+      "url": "https://www.tdlr.texas.gov/towing/compliance/vsf/vehicle-release.htm",
+      "title": "Texas TDLR - Release of Vehicles by VSFs",
+      "downloaded": false
+    },
+    {
+      "type": "jury_parking",
+      "url": "https://www.houstontx.gov/courts/jury_parking_lubbock.html",
+      "title": "City of Houston Municipal Courts - Jury Parking",
+      "downloaded": false
+    },
+    {
+      "type": "jury_benefits",
+      "url": "https://www.houstonpress.com/news/harris-county-jurors-to-get-free-parking-coffee-and-lunch-11577229/",
+      "title": "Houston Press - Harris County Jurors Get Free Parking, Coffee and Lunch",
+      "downloaded": false
+    }
+  ],
+  "jailInfo": {
+    "releaseHours": "24/7 - Bond posting available 24 hours a day",
+    "processingTime": "6-12 hours after bail is posted",
+    "blackoutPeriods": [
+      "Attorney visits discouraged 1:30-3:00 PM (staff shift change)"
+    ],
+    "paymentMethods": [
+      "Cash (exact amount)",
+      "Cashier's check (payable to 'Harris County Sheriff's Office')",
+      "Money order (payable to 'Harris County Sheriff's Office')",
+      "Debit/credit card via AllPaid.com"
+    ],
+    "address": "700 N. San Jacinto, Houston, TX",
+    "phone": "(713) 755-5300",
+    "specialNotes": [
+      "Bonding Division open 24/7 including holidays",
+      "Municipal Courts Jail Bonding Window also 24/7",
+      "Daylight release policy for inmates who have served sentence (2012 policy)",
+      "Help Line: (713) 837-0311"
+    ]
+  },
+  "bondInfo": {
+    "schedule": {
+      "dwiFirst": "Typical range: $500-$5,000 (varies by BAC and circumstances)",
+      "dwiSecond": "Higher amounts, consult bond schedule",
+      "dwiThird": "Felony - significantly higher amounts",
+      "prBondEligibility": "Possible for first-time DWI offenders - check bond schedule for 'Presumption of PR Bond' notes"
+    },
+    "postingLocation": "700 N. San Jacinto, Houston, TX 77002",
+    "postingHours": "24/7",
+    "sources": [
+      "https://www.ccl.hctx.net/criminal/Misdemeanor%20Bail%20Schedule.pdf"
+    ]
+  },
+  "impoundInfo": {
+    "releaseRequirements": [
+      "Valid state or federally issued ID (can be from another country)",
+      "One of: notarized power of attorney, tax collector's receipt with registration renewal, current lease/rental agreement, or TDLR Personal Vehicle Owner Removal form"
+    ],
+    "notaryRequired": true,
+    "powerOfAttorneyAccepted": true,
+    "fees": {
+      "towingMax": "Contact facility - Texas TDLR regulates maximum fees",
+      "storageDailyMax": "Contact facility - Texas TDLR regulates maximum fees"
+    },
+    "specialRules": [
+      "Notarized documents from out-of-state are valid and must be accepted by storage facilities",
+      "If tow yard's credit card machine is down, they cannot charge storage past that date (Texas TDLR statute)",
+      "TDLR Personal Vehicle Owner Removal and Inspection forms available for download"
+    ]
+  },
+  "courtInfo": {
+    "parking": {
+      "jurorLot": "1401 Congress parking garage (FREE for jurors)",
+      "freeLots": [
+        "1401 Congress garage - entrances on La Branch and Austin streets",
+        "Must bring parking ticket to have it validated",
+        "Arrive early as garage fills up quickly"
+      ],
+      "shuttles": [
+        "FREE METRO transit - show jury assignment copy for free bus/light rail",
+        "Use METRO trip planner online or app to find routes to 1201 Congress (El Franco Lee Public Service Plaza)"
+      ],
+      "rates": "FREE with validation for jurors; Free METRO with jury assignment"
+    },
+    "dressCode": [
+      "No muscle shirts (explicitly banned)",
+      "Professional attire recommended",
+      "Check Courtroom Decorum pages for specific requirements"
+    ],
+    "prohibitedItems": [
+      "Lighters (confiscated)",
+      "Weapons",
+      "Cell phones (restricted in some courtrooms - check local rules)"
+    ],
+    "securityNotes": [
+      "Harris County explicitly bans muscle shirts",
+      "Lighters will be confiscated at security",
+      "No in/out privileges at juror parking garage"
+    ]
+  },
+  "vendorLists": {
+    "scramProviders": [],
+    "duiSchools": [],
+    "ignitionInterlock": [
+      {
+        "name": "See Texas DPS Master List",
+        "address": "Multiple locations in Harris County",
+        "phone": "Contact individual providers",
+        "services": [
+          "Lists available at: https://www.dps.texas.gov/rsd/ignitioninterlock/documents/iidservicecenters.pdf",
+          "Sorted by city: https://www.dps.texas.gov/sites/default/files/documents/rsd/ignitioninterlock/documents/iidservicecentersbycity.pdf"
+        ]
+      }
+    ]
+  }
+}
