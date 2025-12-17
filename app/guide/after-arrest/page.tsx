@@ -175,7 +175,7 @@ export default function AfterArrestPage() {
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <p className="mb-3"><strong>Why It's Urgent:</strong></p>
+                <p className="mb-3"><strong>Why It&apos;s Urgent:</strong></p>
                 <ul className="space-y-1 text-sm">
                   <li>• Daily storage fees: $20-50/day</li>
                   <li>• 30-90 days = vehicle auction</li>

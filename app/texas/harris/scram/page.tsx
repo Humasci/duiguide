@@ -36,7 +36,7 @@ export default function HarrisCountySCRAMPage() {
               </li>
               <li className="flex items-start">
                 <span className="text-yellow-600 mr-2">•</span>
-                <strong>Pre-trial release</strong> (judge's discretion)
+                <strong>Pre-trial release</strong> (judge&apos;s discretion)
               </li>
             </ul>
           </div>

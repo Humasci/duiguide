@@ -16,7 +16,7 @@ export interface VapiCall {
 export interface VapiFunctionCall {
   name: string;
   parameters: {
-    [key: string]: any;
+    [key: string]: unknown;
   };
 }
 
@@ -47,6 +47,7 @@ export interface DuiLeadSubmissionParams {
   hadAccident: boolean;
   hasCDL: boolean;
   questions?: string;
+  [key: string]: unknown;
 }
 
 export interface VapiDuiWebhook extends VapiWebhookPayload {

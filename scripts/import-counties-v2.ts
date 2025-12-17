@@ -391,7 +391,8 @@ async function main() {
     if (summary) {
       const byState: { [key: string]: string[] } = {};
       summary.forEach(c => {
-        const stateKey = c.state.abbreviation;
+        const stateData = Array.isArray(c.state) ? c.state[0] : c.state;
+        const stateKey = stateData.abbreviation;
         if (!byState[stateKey]) byState[stateKey] = [];
         byState[stateKey].push(c.name);
       });

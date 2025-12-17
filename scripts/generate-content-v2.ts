@@ -99,7 +99,8 @@ OUTPUT ONLY VALID JSON (no markdown, no backticks):
       }],
     });
     
-    const text = message.content[0].text;
+    const contentBlock = message.content[0];
+    const text = contentBlock.type === 'text' ? contentBlock.text : '';
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     
     if (!jsonMatch) {

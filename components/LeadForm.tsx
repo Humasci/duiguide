@@ -67,7 +67,7 @@ export default function LeadForm({ county }: LeadFormProps) {
         <h3 className="text-2xl font-bold mb-2">Thank You!</h3>
         <p className="text-lg">A local attorney will contact you within 24 hours.</p>
         <p className="text-sm mt-4 opacity-75">
-          We've connected you with attorneys who specialize in {county.state.dui_laws.terminology} cases in {county.name}.
+          We&apos;ve connected you with attorneys who specialize in {county.state.dui_laws.terminology} cases in {county.name}.
         </p>
       </div>
     );

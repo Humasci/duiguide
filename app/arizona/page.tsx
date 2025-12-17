@@ -37,7 +37,7 @@ export default function ArizonaPage() {
 
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4 text-blue-700">⚖️ Arizona DUI Penalties</h2>
-          <p className="text-gray-700 mb-4">Understanding Arizona's strict DUI laws and potential consequences.</p>
+          <p className="text-gray-700 mb-4">Understanding Arizona&apos;s strict DUI laws and potential consequences.</p>
           <div className="space-y-1 text-sm mb-4">
             <p>• <strong>First Offense:</strong> 10+ days jail</p>
             <p>• <strong>Extreme DUI:</strong> 30+ days jail</p>

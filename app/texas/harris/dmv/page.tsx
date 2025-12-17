@@ -187,11 +187,11 @@ export default function HarrisCountyDMVPage() {
           <div className="bg-white border border-red-200 rounded p-4">
             <h3 className="font-semibold text-red-800 mb-2">NO Exceptions For:</h3>
             <ul className="space-y-1 text-sm">
-              <li>• "I didn't know about the deadline"</li>
-              <li>• "I was still in jail"</li>
-              <li>• "I didn't get the notice"</li>
-              <li>• "My attorney said not to worry"</li>
-              <li>• "The mail was delayed"</li>
+              <li>• &quot;I didn&apos;t know about the deadline&quot;</li>
+              <li>• &quot;I was still in jail&quot;</li>
+              <li>• &quot;I didn&apos;t get the notice&quot;</li>
+              <li>• &quot;My attorney said not to worry&quot;</li>
+              <li>• &quot;The mail was delayed&quot;</li>
             </ul>
           </div>
         </div>
@@ -237,7 +237,7 @@ export default function HarrisCountyDMVPage() {
               <p><strong>🌐 Website:</strong> <a href="https://www.soah.texas.gov" className="text-blue-600 hover:text-blue-700">soah.texas.gov</a></p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Most Harris County ALR hearings are conducted by phone or video conference. You don't usually need to travel to Austin.</p>
+              <p className="text-sm text-gray-600">Most Harris County ALR hearings are conducted by phone or video conference. You don&apos;t usually need to travel to Austin.</p>
             </div>
           </div>
         </div>
@@ -262,8 +262,8 @@ export default function HarrisCountyDMVPage() {
             <ul className="space-y-2 text-sm">
               <li>• Must represent yourself</li>
               <li>• Low success rate</li>
-              <li>• Don't know legal standards</li>
-              <li>• Can't subpoena witnesses</li>
+              <li>• Don&apos;t know legal standards</li>
+              <li>• Can&apos;t subpoena witnesses</li>
               <li>• May hurt criminal case</li>
             </ul>
           </div>

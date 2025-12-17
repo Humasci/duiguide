@@ -255,7 +255,7 @@ export default function GeorgiaDMVHearingPage() {
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <h3 className="font-semibold mb-3">What is Form 1205?</h3>
-            <p className="text-gray-700 mb-3">Form 1205 is the official notice given when you're arrested for DUI. It serves as:</p>
+            <p className="text-gray-700 mb-3">Form 1205 is the official notice given when you&apos;re arrested for DUI. It serves as:</p>
             <ul className="space-y-1 text-sm">
               <li>• Temporary driving permit (45 days)</li>
               <li>• Notice of license suspension</li>

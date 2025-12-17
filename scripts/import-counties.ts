@@ -359,7 +359,8 @@ async function main() {
     
     if (summary) {
       const countByState = summary.reduce((acc: Record<string, number>, curr) => {
-        const state = curr.states?.abbreviation;
+        const stateData = Array.isArray(curr.states) ? curr.states[0] : curr.states;
+        const state = stateData?.abbreviation;
         if (state) acc[state] = (acc[state] || 0) + 1;
         return acc;
       }, {});

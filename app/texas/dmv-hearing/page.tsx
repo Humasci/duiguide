@@ -275,9 +275,9 @@ export default function TexasDMVHearingPage() {
               <ul className="space-y-1">
                 <li>• Very low success rate</li>
                 <li>• Complex legal procedures</li>
-                <li>• Can't effectively cross-examine</li>
+                <li>• Can&apos;t effectively cross-examine</li>
                 <li>• May hurt criminal case</li>
-                <li>• Don't know admissibility rules</li>
+                <li>• Don&apos;t know admissibility rules</li>
               </ul>
             </div>
           </div>

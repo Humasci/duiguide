@@ -15,6 +15,11 @@ interface PageProps {
   };
 }
 
+interface CountyWithState {
+  slug: string;
+  states: { abbreviation: string } | { abbreviation: string }[];
+}
+
 // Generate static paths for all counties
 export async function generateStaticParams() {
   const supabase = createClient();
@@ -24,13 +29,16 @@ export async function generateStaticParams() {
       .from('counties')
       .select(`
         slug,
-        state:states(abbreviation)
+        states!inner(abbreviation)
       `);
     
-    return counties?.map((c: { slug: string; state: { abbreviation: string } }) => ({
-      state: c.state.abbreviation.toLowerCase(),
-      county: c.slug
-    })) || [];
+    return counties?.map((c: CountyWithState) => {
+      const stateData = Array.isArray(c.states) ? c.states[0] : c.states;
+      return {
+        state: stateData?.abbreviation?.toLowerCase() || '',
+        county: c.slug || ''
+      };
+    }) || [];
   } catch (error) {
     console.error('Error generating static params:', error);
     return [];
@@ -48,7 +56,7 @@ export async function generateMetadata({ params }: PageProps) {
         meta_title,
         meta_description,
         name,
-        state:states(name, abbreviation, dui_laws)
+        states!inner(name, abbreviation, dui_laws)
       `)
       .eq('slug', params.county)
       .eq('states.abbreviation', params.state.toUpperCase())
@@ -61,9 +69,10 @@ export async function generateMetadata({ params }: PageProps) {
       };
     }
     
-    const terminology = county.state.dui_laws.terminology;
+    const stateData = Array.isArray(county.states) ? county.states[0] : county.states;
+    const terminology = stateData?.dui_laws?.terminology || 'DUI';
     const defaultTitle = `${terminology} Arrest in ${county.name} - What to Do Immediately`;
-    const defaultDescription = `Arrested for ${terminology} in ${county.name}, ${county.state.name}? Learn critical deadlines, court information, and next steps. Get help now.`;
+    const defaultDescription = `Arrested for ${terminology} in ${county.name}, ${stateData?.name || 'your state'}? Learn critical deadlines, court information, and next steps. Get help now.`;
     
     return {
       title: county.meta_title || defaultTitle,
@@ -71,7 +80,7 @@ export async function generateMetadata({ params }: PageProps) {
       keywords: [
         terminology,
         county.name,
-        county.state.name,
+        stateData?.name || '',
         'lawyer',
         'attorney',
         'court',
@@ -102,7 +111,7 @@ export default async function CountyPage({ params }: PageProps) {
       .from('counties')
       .select(`
         *,
-        state:states(*),
+        states!inner(*),
         locations:building_service_locations(*)
       `)
       .eq('slug', params.county)
@@ -113,6 +122,9 @@ export default async function CountyPage({ params }: PageProps) {
       console.error('County not found:', error);
       notFound();
     }
+
+    // Extract state data (handle array response from Supabase)
+    const stateData = Array.isArray(county.states) ? county.states[0] : county.states;
     
     // If no content generated yet, show basic page
     if (!county.page_content) {
@@ -122,13 +134,13 @@ export default async function CountyPage({ params }: PageProps) {
             <div className="bg-yellow-100 border-l-4 border-yellow-500 p-6 mb-8">
               <h2 className="text-xl font-bold text-yellow-800 mb-2">Content Coming Soon</h2>
               <p className="text-yellow-700">
-                We&apos;re building comprehensive {county.state.dui_laws.terminology} guidance for {county.name}.
-                In the meantime, contact a local attorney immediately if you've been arrested.
+                We&apos;re building comprehensive {stateData?.dui_laws?.terminology || 'DUI'} guidance for {county.name}.
+                In the meantime, contact a local attorney immediately if you&apos;ve been arrested.
               </p>
             </div>
             
             <h1 className="text-4xl font-bold mb-6">
-              {county.state.dui_laws.terminology} Help in {county.name}, {county.state.abbreviation}
+              {stateData?.dui_laws?.terminology || 'DUI'} Help in {county.name}, {stateData?.abbreviation || ''}
             </h1>
             
             {county.court_phone && (
@@ -145,7 +157,7 @@ export default async function CountyPage({ params }: PageProps) {
     }
     
     const content = county.page_content;
-    const deadline = county.state.dui_laws.admin_hearing_deadline_days;
+    const deadline = stateData?.dui_laws?.admin_hearing_deadline_days || 10;
     
     // Prepare map data
     const mapCenter = {
@@ -184,7 +196,7 @@ export default async function CountyPage({ params }: PageProps) {
         {/* Timeline */}
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8">{county.state.dui_laws.terminology} Process Timeline</h2>
+            <h2 className="text-3xl font-bold mb-8">{stateData?.dui_laws?.terminology || 'DUI'} Process Timeline</h2>
             <Timeline deadline={deadline} />
           </div>
         </section>
@@ -225,7 +237,7 @@ export default async function CountyPage({ params }: PageProps) {
           <div className="max-w-2xl mx-auto px-4">
             <h2 className="text-3xl font-bold mb-4 text-center">Get Help Now</h2>
             <p className="text-lg mb-8 text-center">
-              Connect with a local {county.state.dui_laws.terminology} attorney in {county.name}
+              Connect with a local {stateData?.dui_laws?.terminology || 'DUI'} attorney in {county.name}
             </p>
             <LeadForm county={county} />
           </div>
@@ -265,13 +277,13 @@ export default async function CountyPage({ params }: PageProps) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LegalService",
-              "name": `${county.state.dui_laws.terminology} Help in ${county.name}`,
+              "name": `${stateData?.dui_laws?.terminology || 'DUI'} Help in ${county.name}`,
               "description": content.intro,
               "areaServed": {
                 "@type": "Place",
-                "name": `${county.name}, ${county.state.name}`
+                "name": `${county.name}, ${stateData?.name || ''}`
               },
-              "serviceType": `${county.state.dui_laws.terminology} Legal Assistance`,
+              "serviceType": `${stateData?.dui_laws?.terminology || 'DUI'} Legal Assistance`,
               "provider": {
                 "@type": "Organization",
                 "name": "DUI Arrested Guide"

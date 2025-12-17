@@ -28,7 +28,10 @@ interface CountyToGeocode {
   states: {
     name: string;
     abbreviation: string;
-  };
+  } | {
+    name: string;
+    abbreviation: string;
+  }[];
 }
 
 async function geocodeAddress(address: string, countyName: string, stateName: string): Promise<{lat: number, lng: number} | null> {
@@ -99,11 +102,12 @@ async function geocodeCounty(county: CountyToGeocode): Promise<boolean> {
   let address = county.court_address;
   
   // If no court address, use county name + state
+  const stateData = Array.isArray(county.states) ? county.states[0] : county.states;
   if (!address) {
-    address = `${county.name}, ${county.states.name}`;
+    address = `${county.name}, ${stateData.name}`;
   }
   
-  const coordinates = await geocodeAddress(address, county.name, county.states.name);
+  const coordinates = await geocodeAddress(address, county.name, stateData.name);
   
   if (!coordinates) {
     console.log(`   ❌ Failed to geocode ${county.name}`);
@@ -227,7 +231,8 @@ async function main() {
     if (geocodedSample && geocodedSample.length > 0) {
       console.log('\n📍 Sample geocoded locations:');
       geocodedSample.forEach(county => {
-        console.log(`   ${county.name}, ${county.states?.abbreviation}: ${county.latitude?.toFixed(4)}, ${county.longitude?.toFixed(4)}`);
+        const stateData = Array.isArray(county.states) ? county.states[0] : county.states;
+        console.log(`   ${county.name}, ${stateData?.abbreviation}: ${county.latitude?.toFixed(4)}, ${county.longitude?.toFixed(4)}`);
       });
     }
     

@@ -259,7 +259,7 @@ export function DUITimeline({
       
       {/* Next Steps CTA */}
       <div className="mt-6 p-4 bg-blue-600 text-white rounded-lg">
-        <h4 className="font-bold mb-2">Don't Wait - Take Action Now</h4>
+        <h4 className="font-bold mb-2">Don&apos;t Wait - Take Action Now</h4>
         <p className="text-sm mb-3">
           Time is critical after a {terminology} arrest. Every day counts toward protecting your rights and driving privileges.
         </p>

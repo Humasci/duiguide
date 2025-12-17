@@ -67,7 +67,7 @@ export default function DMVHearingPage() {
           </div>
         </div>
         <div className="mt-6 p-4 bg-gray-50 rounded">
-          <p className="text-sm text-gray-700"><strong>Important:</strong> These deadlines are from the date of arrest, not from when you were released or received any paperwork. Don't wait - request your hearing immediately.</p>
+          <p className="text-sm text-gray-700"><strong>Important:</strong> These deadlines are from the date of arrest, not from when you were released or received any paperwork. Don&apos;t wait - request your hearing immediately.</p>
         </div>
       </div>
 
@@ -99,7 +99,7 @@ export default function DMVHearingPage() {
 
         <div className="bg-red-50 border border-red-200 rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4 text-red-700">⚠️ Missed Your Deadline?</h2>
-          <p className="text-gray-600 mb-4">Options if you've already missed the DMV hearing request deadline.</p>
+          <p className="text-gray-600 mb-4">Options if you&apos;ve already missed the DMV hearing request deadline.</p>
           <a href="/guide/dmv-hearing/missed-deadline" className="text-red-600 hover:text-red-700 font-medium">Explore Options →</a>
         </div>
       </div>
@@ -110,7 +110,7 @@ export default function DMVHearingPage() {
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <h3 className="font-semibold mb-3">The Hearing Explained</h3>
-            <p className="text-gray-700 mb-4">A DMV administrative hearing is a separate proceeding from your criminal DUI case. It's conducted by the Department of Motor Vehicles (or equivalent state agency) to determine whether your driving privileges should be suspended based on:</p>
+            <p className="text-gray-700 mb-4">A DMV administrative hearing is a separate proceeding from your criminal DUI case. It&apos;s conducted by the Department of Motor Vehicles (or equivalent state agency) to determine whether your driving privileges should be suspended based on:</p>
             <ul className="space-y-1 text-sm text-gray-600">
               <li>• Refusing a breath/blood test</li>
               <li>• Testing over the legal limit (0.08% BAC)</li>
@@ -165,7 +165,7 @@ export default function DMVHearingPage() {
         
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold mb-3 text-red-600">If You Haven't Requested Hearing Yet:</h3>
+            <h3 className="font-semibold mb-3 text-red-600">If You Haven&apos;t Requested Hearing Yet:</h3>
             <ol className="space-y-2 text-sm">
               <li className="flex items-start">
                 <span className="bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">1</span>
@@ -187,9 +187,9 @@ export default function DMVHearingPage() {
           </div>
           
           <div>
-            <h3 className="font-semibold mb-3 text-green-600">If You've Already Requested:</h3>
+            <h3 className="font-semibold mb-3 text-green-600">If You&apos;ve Already Requested:</h3>
             <ul className="space-y-2 text-sm">
-              <li>• <strong>Hire attorney</strong> if you haven't already</li>
+              <li>• <strong>Hire attorney</strong> if you haven&apos;t already</li>
               <li>• <strong>Gather evidence</strong> - photos, witness contacts, medical records</li>
               <li>• <strong>Request discovery</strong> - police reports, calibration records</li>
               <li>• <strong>Prepare defense strategy</strong> based on arrest circumstances</li>

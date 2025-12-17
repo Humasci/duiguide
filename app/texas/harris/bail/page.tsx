@@ -88,8 +88,8 @@ export default function HarrisCountyBailPage() {
             <h3 className="font-semibold mb-3 text-yellow-800">Premium Rate (What You Pay)</h3>
             <div className="bg-white border border-yellow-200 rounded p-4">
               <p className="text-sm mb-2"><strong>Market Rate:</strong> ~10% of bail amount</p>
-              <p className="text-sm mb-2"><strong>No Legal Cap:</strong> Texas doesn't set maximum rates</p>
-              <p className="text-sm mb-2"><strong>Non-Refundable:</strong> You don't get this money back</p>
+              <p className="text-sm mb-2"><strong>No Legal Cap:</strong> Texas doesn&apos;t set maximum rates</p>
+              <p className="text-sm mb-2"><strong>Non-Refundable:</strong> You don&apos;t get this money back</p>
               <p className="text-sm text-gray-600">Example: $5,000 bail = ~$500 premium to bondsman</p>
             </div>
           </div>
@@ -109,11 +109,11 @@ export default function HarrisCountyBailPage() {
         <h2 className="text-2xl font-semibold mb-4">⚠️ Co-Signer Warning</h2>
         <div className="space-y-4">
           <div className="bg-white border border-red-200 rounded p-4">
-            <h3 className="font-semibold text-red-800 mb-2">When You Co-Sign a Bond, You're Responsible For:</h3>
+            <h3 className="font-semibold text-red-800 mb-2">When You Co-Sign a Bond, You&apos;re Responsible For:</h3>
             <ul className="space-y-2 text-sm">
               <li className="flex items-start">
                 <span className="text-red-500 mr-2">•</span>
-                <strong>Full bond amount</strong> if defendant doesn't appear in court
+                <strong>Full bond amount</strong> if defendant doesn&apos;t appear in court
               </li>
               <li className="flex items-start">
                 <span className="text-red-500 mr-2">•</span>
@@ -135,7 +135,7 @@ export default function HarrisCountyBailPage() {
               <li>1. Defendant misses court → Bond declared forfeited</li>
               <li>2. 20-day notice period to produce defendant</li>
               <li>3. If not produced → Judgment Nisi entered</li>
-              <li>4. 150-day period to seek "remission" (reduction)</li>
+              <li>4. 150-day period to seek &quot;remission&quot; (reduction)</li>
               <li>5. Final judgment → Collection lawsuit against co-signer</li>
             </ol>
           </div>

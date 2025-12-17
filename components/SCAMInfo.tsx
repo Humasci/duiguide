@@ -179,7 +179,7 @@ export function SCAMInfo({ state, county, providers = [], className }: SCAMInfoP
           <li>Get court order or probation requirements in writing</li>
           <li>Contact a certified SCAM provider immediately</li>
           <li>Schedule installation appointment (usually within 24-48 hours)</li>
-          <li>Bring payment for setup fee and first week's monitoring</li>
+          <li>Bring payment for setup fee and first week&apos;s monitoring</li>
           <li>Attend all required check-ins and payments</li>
         </ol>
       </div>

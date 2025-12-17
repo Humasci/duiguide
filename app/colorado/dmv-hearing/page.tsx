@@ -93,7 +93,7 @@ export default function ColoradoDMVHearingPage() {
             </div>
             <div>
               <p><strong>⚠️ DANGER:</strong> Must be <strong>postmarked</strong> by day 7</p>
-              <p><strong>Fee:</strong> $95 (money order or cashier's check only)</p>
+              <p><strong>Fee:</strong> $95 (money order or cashier&apos;s check only)</p>
               <p><strong>Form:</strong> DR 2870 (Express Consent Hearing Request)</p>
             </div>
           </div>

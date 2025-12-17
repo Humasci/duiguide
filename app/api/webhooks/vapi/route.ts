@@ -36,7 +36,12 @@ const vapiMessageSchema = z.object({
 });
 
 // Calculate urgency score for voice leads
-function calculateVoiceUrgencyScore(params: any): number {
+function calculateVoiceUrgencyScore(params: {
+  hadAccident: boolean;
+  hasCDL: boolean;
+  isFirstOffense: boolean;
+  arrestDate?: string;
+}): number {
   let score = 7; // Base score higher for phone calls
   
   if (params.hadAccident) score += 1;

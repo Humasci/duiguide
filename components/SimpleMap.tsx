@@ -1,6 +1,25 @@
 'use client';
 import { useEffect, useRef } from 'react';
 
+declare global {
+  interface Window {
+    google: {
+      maps: {
+        Map: new (element: HTMLElement, options: unknown) => {
+          addListener: (event: string, handler: () => void) => void;
+        };
+        Marker: new (options: unknown) => {
+          addListener: (event: string, handler: () => void) => void;
+        };
+        InfoWindow: new (options: unknown) => {
+          open: (map: unknown, marker?: unknown) => void;
+        };
+        Size: new (width: number, height: number) => unknown;
+      };
+    };
+  }
+}
+
 interface MapMarker {
   lat: number;
   lng: number;
@@ -23,7 +42,7 @@ export default function SimpleMap({ center, markers }: SimpleMapProps) {
     }
     
     try {
-      const map = new google.maps.Map(mapRef.current, {
+      const map = new window.google.maps.Map(mapRef.current, {
         center: center,
         zoom: 12,
         styles: [
@@ -41,17 +60,17 @@ export default function SimpleMap({ center, markers }: SimpleMapProps) {
       
       markers.forEach(marker => {
         if (marker.lat && marker.lng) {
-          const mapMarker = new google.maps.Marker({
+          const mapMarker = new window.google.maps.Marker({
             position: { lat: marker.lat, lng: marker.lng },
             map: map,
             title: marker.name,
             icon: marker.type === 'court' ? {
               url: '/court-icon.png',
-              scaledSize: new google.maps.Size(40, 40)
+              scaledSize: new window.google.maps.Size(40, 40)
             } : undefined
           });
           
-          const infoWindow = new google.maps.InfoWindow({
+          const infoWindow = new window.google.maps.InfoWindow({
             content: `
               <div class="p-2">
                 <h3 class="font-bold">${marker.name}</h3>

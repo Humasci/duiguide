@@ -175,7 +175,7 @@ export default function NorthCarolinaDMVHearingPage() {
               </li>
               <li className="flex items-start">
                 <span className="text-red-500 mr-2">•</span>
-                <strong>1-year revocation:</strong> If you lose/don't request
+                <strong>1-year revocation:</strong> If you lose/don&apos;t request
               </li>
               <li className="flex items-start">
                 <span className="text-red-500 mr-2">•</span>

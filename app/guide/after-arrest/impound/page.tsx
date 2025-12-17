@@ -39,7 +39,7 @@ export default function ImpoundGuidePage() {
             <ul className="space-y-2 text-sm">
               <li className="flex items-start">
                 <span className="text-gray-400 mr-2">•</span>
-                <strong>DUI arrest</strong> - Car can't be left unattended
+                <strong>DUI arrest</strong> - Car can&apos;t be left unattended
               </li>
               <li className="flex items-start">
                 <span className="text-gray-400 mr-2">•</span>
@@ -69,7 +69,7 @@ export default function ImpoundGuidePage() {
               </div>
               <div className="bg-yellow-50 border border-yellow-200 rounded p-3">
                 <h4 className="font-semibold text-yellow-800">Discretionary Impounds</h4>
-                <p className="text-sm">Officer's choice based on circumstances</p>
+                <p className="text-sm">Officer&apos;s choice based on circumstances</p>
                 <p className="text-sm">May allow alternative arrangements</p>
               </div>
             </div>
@@ -136,7 +136,7 @@ export default function ImpoundGuidePage() {
                 <span className="text-green-500 mr-2 font-bold">•</span>
                 <div>
                   <strong>Valid Photo ID</strong>
-                  <p className="text-sm text-gray-600">Driver's license or state ID</p>
+                  <p className="text-sm text-gray-600">Driver&apos;s license or state ID</p>
                 </div>
               </li>
               <li className="flex items-start">
@@ -291,7 +291,7 @@ export default function ImpoundGuidePage() {
       </div>
 
       <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
-        <h2 className="text-2xl font-semibold mb-4">⚠️ What If You Can't Afford the Fees?</h2>
+        <h2 className="text-2xl font-semibold mb-4">⚠️ What If You Can&apos;t Afford the Fees?</h2>
         
         <div className="grid md:grid-cols-2 gap-6">
           <div>

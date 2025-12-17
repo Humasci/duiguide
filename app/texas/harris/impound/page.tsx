@@ -35,13 +35,13 @@ export default function HarrisCountyImpoundPage() {
         
         <div className="space-y-6">
           <div className="border-b border-gray-200 pb-6">
-            <h3 className="text-xl font-semibold mb-4">🏢 Harris County Sheriff's Office Auto Pound</h3>
+            <h3 className="text-xl font-semibold mb-4">🏢 Harris County Sheriff&apos;s Office Auto Pound</h3>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <p className="mb-2"><strong>📍 Address:</strong> 8301 John Ralston Road, Houston, TX 77044</p>
                 <p className="mb-2"><strong>📞 Phone:</strong> (713) 274-3232</p>
                 <p className="mb-2"><strong>🕐 Release Hours:</strong> Mon-Fri 8:00 AM - 4:30 PM</p>
-                <p className="mb-2"><strong>💳 Payment:</strong> Cash, Money Order, Cashier's Check</p>
+                <p className="mb-2"><strong>💳 Payment:</strong> Cash, Money Order, Cashier&apos;s Check</p>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">💰 Fees</h4>
@@ -85,7 +85,7 @@ export default function HarrisCountyImpoundPage() {
             <ul className="space-y-2">
               <li className="flex items-start">
                 <span className="text-green-500 mr-2">•</span>
-                Valid photo ID (driver's license or state ID)
+                Valid photo ID (driver&apos;s license or state ID)
               </li>
               <li className="flex items-start">
                 <span className="text-green-500 mr-2">•</span>
@@ -155,19 +155,19 @@ export default function HarrisCountyImpoundPage() {
           </div>
           <div>
             <h3 className="font-semibold mb-3">⏰ Get Personal Property</h3>
-            <p className="text-sm text-gray-600 mb-3">Texas law allows you to retrieve personal items even if you can't afford to get the car.</p>
+            <p className="text-sm text-gray-600 mb-3">Texas law allows you to retrieve personal items even if you can&apos;t afford to get the car.</p>
             <ul className="space-y-1 text-sm">
               <li>• No fee for retrieval</li>
               <li>• Bring photo ID</li>
               <li>• Business hours only</li>
-              <li>• "Attached" items excluded</li>
+              <li>• &quot;Attached&quot; items excluded</li>
             </ul>
           </div>
         </div>
       </div>
 
       <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
-        <h2 className="text-2xl font-semibold mb-4">⚠️ Can't Afford to Get Your Car?</h2>
+        <h2 className="text-2xl font-semibold mb-4">⚠️ Can&apos;t Afford to Get Your Car?</h2>
         <div className="space-y-4">
           <div>
             <h3 className="font-semibold">Timeline to Act:</h3>
@@ -178,7 +178,7 @@ export default function HarrisCountyImpoundPage() {
             </ul>
           </div>
           <div className="bg-white border border-gray-200 rounded p-4">
-            <h4 className="font-semibold mb-2">💰 Can't Afford Fees? Your Options:</h4>
+            <h4 className="font-semibold mb-2">💰 Can&apos;t Afford Fees? Your Options:</h4>
             <ul className="space-y-1 text-sm">
               <li>• File tow hearing to challenge fees</li>
               <li>• Remove personal property first</li>

@@ -242,7 +242,8 @@ async function main() {
     if (updatedCourts && updatedCourts.length > 0) {
       console.log('\n📋 Recently updated courts:');
       updatedCourts.forEach(court => {
-        console.log(`   ${court.name}, ${court.states?.abbreviation}: ${court.court_name} | ${court.court_phone || 'No phone'}`);
+        const stateData = Array.isArray(court.states) ? court.states[0] : court.states;
+        console.log(`   ${court.name}, ${stateData?.abbreviation}: ${court.court_name} | ${court.court_phone || 'No phone'}`);
       });
     }
     
