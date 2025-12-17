@@ -1,4 +1,4 @@
-export default function North-carolinaPage() {
+export default function NorthCarolinaPage() {
   return (
     <div>
       <h1>North-carolina DUI Guide</h1>

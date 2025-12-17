@@ -27,7 +27,7 @@ export async function generateStaticParams() {
         state:states(abbreviation)
       `);
     
-    return counties?.map((c: any) => ({
+    return counties?.map((c: { slug: string; state: { abbreviation: string } }) => ({
       state: c.state.abbreviation.toLowerCase(),
       county: c.slug
     })) || [];
@@ -122,7 +122,7 @@ export default async function CountyPage({ params }: PageProps) {
             <div className="bg-yellow-100 border-l-4 border-yellow-500 p-6 mb-8">
               <h2 className="text-xl font-bold text-yellow-800 mb-2">Content Coming Soon</h2>
               <p className="text-yellow-700">
-                We're building comprehensive {county.state.dui_laws.terminology} guidance for {county.name}.
+                We&apos;re building comprehensive {county.state.dui_laws.terminology} guidance for {county.name}.
                 In the meantime, contact a local attorney immediately if you've been arrested.
               </p>
             </div>
@@ -154,12 +154,12 @@ export default async function CountyPage({ params }: PageProps) {
     };
     
     // Create map markers from service locations
-    const mapMarkers = county.locations?.map((loc: any) => ({
+    const mapMarkers = county.locations?.map((loc: { lat: number; lng: number; name: string; type: string }) => ({
       lat: loc.lat,
       lng: loc.lng,
       name: loc.name,
       type: loc.type
-    })).filter((marker: any) => marker.lat && marker.lng) || [];
+    })).filter((marker: { lat: number; lng: number }) => marker.lat && marker.lng) || [];
     
     // Add court as main marker if not in locations
     if (county.court_lat && county.court_lng) {
@@ -237,7 +237,7 @@ export default async function CountyPage({ params }: PageProps) {
             <div className="max-w-3xl mx-auto px-4">
               <h2 className="text-3xl font-bold mb-8">Frequently Asked Questions</h2>
               <div className="space-y-4">
-                {content.faq.map((item: any, i: number) => (
+                {content.faq.map((item: { question: string; answer: string }, i: number) => (
                   <details key={i} className="border border-gray-200 rounded-lg">
                     <summary className="font-semibold p-4 cursor-pointer hover:bg-gray-50 rounded-lg">
                       {item.question}
