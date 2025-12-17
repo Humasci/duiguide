@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "seed:states": "tsx scripts/seed-states.ts",
+    "seed:knowledge-base": "tsx scripts/seed-knowledge-base.ts",
+    "migration:show": "tsx scripts/run-migration.ts",
     "import:counties": "tsx scripts/import-counties.ts",
     "generate:states": "tsx scripts/generate-state-content.ts",
     "generate:counties": "tsx scripts/generate-county-content.ts",
@@ -46,7 +48,7 @@
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
     "tsx": "^4.21.0",
-    "zod": "^4.1.13"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",

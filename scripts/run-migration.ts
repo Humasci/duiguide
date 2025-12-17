@@ -1,47 +1,33 @@
-import * as dotenv from 'dotenv';
-import { createClient } from '@supabase/supabase-js';
-import fs from 'fs';
-import path from 'path';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
-// Load environment variables
-dotenv.config({ path: '.env.local' });
+async function showMigration(migrationFile: string) {
+  console.log(`🚀 Migration SQL for: ${migrationFile}`);
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
-async function runMigration() {
-  console.log('🔄 Running database migration...\n');
-  
   try {
     // Read the migration file
-    const migrationPath = path.join(process.cwd(), 'migrations', '001_dui_content_tables.sql');
-    const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
+    const migrationPath = join(process.cwd(), 'migrations', migrationFile);
+    const sql = readFileSync(migrationPath, 'utf8');
+
+    console.log('\n📋 COPY AND PASTE THIS SQL INTO SUPABASE SQL EDITOR:');
+    console.log('═'.repeat(80));
+    console.log(sql);
+    console.log('═'.repeat(80));
     
-    // Execute the migration
-    const { error } = await supabase.rpc('exec_sql', { sql: migrationSQL });
-    
-    if (error) {
-      console.error('❌ Migration failed:', error.message);
-      return;
-    }
-    
-    console.log('✅ Migration completed successfully!');
-    
-    // Verify the states table structure
-    const { data: statesSchema, error: schemaError } = await supabase
-      .from('states')
-      .select('*')
-      .limit(0);
-    
-    if (!schemaError) {
-      console.log('✅ States table schema verified');
-    }
-    
+    console.log('\n📝 Steps:');
+    console.log('1. Go to https://supabase.com/dashboard');
+    console.log('2. Select your project');  
+    console.log('3. Go to SQL Editor');
+    console.log('4. Paste the SQL above and run it');
+    console.log('5. Then run: npm run seed:knowledge-base');
+
   } catch (error) {
-    console.error('💥 Error running migration:', error);
+    console.error(`❌ Could not read migration file:`, error);
+    throw error;
   }
 }
 
-runMigration();
+// Run specific migration
+const migrationFile = process.argv[2] || '003_knowledge_base.sql';
+
+showMigration(migrationFile);
