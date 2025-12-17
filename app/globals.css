@@ -1,54 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* Professional Legal Color Palette */
-    --background: 0 0% 100%;
-    --foreground: 215 25% 15%;
+    /* Organic Tech: Cool Blue-Gray Palette */
+    --background: 215 30% 96%;      /* #F0F4F8 - Alice Blue (cool gray-blue canvas) */
+    --foreground: 215 25% 7%;       /* #0F172A - Navy-black (never pure black) */
 
     /* Cards & Surfaces */
-    --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card: 0 0% 100%;              /* #FFFFFF - Pure white cards */
+    --card-foreground: 215 25% 7%;  /* #0F172A - Navy-black text on cards */
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 15%;
+    --popover-foreground: 215 25% 7%;
 
-    /* Primary: Professional Navy Blue (trust, stability) */
-    --primary: 214 95% 36%;
+    /* Primary: Cobalt Blue (trust, action) */
+    --primary: 214 100% 34%;        /* #0047AB - Cobalt Blue */
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary: Warm Gray (sophistication) */
-    --secondary: 215 15% 95%;
-    --secondary-foreground: 215 25% 15%;
+    /* Secondary: Cool Gray */
+    --secondary: 215 20% 89%;       /* #E2E8F0 - Light slate */
+    --secondary-foreground: 215 25% 7%;
 
-    /* Muted: Subtle Background */
-    --muted: 215 20% 97%;
-    --muted-foreground: 215 15% 45%;
+    /* Muted: Subtle Cool Background */
+    --muted: 215 20% 94%;           /* #EDF2F7 - Very light slate */
+    --muted-foreground: 215 15% 35%; /* #64748B - Medium slate gray */
 
-    /* Accent: Highlight Color (calls to action) */
-    --accent: 214 95% 36%;
+    /* Accent: Same as Primary */
+    --accent: 214 100% 34%;
     --accent-foreground: 0 0% 100%;
 
-    /* Destructive: Urgent Red (deadlines, warnings) */
-    --destructive: 0 85% 45%;
+    /* Destructive: Urgent Red */
+    --destructive: 0 73% 50%;       /* #DC2626 - Critical red */
     --destructive-foreground: 0 0% 100%;
 
     /* Success: Confirmation Green */
-    --success: 142 76% 36%;
+    --success: 142 76% 36%;         /* #059669 - Trust green */
     --success-foreground: 0 0% 100%;
 
     /* Warning: Attention Orange */
-    --warning: 38 92% 50%;
+    --warning: 25 95% 53%;          /* #F97316 - Alert orange */
     --warning-foreground: 0 0% 100%;
 
-    /* Borders & Inputs */
-    --border: 215 20% 88%;
-    --input: 215 20% 88%;
-    --ring: 214 95% 36%;
+    /* Borders & Inputs - Cool Gray */
+    --border: 215 20% 85%;          /* #CBD5E1 - Slate border */
+    --input: 215 20% 85%;
+    --ring: 214 100% 34%;           /* Primary blue for focus rings */
 
-    /* Border Radius */
-    --radius: 0.5rem;
+    /* Border Radius - Soft but not extreme */
+    --radius: 12px;
   }
 
   .dark {
@@ -78,19 +80,25 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-feature-settings: "cv11", "ss01";
-    font-variation-settings: "opsz" 32;
+    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    @apply font-bold;
+    letter-spacing: -0.02em;  /* Tight tracking for modern look */
+    line-height: 1.2;
   }
 
   h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl;
+    @apply text-4xl md:text-5xl lg:text-7xl;
+    letter-spacing: -0.03em;  /* Extra tight for hero headlines */
   }
 
   h2 {
@@ -99,6 +107,11 @@
 
   h3 {
     @apply text-2xl md:text-3xl;
+  }
+
+  p {
+    font-family: 'Noto Sans', -apple-system, sans-serif;
+    line-height: 1.6;
   }
 }
 
@@ -141,13 +154,21 @@
            animate-pulse;
   }
 
-  /* Section Containers */
+  /* Section Containers - Generous but not overwhelming */
   .section {
-    @apply py-12 md:py-16 lg:py-20;
+    @apply py-12 md:py-16 lg:py-24;  /* Slightly less than Claude's massive spacing */
+  }
+
+  .section-lg {
+    @apply py-16 md:py-20 lg:py-28;  /* For hero sections */
   }
 
   .section-muted {
-    @apply bg-muted/30;
+    @apply bg-muted/40;  /* Subtle cool gray tint */
+  }
+
+  .section-inverted {
+    @apply bg-foreground text-background;  /* Dark sections for contrast */
   }
 
   /* Content Containers */
@@ -157,5 +178,29 @@
 
   .content-narrow {
     @apply mx-auto max-w-3xl;
+  }
+
+  /* Claude-Style 50/50 Grid */
+  .grid-50-50 {
+    @apply grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center;
+  }
+
+  /* Feature Cards Grid */
+  .grid-features {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8;
+  }
+
+  /* Sketch Placeholder */
+  .sketch-placeholder {
+    @apply w-full max-w-md mx-auto opacity-90;
+  }
+
+  /* Card Hover Effect - Subtle lift */
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .card-hover:hover {
+    @apply -translate-y-1 shadow-lg;
   }
 }
