@@ -129,21 +129,21 @@ export function generateHunterKillerQueries(county: CountyTarget) {
     },
 
     bail: {
-      jailBlackout: `site:.gov "inmate handbook" "release processing" "shift change" ${countyName} ${state}`,
-      coolDown: `site:.gov "magistrate" "standing order" "DUI" OR "DWI" "release" ${countyName} ${state}`,
-      bondSchedule: `site:.gov "bail schedule" "misdemeanor" "DUI" OR "DWI" 2024 OR 2025 filetype:pdf ${countyName} ${state}`,
-      bondScheduleFelony: `site:.gov "bail schedule" "felony" "DUI" OR "DWI" 2024 OR 2025 filetype:pdf ${countyName} ${state}`,
-      prBondRules: `site:.gov "personal recognizance" OR "PR bond" "DUI" eligibility ${countyName} ${state}`,
-      bondingOfficeHours: `site:.gov "${countyName}" sheriff "bonding" hours location`,
+      jailBlackout: `site:.gov "inmate handbook" "release processing" "shift change" ${countyName} ${state} 2025`,
+      coolDown: `site:.gov "magistrate" "standing order" "DUI" OR "DWI" "release" ${countyName} ${state} 2025`,
+      bondSchedule: `site:.gov "bail schedule" "misdemeanor" "DUI" OR "DWI" 2025 filetype:pdf ${countyName} ${state}`,
+      bondScheduleFelony: `site:.gov "bail schedule" "felony" "DUI" OR "DWI" 2025 filetype:pdf ${countyName} ${state}`,
+      prBondRules: `site:.gov "personal recognizance" OR "PR bond" "DUI" eligibility ${countyName} ${state} 2025`,
+      bondingOfficeHours: `site:.gov "${countyName}" sheriff "bonding" hours location 2025`,
     },
 
     // PHASE 2: CRITICAL WINDOW (DMV & License)
     dmv: {
-      hearingRequestForm: `site:.gov "ALR" OR "admin per se" "hearing request" form filetype:pdf ${state}`,
-      discoveryFees: `site:.gov "open records" "fee schedule" "body cam" OR "video" ${city} police`,
-      hearingLocation: `site:.gov "ALR" "hearing location" "zoom" OR "telephonic" ${state} ${countyName}`,
-      hardshipLogbook: `site:.gov "hardship license" "log" OR "hours" "form" filetype:pdf ${state}`,
-      deadlineDays: `site:.gov "${state}" "ALR" "deadline" "days" "request hearing"`,
+      hearingRequestForm: `site:.gov "ALR" OR "admin per se" "hearing request" form filetype:pdf ${state} 2025`,
+      discoveryFees: `site:.gov "open records" "fee schedule" "body cam" OR "video" ${city} police 2025`,
+      hearingLocation: `site:.gov "ALR" "hearing location" "zoom" OR "telephonic" ${state} ${countyName} 2025`,
+      hardshipLogbook: `site:.gov "hardship license" "log" OR "hours" "form" filetype:pdf ${state} 2025`,
+      deadlineDays: `site:.gov "${state}" "ALR" "deadline" "days" "request hearing" 2025`,
     },
 
     // PHASE 3: COMPLIANCE (SCRAM, Interlock, SR-22)
@@ -699,7 +699,7 @@ EXTRACT: Municipal Towing Ordinance
 - Cash-only hours
 
 VALIDATION:
-- Ctrl+F "Effective Date" (must be 2022 or newer)
+- Ctrl+F "Effective Date" (MUST be 2025 - if earlier, search for 2025 version or note source year)
 - Ctrl+F "$" (capture all fees)
 - Ctrl+F "Must" (capture hard constraints)
 
@@ -738,7 +738,7 @@ EXTRACT: Magistrate Standing Order
 \`\`\`
 ${queries.bail.bondSchedule}
 \`\`\`
-EXTRACT: Official Misdemeanor Bond Schedule PDF
+EXTRACT: Official Misdemeanor Bond Schedule PDF (2025)
 - DWI 1st offense, BAC <0.15: $XXX
 - DWI 1st offense, BAC 0.15-0.19: $XXX
 - DWI 1st offense, BAC 0.20-0.29: $XXX
@@ -748,15 +748,19 @@ EXTRACT: Official Misdemeanor Bond Schedule PDF
 - PR bond eligible (Yes/No)
 - PR bond conditions
 
+NOTE: If only pre-2025 schedule found, note effective date explicitly
+
 ### BAIL - Bond Schedule (Felony)
 \`\`\`
 ${queries.bail.bondScheduleFelony}
 \`\`\`
-EXTRACT:
+EXTRACT: Official Felony Bond Schedule PDF (2025)
 - DWI 2nd offense, BAC <0.15: $XXX
 - DWI 2nd offense, BAC 0.15+: $XXX
 - DWI 3rd offense (felony): $XXX-$XXX
 - Enhanced charges (CDL, under 21, refusal)
+
+NOTE: If only pre-2025 schedule found, note effective date explicitly
 
 ### BAIL - PR Bond Rules
 \`\`\`
@@ -946,10 +950,13 @@ EXTRACT: Jury Service Parking Map
 
 For EVERY PDF downloaded:
 
-1. Ctrl+F "Effective Date" - If older than 2022, add "2024" or "2025" to search query and retry
+1. Ctrl+F "Effective Date" - MUST be 2025
+   - If older than 2025: Try alternate search with "2025" added to query
+   - If no 2025 version exists: Use most recent + explicitly note year in sources[]
+   - Example: "effectiveDate": "2024-01-15 (NOTE: 2025 version not found)"
 2. Ctrl+F "$" - Scan for all dollar amounts, populate fee fields
 3. Ctrl+F "Must" - Capture all hard constraints
-4. Mark effectiveDate in sources[] array
+4. Mark effectiveDate in sources[] array with year notation
 5. Add keyFindings[] to source entry
 
 ---
@@ -1000,7 +1007,9 @@ QUALITY STANDARDS:
 - All dates must include effectiveDate from PDF
 - All "must" constraints captured
 - Cross-reference county lists vs state lists (flag conflicts)
-- Mark data freshness (prefer 2024-2025 sources)
+- Data freshness: MUST be 2025 sources
+  - If 2025 not available: Use most recent + note year explicitly
+  - Example: "Source: 2024 Bond Schedule (2025 not yet published)"
 
 ---
 

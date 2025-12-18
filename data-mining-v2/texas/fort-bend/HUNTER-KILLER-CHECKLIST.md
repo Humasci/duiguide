@@ -35,7 +35,7 @@ EXTRACT: Municipal Towing Ordinance
 - Cash-only hours
 
 VALIDATION:
-- Ctrl+F "Effective Date" (must be 2022 or newer)
+- Ctrl+F "Effective Date" (MUST be 2025 - if earlier, search for 2025 version or note source year)
 - Ctrl+F "$" (capture all fees)
 - Ctrl+F "Must" (capture hard constraints)
 
@@ -53,7 +53,7 @@ site:.gov "towing ordinance" "maximum fee" Sugar Land TX
 
 ### BAIL - Jail Blackout Times
 ```
-site:.gov "inmate handbook" "release processing" "shift change" Fort Bend TX
+site:.gov "inmate handbook" "release processing" "shift change" Fort Bend TX 2025
 ```
 EXTRACT: Inmate Handbook PDF
 - Shift change times (e.g., "6-8 AM, 2-4 PM, 10 PM-12 AM")
@@ -62,7 +62,7 @@ EXTRACT: Inmate Handbook PDF
 
 ### BAIL - Mandatory Cool Down
 ```
-site:.gov "magistrate" "standing order" "DUI" OR "DWI" "release" Fort Bend TX
+site:.gov "magistrate" "standing order" "DUI" OR "DWI" "release" Fort Bend TX 2025
 ```
 EXTRACT: Magistrate Standing Order
 - Cool down period exists (Yes/No)
@@ -72,9 +72,9 @@ EXTRACT: Magistrate Standing Order
 
 ### BAIL - Bond Schedule (Misdemeanor)
 ```
-site:.gov "bail schedule" "misdemeanor" "DUI" OR "DWI" 2024 OR 2025 filetype:pdf Fort Bend TX
+site:.gov "bail schedule" "misdemeanor" "DUI" OR "DWI" 2025 filetype:pdf Fort Bend TX
 ```
-EXTRACT: Official Misdemeanor Bond Schedule PDF
+EXTRACT: Official Misdemeanor Bond Schedule PDF (2025)
 - DWI 1st offense, BAC <0.15: $XXX
 - DWI 1st offense, BAC 0.15-0.19: $XXX
 - DWI 1st offense, BAC 0.20-0.29: $XXX
@@ -84,24 +84,28 @@ EXTRACT: Official Misdemeanor Bond Schedule PDF
 - PR bond eligible (Yes/No)
 - PR bond conditions
 
+NOTE: If only pre-2025 schedule found, note effective date explicitly
+
 ### BAIL - Bond Schedule (Felony)
 ```
-site:.gov "bail schedule" "felony" "DUI" OR "DWI" 2024 OR 2025 filetype:pdf Fort Bend TX
+site:.gov "bail schedule" "felony" "DUI" OR "DWI" 2025 filetype:pdf Fort Bend TX
 ```
-EXTRACT:
+EXTRACT: Official Felony Bond Schedule PDF (2025)
 - DWI 2nd offense, BAC <0.15: $XXX
 - DWI 2nd offense, BAC 0.15+: $XXX
 - DWI 3rd offense (felony): $XXX-$XXX
 - Enhanced charges (CDL, under 21, refusal)
 
+NOTE: If only pre-2025 schedule found, note effective date explicitly
+
 ### BAIL - PR Bond Rules
 ```
-site:.gov "personal recognizance" OR "PR bond" "DUI" eligibility Fort Bend TX
+site:.gov "personal recognizance" OR "PR bond" "DUI" eligibility Fort Bend TX 2025
 ```
 
 ### BAIL - Bonding Office Hours
 ```
-site:.gov "Fort Bend" sheriff "bonding" hours location
+site:.gov "Fort Bend" sheriff "bonding" hours location 2025
 ```
 EXTRACT:
 - Address
@@ -115,7 +119,7 @@ EXTRACT:
 
 ### DMV - Hearing Request Form
 ```
-site:.gov "ALR" OR "admin per se" "hearing request" form filetype:pdf TX
+site:.gov "ALR" OR "admin per se" "hearing request" form filetype:pdf TX 2025
 ```
 EXTRACT: ALR Hearing Request Form PDF
 - Form name
@@ -127,7 +131,7 @@ EXTRACT: ALR Hearing Request Form PDF
 
 ### DMV - Discovery Fees
 ```
-site:.gov "open records" "fee schedule" "body cam" OR "video" Sugar Land police
+site:.gov "open records" "fee schedule" "body cam" OR "video" Sugar Land police 2025
 ```
 EXTRACT: Police Records Fee Schedule
 - Body cam footage: $XXX
@@ -139,7 +143,7 @@ EXTRACT: Police Records Fee Schedule
 
 ### DMV - Hearing Location
 ```
-site:.gov "ALR" "hearing location" "zoom" OR "telephonic" TX Fort Bend
+site:.gov "ALR" "hearing location" "zoom" OR "telephonic" TX Fort Bend 2025
 ```
 EXTRACT:
 - Hearing location address
@@ -148,7 +152,7 @@ EXTRACT:
 
 ### DMV - Hardship License Logbook
 ```
-site:.gov "hardship license" "log" OR "hours" "form" filetype:pdf TX
+site:.gov "hardship license" "log" OR "hours" "form" filetype:pdf TX 2025
 ```
 EXTRACT: Driving Log Sheet PDF
 - Form name
@@ -282,10 +286,13 @@ EXTRACT: Jury Service Parking Map
 
 For EVERY PDF downloaded:
 
-1. Ctrl+F "Effective Date" - If older than 2022, add "2024" or "2025" to search query and retry
+1. Ctrl+F "Effective Date" - MUST be 2025
+   - If older than 2025: Try alternate search with "2025" added to query
+   - If no 2025 version exists: Use most recent + explicitly note year in sources[]
+   - Example: "effectiveDate": "2024-01-15 (NOTE: 2025 version not found)"
 2. Ctrl+F "$" - Scan for all dollar amounts, populate fee fields
 3. Ctrl+F "Must" - Capture all hard constraints
-4. Mark effectiveDate in sources[] array
+4. Mark effectiveDate in sources[] array with year notation
 5. Add keyFindings[] to source entry
 
 ---
@@ -336,7 +343,9 @@ QUALITY STANDARDS:
 - All dates must include effectiveDate from PDF
 - All "must" constraints captured
 - Cross-reference county lists vs state lists (flag conflicts)
-- Mark data freshness (prefer 2024-2025 sources)
+- Data freshness: MUST be 2025 sources
+  - If 2025 not available: Use most recent + note year explicitly
+  - Example: "Source: 2024 Bond Schedule (2025 not yet published)"
 
 ---
 
