@@ -1,0 +1,189 @@
+{
+  "county": "Bexar County",
+  "state": "TX",
+  "lastUpdated": "2025-12-18T00:18:10.984Z",
+  "effectiveDate": "",
+  "sources": [],
+  "impound": {
+    "holdRules": {
+      "vsfSOP": "",
+      "notarizedLetterRequired": false,
+      "powerOfAttorneyAccepted": false,
+      "requiredDocuments": [],
+      "ownerAbsentProcedure": ""
+    },
+    "fees": {
+      "baseTowFee": "",
+      "baseTowFeeMax": "",
+      "gateFee": "",
+      "gateFeeMax": "",
+      "storageDailyFee": "",
+      "storageDailyMax": "",
+      "adminFee": "",
+      "creditCardAccepted": false,
+      "creditCardFee": "",
+      "cashOnlyHours": ""
+    },
+    "tricks": {
+      "cardMachineDownRule": "",
+      "outOfStateNotaryAccepted": false,
+      "tdlrFormAlternative": false,
+      "noStorageFirstDay": false
+    }
+  },
+  "bail": {
+    "bondSchedule": {
+      "dwiFirstOffense": {
+        "bacUnder015": "",
+        "bac015to019": "",
+        "bac020to029": "",
+        "bac030Plus": "",
+        "withMinor": "",
+        "withAccident": "",
+        "prBondEligible": false,
+        "prBondConditions": []
+      },
+      "dwiSecondOffense": {
+        "bacUnder015": "",
+        "bac015Plus": "",
+        "minimumBond": "",
+        "prBondEligible": false
+      },
+      "dwiThirdOffense": {
+        "felony": true,
+        "minimumBond": "",
+        "maximumBond": "",
+        "prBondEligible": false
+      },
+      "enhancedCharges": {
+        "commercialDriver": "",
+        "under21": "",
+        "refusal": ""
+      }
+    },
+    "jailRelease": {
+      "bondingOfficeAddress": "",
+      "bondingOfficeHours": "",
+      "processingTimeHours": "",
+      "blackoutPeriods": [],
+      "coolDownPeriod": {
+        "exists": false,
+        "hours": 0,
+        "statute": "",
+        "exceptions": []
+      },
+      "paymentMethods": {
+        "cash": false,
+        "cashierCheck": false,
+        "moneyOrder": false,
+        "debitCredit": false,
+        "debitCreditProcessor": "",
+        "debitCreditFee": "",
+        "personalCheck": false
+      }
+    }
+  },
+  "court": {
+    "parking": {
+      "jurorLotAddress": "",
+      "jurorLotFree": false,
+      "jurorLotValidationRequired": false,
+      "jurorLotHours": "",
+      "publicLots": [],
+      "shuttles": [],
+      "metroTransit": {
+        "freeWithJuryNotice": false,
+        "routes": []
+      }
+    },
+    "rules": {
+      "dressCode": {
+        "banned": [],
+        "required": []
+      },
+      "prohibitedItems": [],
+      "cellPhonePolicy": "",
+      "securityCheckpoint": {
+        "metalDetector": false,
+        "bagSearch": false,
+        "confiscatedItems": []
+      }
+    },
+    "diversion": {
+      "programAvailable": false,
+      "programName": "",
+      "eligibilityCriteria": [],
+      "programFee": "",
+      "durationMonths": 0,
+      "admissionOfGuilt": false,
+      "completionBenefits": []
+    },
+    "weekendJail": {
+      "available": false,
+      "applicationRequired": false,
+      "costPerDay": "",
+      "minimumStayDays": 0,
+      "restrictions": []
+    }
+  },
+  "dmv": {
+    "hearingRequest": {
+      "formName": "",
+      "formUrl": "",
+      "deadlineDays": 0,
+      "deadlineCalendarDays": true,
+      "submissionMethods": {
+        "mail": false,
+        "certifiedMail": false,
+        "email": false,
+        "fax": false,
+        "inPerson": false
+      },
+      "filingFee": "",
+      "hearingLocation": "",
+      "zoomAvailable": false,
+      "telephonicAvailable": false
+    },
+    "discovery": {
+      "bodyCamFee": "",
+      "dashCamFee": "",
+      "policeReportFee": "",
+      "breathalyzerCalibrationFee": "",
+      "openRecordsRequestForm": "",
+      "processingTimeDays": 0
+    },
+    "hardshipLicense": {
+      "available": false,
+      "formName": "",
+      "formUrl": "",
+      "drivingLogRequired": false,
+      "drivingLogUrl": "",
+      "restrictions": [],
+      "fee": ""
+    }
+  },
+  "interlock": {
+    "approvedProviders": [],
+    "indigentProgram": {
+      "available": false,
+      "applicationForm": "",
+      "discount": "",
+      "incomeThreshold": ""
+    },
+    "removalProcess": {
+      "whoSigns": "",
+      "formRequired": "",
+      "verificationRequired": false,
+      "fee": ""
+    }
+  },
+  "scram": {
+    "approvedProviders": [],
+    "violationPolicy": {
+      "zeroTolerance": false,
+      "confirmationTest": false,
+      "automaticRevocation": false,
+      "warningSystem": ""
+    }
+  }
+}

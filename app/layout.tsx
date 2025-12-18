@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
-import { Header } from "@/components/layout/Header";
+import Header from "@/components/Header";
 import { Footer } from "@/components/layout/Footer";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
@@ -61,7 +58,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         />
         {/* End Google Tag Manager */}
       </head>
-      <body className={inter.className}>
+      <body>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
