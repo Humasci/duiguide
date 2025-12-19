@@ -127,20 +127,22 @@ GEMINI_API_KEY=your_gemini_api_key
 
 ### 🎯 **Upload Your Texas Research**
 
-You mentioned you have deep research for **15 Texas counties**. You can now upload them!
+You have research (including PDFs!) for **10 Texas counties**. You can now upload them!
+
+**Target counties**:
+- Harris, Dallas, Tarrant, Bexar, Travis, Collin, Denton, Hidalgo, Fort Bend, El Paso
 
 **Folder structure**:
 
 ```
 research-uploads/texas/
-├── harris/              (Main county - separate files)
-│   ├── impound.docx
+├── harris/              (PDFs, DOCX, or mixed)
+│   ├── impound.pdf
 │   ├── court-info.docx
-│   ├── scram.docx
-│   ├── bail-bonds.docx
-│   └── license-reinstatement.docx
+│   ├── scram.pdf
+│   └── ... (any relevant files)
 │
-├── dallas/              (Main county)
+├── dallas/
 │   └── (same structure)
 │
 ├── tarrant/
@@ -150,14 +152,14 @@ research-uploads/texas/
 ├── denton/
 ├── hidalgo/
 ├── fort-bend/
-├── el-paso/
-├── williamson/
-├── montgomery/
-├── brazoria/
-├── nueces/
-└── galveston/           (Smaller county - single file)
-    └── complete-guide.docx
+└── el-paso/
 ```
+
+**Supported file types**:
+- ✅ PDF (you have these!)
+- ✅ DOCX
+- ✅ HTML
+- ✅ Markdown
 
 **Upload methods**:
 1. **Manual**: Supabase Dashboard → Storage → `research-uploads` → drag & drop

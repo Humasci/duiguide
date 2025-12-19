@@ -500,17 +500,27 @@ def chunk_text(text: str, chunk_size: int = 1000, overlap: int = 100) -> List[st
 
 ---
 
-## Initial Target: 15 Texas Counties
+## Initial Target: 10 Texas Counties
 
 The user will upload research for these counties:
 
-**Main counties (9)** - 5 files each:
-- Harris, Dallas, Tarrant, Bexar, Travis, Collin, Denton, Hidalgo, Fort Bend
+**Target counties**:
+1. **Harris** (Houston) - Pop: 4.7M
+2. **Dallas** - Pop: 2.6M
+3. **Tarrant** (Fort Worth) - Pop: 2.1M
+4. **Bexar** (San Antonio) - Pop: 2.0M
+5. **Travis** (Austin) - Pop: 1.3M
+6. **Collin** (Plano) - Pop: 1.1M
+7. **Denton** - Pop: 900K
+8. **Hidalgo** (McAllen) - Pop: 870K
+9. **Fort Bend** (Sugar Land) - Pop: 820K
+10. **El Paso** - Pop: 865K
 
-**Smaller counties (6)** - 1 file each:
-- El Paso, Williamson, Montgomery, Brazoria, Nueces, Galveston
+**File structure**:
+- Main counties (Harris through Fort Bend): 5 separate topic files each
+- El Paso: 1 combined file or separate files (flexible)
 
-**Total**: ~51 files
+**Total**: ~40-50 files (mix of PDFs, DOCX)
 
 ---
 
