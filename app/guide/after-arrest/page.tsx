@@ -40,7 +40,7 @@ export default function AfterArrestPage() {
             </div>
           </div>
           <div className="flex items-start">
-            <div className="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4">2</div>
+            <div className="bg-blue-900 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4">2</div>
             <div>
               <h3 className="font-semibold">Vehicle Impound (Immediate)</h3>
               <p className="text-gray-600 text-sm">Car towed to impound lot, daily storage fees begin accruing</p>
@@ -163,14 +163,14 @@ export default function AfterArrestPage() {
                   <li>• Loss of driving privileges</li>
                   <li>• Job/family impact</li>
                 </ul>
-                <a href="/guide/dmv-hearing" className="inline-block mt-3 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm">Request Hearing Now →</a>
+                <a href="/guide/dmv-hearing" className="inline-block mt-3 bg-pastel-blue text-gray-700 px-4 py-2 rounded hover:bg-blue-900 text-sm">Request Hearing Now →</a>
               </div>
             </div>
           </div>
 
           <div className="border-b border-gray-200 pb-6">
             <h3 className="text-xl font-semibold mb-4 flex items-center">
-              <span className="bg-orange-500 text-white rounded w-6 h-6 flex items-center justify-center text-sm mr-3">2</span>
+              <span className="bg-blue-900 text-white rounded w-6 h-6 flex items-center justify-center text-sm mr-3">2</span>
               Retrieve Your Vehicle from Impound
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
@@ -191,7 +191,7 @@ export default function AfterArrestPage() {
                   <li>• Payment for fees</li>
                   <li>• Insurance (varies by state)</li>
                 </ul>
-                <a href="/guide/after-arrest/impound" className="inline-block mt-3 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 text-sm">Get Car Out →</a>
+                <a href="/guide/after-arrest/impound" className="inline-block mt-3 bg-pastel-green text-gray-700 px-4 py-2 rounded hover:bg-blue-900 text-sm">Get Car Out →</a>
               </div>
             </div>
           </div>
@@ -219,7 +219,7 @@ export default function AfterArrestPage() {
                   <li>• Ignition interlock possible</li>
                   <li>• Travel restrictions</li>
                 </ul>
-                <a href="/guide/after-arrest/bail" className="inline-block mt-3 bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 text-sm">Bail Information →</a>
+                <a href="/guide/after-arrest/bail" className="inline-block mt-3 bg-pastel-yellow text-gray-700 px-4 py-2 rounded hover:bg-blue-900 text-sm">Bail Information →</a>
               </div>
             </div>
           </div>
@@ -247,7 +247,7 @@ export default function AfterArrestPage() {
                   <li>• DMV hearing experience</li>
                   <li>• Trial experience</li>
                 </ul>
-                <a href="/find-attorney" className="inline-block mt-3 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">Find Attorney →</a>
+                <a href="/find-attorney" className="inline-block mt-3 bg-pastel-blue text-gray-700 px-4 py-2 rounded hover:bg-blue-900 text-sm">Find Attorney →</a>
               </div>
             </div>
           </div>
@@ -310,15 +310,15 @@ export default function AfterArrestPage() {
           <div>
             <h3 className="font-semibold mb-3">🟡 15-30 Day States (HIGH)</h3>
             <div className="space-y-3">
-              <div className="bg-orange-50 border border-orange-200 rounded p-3">
+              <div className="bg-blue-50 border border-blue-200 rounded p-3">
                 <h4 className="font-semibold">Texas (15 days)</h4>
                 <p className="text-sm">ALR hearing + tow hearing (14 days)</p>
-                <a href="/texas/dmv-hearing" className="text-orange-600 hover:text-orange-700 text-sm">Texas DPS →</a>
+                <a href="/texas/dmv-hearing" className="text-blue-900 hover:text-blue-700 text-sm">Texas DPS →</a>
               </div>
-              <div className="bg-orange-50 border border-orange-200 rounded p-3">
+              <div className="bg-blue-50 border border-blue-200 rounded p-3">
                 <h4 className="font-semibold">Arizona (15 days)</h4>
                 <p className="text-sm">Implied Consent hearing</p>
-                <a href="/arizona/dmv-hearing" className="text-orange-600 hover:text-orange-700 text-sm">Arizona MVD →</a>
+                <a href="/arizona/dmv-hearing" className="text-blue-900 hover:text-blue-700 text-sm">Arizona MVD →</a>
               </div>
               <div className="bg-yellow-50 border border-yellow-200 rounded p-3">
                 <h4 className="font-semibold">Georgia & Ohio (30 days)</h4>

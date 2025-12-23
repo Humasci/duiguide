@@ -45,15 +45,15 @@ export default function DMVHearingPage() {
             </div>
           </div>
           <div>
-            <h3 className="font-semibold text-orange-600 mb-3">🟡 URGENT (15-30 Days)</h3>
+            <h3 className="font-semibold text-blue-900 mb-3">🟡 URGENT (15-30 Days)</h3>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between border-b pb-1">
                 <span><strong>Texas:</strong></span>
-                <span className="text-orange-600 font-bold">15 days</span>
+                <span className="text-blue-900 font-bold">15 days</span>
               </div>
               <div className="flex justify-between border-b pb-1">
                 <span><strong>Arizona:</strong></span>
-                <span className="text-orange-600 font-bold">15 days</span>
+                <span className="text-blue-900 font-bold">15 days</span>
               </div>
               <div className="flex justify-between border-b pb-1">
                 <span><strong>Georgia:</strong></span>
@@ -172,7 +172,7 @@ export default function DMVHearingPage() {
                 <span><strong>STOP EVERYTHING</strong> - Request hearing immediately</span>
               </li>
               <li className="flex items-start">
-                <span className="bg-orange-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">2</span>
+                <span className="bg-blue-900 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">2</span>
                 <span>Find your state-specific form and deadline above</span>
               </li>
               <li className="flex items-start">

@@ -41,7 +41,7 @@ export default function TennesseeDMVHearingPage() {
             </div>
           </div>
           <div className="flex items-start">
-            <div className="bg-orange-500 text-white rounded-full w-12 h-12 flex items-center justify-center text-sm font-bold mr-4">DAY 10</div>
+            <div className="bg-blue-900 text-white rounded-full w-12 h-12 flex items-center justify-center text-sm font-bold mr-4">DAY 10</div>
             <div>
               <h3 className="font-semibold text-lg">DEADLINE - Request Hearing</h3>
               <p className="text-gray-600">Must be received by Tennessee Department of Safety within 10 calendar days</p>
@@ -168,7 +168,7 @@ export default function TennesseeDMVHearingPage() {
             <tbody className="divide-y divide-gray-200">
               <tr>
                 <td className="px-4 py-3 text-sm font-semibold">1st DUI</td>
-                <td className="px-4 py-3 text-sm text-orange-600">1 year</td>
+                <td className="px-4 py-3 text-sm text-blue-900">1 year</td>
                 <td className="px-4 py-3 text-sm">0.08+ or refusal</td>
               </tr>
               <tr className="bg-gray-50">

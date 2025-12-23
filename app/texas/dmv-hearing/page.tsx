@@ -41,7 +41,7 @@ export default function TexasDMVHearingPage() {
             </div>
           </div>
           <div className="flex items-start">
-            <div className="bg-orange-500 text-white rounded-full w-12 h-12 flex items-center justify-center text-sm font-bold mr-4">DAY 15</div>
+            <div className="bg-blue-900 text-white rounded-full w-12 h-12 flex items-center justify-center text-sm font-bold mr-4">DAY 15</div>
             <div>
               <h3 className="font-semibold text-lg">DEADLINE - Request ALR Hearing</h3>
               <p className="text-gray-600">Must be postmarked or received by Texas DPS within 15 days</p>
@@ -168,7 +168,7 @@ export default function TexasDMVHearingPage() {
             <tbody className="divide-y divide-gray-200">
               <tr>
                 <td className="px-4 py-3 text-sm font-semibold">1st DWI (0.08+)</td>
-                <td className="px-4 py-3 text-sm text-orange-600">90 days</td>
+                <td className="px-4 py-3 text-sm text-blue-900">90 days</td>
                 <td className="px-4 py-3 text-sm">Can get occupational license after 30 days</td>
               </tr>
               <tr className="bg-gray-50">

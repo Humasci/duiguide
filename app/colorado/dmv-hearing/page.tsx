@@ -41,7 +41,7 @@ export default function ColoradoDMVHearingPage() {
             </div>
           </div>
           <div className="flex items-start">
-            <div className="bg-orange-500 text-white rounded-full w-12 h-12 flex items-center justify-center text-sm font-bold mr-4">DAY 7</div>
+            <div className="bg-blue-900 text-white rounded-full w-12 h-12 flex items-center justify-center text-sm font-bold mr-4">DAY 7</div>
             <div>
               <h3 className="font-semibold text-lg">DEADLINE - Last Day to Request Hearing</h3>
               <p className="text-gray-600">Must be postmarked or received by Colorado DMV by end of 7th day</p>

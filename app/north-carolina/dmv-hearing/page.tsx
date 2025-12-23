@@ -41,7 +41,7 @@ export default function NorthCarolinaDMVHearingPage() {
             </div>
           </div>
           <div className="flex items-start">
-            <div className="bg-orange-500 text-white rounded-full w-12 h-12 flex items-center justify-center text-sm font-bold mr-4">DAY 10</div>
+            <div className="bg-blue-900 text-white rounded-full w-12 h-12 flex items-center justify-center text-sm font-bold mr-4">DAY 10</div>
             <div>
               <h3 className="font-semibold text-lg">DEADLINE - Request Hearing</h3>
               <p className="text-gray-600">Must be received by NC DMV within 10 calendar days</p>
@@ -125,12 +125,12 @@ export default function NorthCarolinaDMVHearingPage() {
               </tr>
               <tr>
                 <td className="px-4 py-3 text-sm font-semibold">Level 2</td>
-                <td className="px-4 py-3 text-sm text-orange-600">1 year</td>
+                <td className="px-4 py-3 text-sm text-blue-900">1 year</td>
                 <td className="px-4 py-3 text-sm">7 days jail (min), $2,000 fine</td>
               </tr>
               <tr className="bg-gray-50">
                 <td className="px-4 py-3 text-sm font-semibold">Level 3</td>
-                <td className="px-4 py-3 text-sm text-orange-600">1 year</td>
+                <td className="px-4 py-3 text-sm text-blue-900">1 year</td>
                 <td className="px-4 py-3 text-sm">72 hours jail (min), $1,000 fine</td>
               </tr>
               <tr>
