@@ -1,288 +1,287 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Clock, Scale, Car, Shield, AlertTriangle, Phone, MapPin } from "lucide-react";
+import { createClient } from '@/lib/supabase/server';
+import PenaltyMatrix from '@/components/PenaltyMatrix';
+import ArizonaCountiesMap from '@/components/ui/ui-showcase/ArizonaCountiesMap';
+import { Card } from '@/components/ui/card';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import {
+  AlertTriangle,
+  Scale,
+  Car,
+  Shield,
+  Clock,
+  MapPin,
+  ChevronRight
+} from 'lucide-react';
 
-// Arizona Hero Section
-const ArizonaHeroSection = () => {
+async function getStateData() {
+  const supabase = await createClient();
+
+  const { data: state, error: stateError } = await supabase
+    .from('states')
+    .select('*')
+    .eq('slug', 'arizona')
+    .single();
+
+  if (stateError || !state) {
+    console.error('Error fetching state:', stateError);
+    return null;
+  }
+
+  // Get counties for this state
+  const { data: counties } = await supabase
+    .from('counties')
+    .select('*')
+    .eq('state_id', state.id)
+    .order('name');
+
+  return { state, counties: counties || [] };
+}
+
+export default async function ArizonaPage() {
+  const data = await getStateData();
+
+  if (!data) {
+    notFound();
+  }
+
+  const { state, counties } = data;
+
+  // Priority counties (top 10)
+  const priorityCounties = counties.slice(0, 10);
+
   return (
-    <section className="pt-16 pb-8">
-      <div className="container max-w-4xl text-center">
-        {/* Badge */}
-        <div className="flex justify-center mb-6">
-          <div className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-destructive/10 text-destructive border border-destructive/20">
-            <AlertTriangle className="w-3 h-3 mr-2" />
-            URGENT: 15 Day MVD Hearing Deadline
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-red-500 text-white mb-4">
+              <AlertTriangle className="h-4 w-4 mr-1" />
+              {state.dmv_deadline_days || 15}-Day MVD Deadline
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              {state.name} {state.legal_term} Guide
+            </h1>
+            <p className="text-xl text-blue-100">
+              Complete guide to {state.legal_term} laws, penalties, and procedures in {state.name}.
+              Know your rights and deadlines after a {state.legal_term} arrest.
+            </p>
           </div>
-        </div>
-
-        {/* Icon */}
-        <div className="flex justify-center mb-8">
-          <div className="p-4">
-            <MapPin className="h-16 w-16 text-foreground stroke-[1.5]" />
-          </div>
-        </div>
-
-        {/* Heading */}
-        <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-normal leading-tight mb-6 text-foreground">
-          Arizona DUI Guide
-        </h1>
-
-        {/* Subtext */}
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
-          Complete guide to DUI process, penalties, and procedures in Arizona. Get help with MVD hearings, court proceedings, and license restoration.
-        </p>
-
-        {/* CTA Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button asChild className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full px-8 py-6 text-base font-medium">
-            <Link href="/arizona/dmv-hearing">Request MVD Hearing</Link>
-          </Button>
-          <Button 
-            asChild
-            variant="ghost" 
-            className="text-muted-foreground hover:text-foreground rounded-full px-6 py-6 text-base gap-2"
-          >
-            <Link href="/find-attorney/arizona">Find Attorney</Link>
-          </Button>
         </div>
       </div>
 
-      {/* Hero Illustration */}
-      <div className="container max-w-5xl mt-12">
-        <div className="bg-card rounded-3xl p-8 md:p-12 min-h-[400px] flex items-center justify-center">
-          <div className="flex items-end gap-4 md:gap-8 transform -rotate-6">
-            {/* MVD Document */}
-            <div className="bg-background rounded-xl shadow-lg p-4 w-36 md:w-48 transform rotate-[-8deg]">
-              <div className="aspect-[3/4] bg-muted rounded-lg flex flex-col items-center justify-center p-4">
-                <div className="text-destructive font-heading text-[10px] md:text-xs font-bold tracking-wider">MVD</div>
-                <div className="text-muted-foreground text-[8px] md:text-[10px] mt-1">HEARING</div>
-                <div className="mt-4 w-full space-y-1.5">
-                  <div className="h-1.5 bg-border rounded w-3/4 mx-auto" />
-                  <div className="h-1.5 bg-border rounded w-1/2 mx-auto" />
-                </div>
-              </div>
-              <p className="text-xs text-muted-foreground mt-2 italic">mvd-hearing.pdf</p>
-            </div>
-
-            {/* 15 Days Card */}
-            <div className="bg-background rounded-xl shadow-lg p-4 w-32 md:w-40 transform rotate-[5deg] z-10">
-              <div className="aspect-square bg-muted rounded-lg flex items-center justify-center">
-                <span className="text-muted-foreground/50 font-heading text-lg md:text-xl">15 DAYS</span>
-              </div>
-              <div className="mt-3 flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-destructive/10 flex items-center justify-center">
-                  <Clock className="h-4 w-4 text-destructive" />
-                </div>
-              </div>
-            </div>
-
-            {/* Arizona Folder */}
-            <div className="transform rotate-[12deg]">
-              <div className="relative">
-                <div className="w-32 md:w-44 h-24 md:h-32 bg-primary rounded-lg rounded-tl-none shadow-lg" />
-                <div className="absolute -top-3 left-0 w-12 md:w-16 h-3 bg-primary rounded-t-lg" />
-                <span className="absolute bottom-3 left-3 text-background/90 text-xs md:text-sm font-medium">Arizona</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// Arizona Key Information Section
-const ArizonaKeyInfoSection = () => {
-  const keyInfo = [
-    {
-      icon: Clock,
-      title: "MVD Implied Consent Hearing",
-      description: "Request your administrative hearing within 15 days to challenge license suspension.",
-      details: [
-        { label: "Deadline", value: "15 days from arrest", urgent: true },
-        { label: "Fee", value: "$500", urgent: false },
-        { label: "Phone", value: "(602) 712-7355", urgent: false }
-      ],
-      link: "/arizona/dmv-hearing",
-      buttonText: "Request Hearing",
-      variant: "destructive" as const
-    },
-    {
-      icon: Scale,
-      title: "Arizona DUI Penalties", 
-      description: "Understanding Arizona's strict DUI laws and potential consequences.",
-      details: [
-        { label: "First Offense", value: "10+ days jail", urgent: false },
-        { label: "Extreme DUI", value: "30+ days jail", urgent: false },
-        { label: "License", value: "90-365 day suspension", urgent: false }
-      ],
-      link: "/arizona/penalties",
-      buttonText: "View Penalties",
-      variant: "default" as const
-    }
-  ];
-
-  return (
-    <section className="py-20 bg-surface-warm">
-      <div className="container">
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {keyInfo.map((info, index) => (
-            <div 
-              key={index}
-              className="group p-8 rounded-2xl bg-background border border-border hover:shadow-md transition-all duration-300"
-            >
-              <info.icon className={`h-12 w-12 mb-6 stroke-[1.5] ${info.variant === 'destructive' ? 'text-destructive' : 'text-primary'}`} />
-              <h3 className="font-heading text-2xl font-normal text-foreground mb-3">
-                {info.title}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                {info.description}
+      {/* Critical Alert */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
+        <Card className="bg-red-50 border-2 border-red-300 p-6">
+          <div className="flex items-start gap-4">
+            <AlertTriangle className="h-8 w-8 text-red-600 flex-shrink-0 mt-1" />
+            <div className="flex-1">
+              <h2 className="text-xl font-bold text-red-900 mb-2">
+                URGENT: Request Your {state.admin_hearing_term || 'MVD Hearing'} Within {state.dmv_deadline_days || 15} Days
+              </h2>
+              <p className="text-red-800 mb-4">
+                You have only <strong>{state.dmv_deadline_days || 15} days</strong> from your arrest date to request an{' '}
+                {state.admin_hearing_term || 'Administrative Motor Vehicle Division (MVD) hearing'}. Missing this deadline
+                results in <strong>automatic license suspension</strong>.
               </p>
-              <div className="space-y-2 mb-6">
-                {info.details.map((detail, detailIndex) => (
-                  <div key={detailIndex} className="flex items-center gap-2 text-sm">
-                    <span className={`font-medium ${detail.urgent ? 'text-destructive' : 'text-foreground'}`}>
-                      {detail.label}:
-                    </span>
-                    <span>{detail.value}</span>
-                  </div>
-                ))}
-              </div>
-              <Button 
-                asChild 
-                variant={info.variant}
-                className={info.variant === 'destructive' ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90' : ''}
+              <Link
+                href={`/arizona/dmv-hearing`}
+                className="inline-flex items-center px-6 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors"
               >
-                <Link href={info.link}>{info.buttonText}</Link>
-              </Button>
+                Request Your Hearing Now
+                <ChevronRight className="h-5 w-5 ml-1" />
+              </Link>
             </div>
-          ))}
-        </div>
+          </div>
+        </Card>
       </div>
-    </section>
-  );
-};
 
-// Arizona Counties Section
-const ArizonaCountiesSection = () => {
-  const counties = [
-    { name: "Maricopa County", cities: "Phoenix, Scottsdale, Mesa, Tempe, Chandler, Glendale", slug: "maricopa" },
-    { name: "Pima County", cities: "Tucson, Oro Valley, South Tucson", slug: "pima" },
-    { name: "Pinal County", cities: "Casa Grande, Maricopa, Eloy", slug: "pinal" },
-    { name: "Yavapai County", cities: "Prescott, Sedona, Cottonwood", slug: "yavapai" },
-    { name: "Yuma County", cities: "Yuma, Somerton, San Luis", slug: "yuma" },
-    { name: "Mohave County", cities: "Lake Havasu City, Kingman, Bullhead City", slug: "mohave" },
-  ];
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+        {/* Quick Actions */}
+        <section>
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">What You Need to Do Now</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Link href="/arizona/dmv-hearing">
+              <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-red-500">
+                <Clock className="h-10 w-10 text-red-600 mb-3" />
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Request MVD Hearing</h3>
+                <p className="text-sm text-gray-600">
+                  {state.dmv_deadline_days || 15}-day deadline to save your license
+                </p>
+              </Card>
+            </Link>
 
-  return (
-    <section className="py-20">
-      <div className="container">
-        <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-4xl font-normal text-foreground mb-4">
-            Arizona Counties
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Find county-specific information for courts, impound lots, bail bonds, and other services.
+            <Link href="/find-attorney/arizona">
+              <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-blue-500">
+                <Scale className="h-10 w-10 text-blue-600 mb-3" />
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Find an Attorney</h3>
+                <p className="text-sm text-gray-600">
+                  Connect with experienced {state.legal_term} lawyers
+                </p>
+              </Card>
+            </Link>
+
+            <Link href="/guide/after-arrest">
+              <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-orange-500">
+                <Car className="h-10 w-10 text-orange-600 mb-3" />
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Get Your Car</h3>
+                <p className="text-sm text-gray-600">
+                  Retrieve vehicle from impound lots
+                </p>
+              </Card>
+            </Link>
+
+            <Link href="/guide/scram-bracelet">
+              <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-purple-500">
+                <Shield className="h-10 w-10 text-purple-600 mb-3" />
+                <h3 className="text-lg font-bold text-gray-900 mb-2">SCRAM Monitoring</h3>
+                <p className="text-sm text-gray-600">
+                  Ankle monitor requirements & providers
+                </p>
+              </Card>
+            </Link>
+          </div>
+        </section>
+
+        {/* Penalty Matrix */}
+        <section>
+          <PenaltyMatrix state={state} />
+        </section>
+
+        {/* County Selection */}
+        <section>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Select Your County</h2>
+          <p className="text-gray-600 mb-6">
+            Get county-specific information about courts, impound lots, bail, and local procedures.
           </p>
-        </div>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {counties.map((county) => (
-            <div key={county.slug} className="group p-6 rounded-2xl hover:bg-card transition-colors duration-300">
-              <h3 className="font-heading text-lg font-normal text-foreground mb-2 group-hover:text-primary transition-colors">
-                {county.name}
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                {county.cities}
+
+          {/* Map */}
+          <div className="mb-8">
+            <ArizonaCountiesMap />
+          </div>
+
+          {/* Priority Counties List */}
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <MapPin className="h-6 w-6 text-blue-600" />
+              Major Counties
+            </h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {priorityCounties.map((county) => (
+                <Link key={county.id} href={`/arizona/${county.slug}`}>
+                  <Card className="p-4 hover:shadow-lg transition-shadow cursor-pointer hover:border-blue-500">
+                    <h4 className="font-semibold text-gray-900 mb-1">{county.name}</h4>
+                    <p className="text-sm text-gray-500">
+                      {county.impound_daily_fee && `Impound: $${county.impound_daily_fee}/day`}
+                      {!county.impound_daily_fee && 'View county information'}
+                    </p>
+                    <div className="flex items-center text-blue-600 text-sm font-medium mt-2">
+                      View Guide
+                      <ChevronRight className="h-4 w-4 ml-1" />
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+
+            {counties.length > 10 && (
+              <div className="mt-4">
+                <details>
+                  <summary className="cursor-pointer text-blue-600 font-semibold hover:text-blue-700">
+                    View all {counties.length} counties in {state.name}
+                  </summary>
+                  <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-3 mt-4">
+                    {counties.slice(10).map((county) => (
+                      <Link
+                        key={county.id}
+                        href={`/arizona/${county.slug}`}
+                        className="text-blue-600 hover:text-blue-700 hover:underline"
+                      >
+                        {county.name}
+                      </Link>
+                    ))}
+                  </div>
+                </details>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* State-Specific Information */}
+        <section>
+          <Card className="p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              Understanding {state.legal_term} in {state.name}
+            </h2>
+
+            <div className="prose prose-blue max-w-none">
+              <h3>What is {state.legal_term}?</h3>
+              <p className="text-gray-700">
+                In {state.name}, driving under the influence is referred to as <strong>{state.legal_term}</strong>.
+                Arizona has some of the strictest DUI laws in the United States, with mandatory jail time
+                even for first-time offenders.
               </p>
-              <Button asChild variant="outline" size="sm">
-                <Link href={`/arizona/${county.slug}`}>View County Info</Link>
-              </Button>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
 
-// Arizona Services Section
-const ArizonaServicesSection = () => {
-  const services = [
-    { title: "Vehicle Impound", desc: "Get your vehicle released from impound lots across Arizona.", href: "/arizona/towing-impound", icon: Car },
-    { title: "Bail Bonds", desc: "Find bail bond agents serving Arizona counties.", href: "/arizona/bail-bonds", icon: Shield },
-    { title: "Ignition Interlock", desc: "Find certified ignition interlock installers in Arizona.", href: "/arizona/ignition-interlock", icon: Car },
-    { title: "SCRAM Monitoring", desc: "Continuous alcohol monitoring providers in Arizona.", href: "/arizona/scram", icon: Shield },
-    { title: "DUI School", desc: "Court-approved DUI education programs in Arizona.", href: "/arizona/dui-school", icon: Scale },
-    { title: "SR-22 Insurance", desc: "Get required SR-22 filing for license reinstatement.", href: "/arizona/sr22-insurance", icon: Shield },
-  ];
+              <h3>Arizona's Three DUI Categories</h3>
+              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-4">
+                <p className="text-gray-800 font-semibold mb-2">Arizona is unique in having three DUI levels:</p>
+                <ul className="text-gray-700 space-y-2">
+                  <li>
+                    <strong>Standard DUI</strong> - BAC 0.08% to 0.149%
+                  </li>
+                  <li>
+                    <strong>Extreme DUI</strong> - BAC 0.15% to 0.199%
+                  </li>
+                  <li>
+                    <strong>Super Extreme DUI</strong> - BAC 0.20% or higher
+                  </li>
+                </ul>
+                <p className="text-sm text-gray-600 mt-3">
+                  Each category has increasingly severe mandatory penalties, including jail time, fines,
+                  and license suspension periods.
+                </p>
+              </div>
 
-  return (
-    <section className="py-20 bg-surface-warm">
-      <div className="container">
-        <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-4xl font-normal text-foreground mb-4">
-            DUI-Related Services
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Essential services you may need during the DUI process in Arizona.
-          </p>
-        </div>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {services.map((service, index) => (
-            <div 
-              key={index}
-              className="group p-6 rounded-2xl hover:bg-card transition-colors duration-300 text-center"
-            >
-              <service.icon className="h-8 w-8 text-primary mb-4 stroke-[1.5] mx-auto" />
-              <h3 className="font-heading text-lg font-normal text-foreground mb-3">
-                {service.title}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                {service.desc}
+              <h3>Legal BAC Limits</h3>
+              <p className="text-gray-700">
+                The legal blood alcohol concentration (BAC) limits in {state.name} are:
               </p>
-              <Button asChild variant="outline" size="sm">
-                <Link href={service.href}>Learn More</Link>
-              </Button>
+              <ul className="text-gray-700">
+                <li><strong>0.08%</strong> for drivers 21 and older</li>
+                <li><strong>0.04%</strong> for commercial drivers</li>
+                <li><strong>Any detectable amount</strong> for drivers under 21</li>
+              </ul>
+
+              <h3>Implied Consent Law</h3>
+              <p className="text-gray-700">
+                By driving in {state.name}, you automatically consent to chemical testing if arrested for {state.legal_term}.
+                Refusing a breath or blood test results in automatic license suspension for 12 months for a first refusal,
+                and 24 months for subsequent refusals.
+              </p>
+
+              <h3>Mandatory Ignition Interlock</h3>
+              <div className="bg-blue-50 border-l-4 border-blue-400 p-4 my-4">
+                <p className="text-gray-800 font-semibold mb-2">Arizona requires ignition interlock devices for ALL DUI convictions</p>
+                <p className="text-gray-700">
+                  Unlike many states, Arizona mandates ignition interlock installation even for first-time offenders.
+                  The device must remain installed for the entire suspension period and beyond, depending on the offense level.
+                </p>
+              </div>
+
+              <h3>Time-Sensitive Deadlines</h3>
+              <ul className="text-gray-700">
+                <li>
+                  <strong>{state.dmv_deadline_days || 15} days</strong> to request {state.admin_hearing_term || 'MVD hearing'}
+                </li>
+                <li>Vehicle impound fees accrue daily</li>
+                <li>Court arraignment typically within 2-3 weeks</li>
+                <li>Jail time must usually be served within 6 months of conviction</li>
+              </ul>
             </div>
-          ))}
-        </div>
+          </Card>
+        </section>
       </div>
-    </section>
-  );
-};
-
-// Arizona CTA Section
-const ArizonaCTASection = () => {
-  return (
-    <section className="py-16 bg-foreground text-background">
-      <div className="container max-w-4xl text-center">
-        <div className="mb-8">
-          <h2 className="font-heading text-3xl md:text-4xl font-normal mb-4 text-background">
-            Need Legal Representation?
-          </h2>
-          <p className="text-lg text-background/80 max-w-2xl mx-auto">
-            Connect with experienced Arizona DUI attorneys who understand local courts and procedures.
-          </p>
-        </div>
-        
-        <Button asChild className="bg-background text-foreground hover:bg-background/90">
-          <Link href="/find-attorney/arizona">Find Arizona DUI Attorney</Link>
-        </Button>
-      </div>
-    </section>
-  );
-};
-
-export default function ArizonaPage() {
-  return (
-    <main>
-      <ArizonaHeroSection />
-      <ArizonaKeyInfoSection />
-      <ArizonaCountiesSection />
-      <ArizonaServicesSection />
-      <ArizonaCTASection />
-    </main>
+    </div>
   );
 }

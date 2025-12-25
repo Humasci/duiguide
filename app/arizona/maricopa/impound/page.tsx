@@ -22,8 +22,8 @@ async function getCountyData() {
       *,
       state:states(*)
     `)
-    .eq('slug', 'harris')
-    .eq('state:states.slug', 'texas')
+    .eq('slug', 'maricopa')
+    .eq('state:states.slug', 'arizona')
     .single();
 
   if (error || !county) {
@@ -34,7 +34,7 @@ async function getCountyData() {
   return { county };
 }
 
-export default async function HarrisImpoundPage() {
+export default async function MaricopaImpoundPage() {
   const data = await getCountyData();
 
   if (!data) {
@@ -50,9 +50,9 @@ export default async function HarrisImpoundPage() {
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-            <Link href="/texas" className="hover:text-blue-600">Texas</Link>
+            <Link href="/arizona" className="hover:text-blue-600">Arizona</Link>
             <ChevronRight className="h-4 w-4" />
-            <Link href="/texas/harris" className="hover:text-blue-600">{county.name}</Link>
+            <Link href="/arizona/maricopa" className="hover:text-blue-600">{county.name}</Link>
             <ChevronRight className="h-4 w-4" />
             <span className="text-gray-900">Impound</span>
           </div>
@@ -297,7 +297,7 @@ export default async function HarrisImpoundPage() {
               or even get the case dismissed. Don't face this alone.
             </p>
             <Link
-              href="/find-attorney/texas"
+              href="/find-attorney/arizona"
               className="inline-flex items-center px-8 py-4 bg-white text-blue-700 font-bold rounded-lg hover:bg-blue-50 transition-colors"
             >
               Find {county.name} {state.legal_term} Attorneys
