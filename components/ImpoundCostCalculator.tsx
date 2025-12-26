@@ -4,9 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
-import { AlertCircle, DollarSign, Calendar, Clock, CreditCard, Info } from 'lucide-react';
+import { DollarSign, Calendar, Clock, CreditCard, AlertTriangle, Info } from 'lucide-react';
 
 interface ImpoundCostCalculatorProps {
   county: {
@@ -110,20 +108,22 @@ export default function ImpoundCostCalculator({ county, className = '' }: Impoun
   return (
     <div className={`w-full max-w-4xl mx-auto space-y-8 ${className}`}>
       {/* Sticky Alert */}
-      <Alert className="sticky top-4 z-10 bg-yellow-50/95 border-2 border-yellow-300 rounded-2xl backdrop-blur-sm">
-        <AlertCircle className="h-6 w-6 text-yellow-600 stroke-[1.5]" />
-        <AlertDescription className="ml-7">
-          <p className="font-bold text-foreground mb-1">
-            Daily Storage Fee: {formatCurrency(county.impound_daily_fee)}/day
-          </p>
-          {result && (
-            <p className="text-sm text-muted-foreground">
-              <Clock className="inline h-4 w-4 mr-1 stroke-[1.5]" />
-              Next charge in {result.hoursUntilNextCharge} hours (12:00 AM)
+      <div className="sticky top-4 z-10 bg-destructive/10 border-2 border-destructive/30 rounded-2xl p-4 backdrop-blur-sm">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="h-6 w-6 text-destructive flex-shrink-0 stroke-[1.5]" />
+          <div>
+            <p className="font-heading text-lg font-normal text-foreground mb-1">
+              Daily Storage Fee: {formatCurrency(county.impound_daily_fee)}/day
             </p>
-          )}
-        </AlertDescription>
-      </Alert>
+            {result && (
+              <p className="text-sm text-muted-foreground flex items-center gap-1">
+                <Clock className="h-4 w-4 stroke-[1.5]" />
+                Next charge in {result.hoursUntilNextCharge} hours (12:00 AM)
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
 
       {/* Calculator Card */}
       <Card className="p-8 md:p-12 rounded-2xl">
@@ -140,7 +140,7 @@ export default function ImpoundCostCalculator({ county, className = '' }: Impoun
 
           <div className="grid gap-8 md:grid-cols-2">
             <div className="space-y-3">
-              <Label htmlFor="arrestDate" className="flex items-center gap-2 text-base">
+              <Label htmlFor="arrestDate" className="flex items-center gap-2 text-base font-medium">
                 <Calendar className="h-5 w-5 text-primary stroke-[1.5]" />
                 Arrest Date (Vehicle Towed)
               </Label>
@@ -150,12 +150,12 @@ export default function ImpoundCostCalculator({ county, className = '' }: Impoun
                 value={arrestDate}
                 onChange={(e) => setArrestDate(e.target.value)}
                 max={new Date().toISOString().split('T')[0]}
-                className="h-12 rounded-xl border-2 hover:border-teal-300 focus:border-teal-400 transition-colors"
+                className="h-12 rounded-xl border-2 border-border hover:border-primary/50 focus:border-primary transition-colors"
               />
             </div>
 
             <div className="space-y-3">
-              <Label htmlFor="pickupDate" className="flex items-center gap-2 text-base">
+              <Label htmlFor="pickupDate" className="flex items-center gap-2 text-base font-medium">
                 <Calendar className="h-5 w-5 text-primary stroke-[1.5]" />
                 Planned Pickup Date
               </Label>
@@ -165,7 +165,7 @@ export default function ImpoundCostCalculator({ county, className = '' }: Impoun
                 value={pickupDate}
                 onChange={(e) => setPickupDate(e.target.value)}
                 min={arrestDate || undefined}
-                className="h-12 rounded-xl border-2 hover:border-teal-300 focus:border-teal-400 transition-colors"
+                className="h-12 rounded-xl border-2 border-border hover:border-primary/50 focus:border-primary transition-colors"
               />
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function ImpoundCostCalculator({ county, className = '' }: Impoun
 
       {/* Cost Breakdown */}
       {result && (
-        <Card className="p-8 md:p-12 border-2 border-blue-300 bg-blue-50/80 rounded-2xl">
+        <Card className="p-8 md:p-12 border-2 border-primary/30 bg-accent rounded-2xl">
           <div className="space-y-8">
             <div>
               <h3 className="font-heading text-2xl md:text-3xl font-normal text-foreground mb-3">
@@ -192,50 +192,52 @@ export default function ImpoundCostCalculator({ county, className = '' }: Impoun
             </div>
 
             {/* Calculation Details */}
-            <div className="space-y-6 bg-background rounded-2xl p-8 border-2 border-border">
-              <div className="flex justify-between items-center pb-6 border-b-2 border-border">
+            <div className="space-y-6 bg-background rounded-2xl p-8 border border-border">
+              <div className="flex justify-between items-center pb-6 border-b border-border">
                 <span className="text-muted-foreground text-lg">Days Impounded</span>
-                <span className="font-bold text-2xl text-foreground">{result.daysImpounded} days</span>
+                <span className="font-heading text-2xl text-foreground">{result.daysImpounded} days</span>
               </div>
 
-              <div className="flex justify-between items-center pb-6 border-b-2 border-border">
+              <div className="flex justify-between items-center pb-6 border-b border-border">
                 <div>
                   <div className="text-foreground text-lg font-medium">Daily Storage Fee</div>
                   <div className="text-sm text-muted-foreground">{result.daysImpounded} days × {formatCurrency(result.dailyFee)}/day</div>
                 </div>
-                <span className="font-bold text-2xl text-foreground">{formatCurrency(result.storageFees)}</span>
+                <span className="font-heading text-2xl text-foreground">{formatCurrency(result.storageFees)}</span>
               </div>
 
-              <div className="flex justify-between items-center pb-6 border-b-2 border-border">
+              <div className="flex justify-between items-center pb-6 border-b border-border">
                 <div>
                   <div className="text-foreground text-lg font-medium">Administrative Fee</div>
                   <div className="text-sm text-muted-foreground">One-time charge</div>
                 </div>
-                <span className="font-bold text-2xl text-foreground">{formatCurrency(result.adminFee)}</span>
+                <span className="font-heading text-2xl text-foreground">{formatCurrency(result.adminFee)}</span>
               </div>
 
-              <div className="flex justify-between items-center pt-6 bg-green-50/80 border-2 border-green-300 -mx-8 -mb-8 px-8 py-8 rounded-b-2xl">
+              <div className="flex justify-between items-center pt-6 bg-primary/10 border-2 border-primary/30 -mx-8 -mb-8 px-8 py-8 rounded-b-2xl">
                 <div>
-                  <div className="text-foreground font-bold text-xl mb-1">TOTAL CASH NEEDED</div>
+                  <div className="text-foreground font-heading text-xl mb-1">TOTAL CASH NEEDED</div>
                   <div className="text-sm text-muted-foreground">Amount to bring for pickup</div>
                 </div>
                 <div className="text-right">
-                  <div className="text-5xl font-heading font-normal text-foreground">{formatCurrency(result.totalCost)}</div>
+                  <div className="text-4xl md:text-5xl font-heading font-normal text-foreground">{formatCurrency(result.totalCost)}</div>
                 </div>
               </div>
             </div>
 
             {/* Warning for high costs */}
             {result.totalCost > 500 && (
-              <Alert className="border-2 rounded-2xl bg-yellow-50/80 border-yellow-300">
-                <AlertCircle className="h-6 w-6 text-yellow-600 stroke-[1.5]" />
-                <AlertDescription className="ml-7">
-                  <p className="font-bold text-foreground mb-2">High Storage Costs</p>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Costs increase by {formatCurrency(county.impound_daily_fee)} every day. Consider retrieving your vehicle as soon as possible to avoid further charges.
-                  </p>
-                </AlertDescription>
-              </Alert>
+              <div className="bg-destructive/10 border-2 border-destructive/30 rounded-2xl p-6">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="h-6 w-6 text-destructive flex-shrink-0 stroke-[1.5]" />
+                  <div>
+                    <p className="font-heading text-lg font-normal text-foreground mb-2">High Storage Costs</p>
+                    <p className="text-muted-foreground leading-relaxed">
+                      Costs increase by {formatCurrency(county.impound_daily_fee)} every day. Consider retrieving your vehicle as soon as possible to avoid further charges.
+                    </p>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         </Card>
@@ -274,32 +276,34 @@ export default function ImpoundCostCalculator({ county, className = '' }: Impoun
             {county.impound_payment_methods && (
               <div>
                 <div className="font-medium text-foreground mb-3 text-lg">Accepted Payment Methods</div>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2">
                   {county.impound_payment_methods.split(',').map((method, index) => (
-                    <Badge
+                    <span
                       key={index}
-                      className="px-4 py-2 bg-green-50/80 text-green-800 border-green-300 border-2"
+                      className="px-4 py-2 bg-primary/10 text-foreground border border-primary/30 rounded-full text-sm font-medium"
                     >
                       {method.trim()}
-                    </Badge>
+                    </span>
                   ))}
                 </div>
               </div>
             )}
           </div>
 
-          <Alert className="mt-8 border-2 rounded-2xl bg-blue-50/80 border-blue-300">
-            <Info className="h-6 w-6 text-blue-600 stroke-[1.5]" />
-            <AlertDescription className="ml-7">
-              <p className="font-bold text-foreground mb-3">Important Reminders</p>
-              <ul className="list-disc list-inside space-y-2 text-muted-foreground leading-relaxed">
-                <li>Bring valid photo ID and vehicle registration</li>
-                <li>Proof of insurance may be required</li>
-                <li>Only exact amounts shown above - no credit cards for storage fees at some lots</li>
-                <li>Call ahead to verify current balance and payment requirements</li>
-              </ul>
-            </AlertDescription>
-          </Alert>
+          <div className="mt-8 bg-accent border border-border rounded-2xl p-6">
+            <div className="flex items-start gap-3">
+              <Info className="h-6 w-6 text-primary flex-shrink-0 stroke-[1.5]" />
+              <div>
+                <p className="font-heading text-lg font-normal text-foreground mb-3">Important Reminders</p>
+                <ul className="list-disc list-inside space-y-2 text-muted-foreground leading-relaxed">
+                  <li>Bring valid photo ID and vehicle registration</li>
+                  <li>Proof of insurance may be required</li>
+                  <li>Only exact amounts shown above - no credit cards for storage fees at some lots</li>
+                  <li>Call ahead to verify current balance and payment requirements</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </Card>
       )}
     </div>

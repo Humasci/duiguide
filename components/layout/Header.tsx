@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { Phone, Menu, X } from "lucide-react";
+import { Phone, Menu, X, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -15,12 +15,15 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="content-container">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <div className="container max-w-7xl">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-xl font-bold" style={{ fontFamily: 'DM Sans' }}>
+            <div className="p-1.5 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+              <Scale className="h-5 w-5 text-primary stroke-[1.5]" />
+            </div>
+            <span className="font-heading text-xl font-normal text-foreground">
               DUI Guide
             </span>
           </Link>
@@ -42,29 +45,29 @@ export function Header() {
           <div className="flex items-center gap-3">
             {/* Desktop CTA */}
             <a href="tel:+18005551234" className="hidden sm:inline-flex">
-              <Button size="default" className="rounded-full gap-2">
-                <Phone className="h-4 w-4" />
+              <Button className="bg-foreground text-background hover:bg-foreground/90 rounded-full gap-2 px-6">
+                <Phone className="h-4 w-4 stroke-[1.5]" />
                 <span>Call 24/7</span>
               </Button>
             </a>
 
             {/* Mobile CTA */}
             <a href="tel:+18005551234" className="sm:hidden">
-              <Button size="icon" className="rounded-full">
-                <Phone className="h-4 w-4" />
+              <Button size="icon" className="bg-foreground text-background hover:bg-foreground/90 rounded-full">
+                <Phone className="h-4 w-4 stroke-[1.5]" />
               </Button>
             </a>
 
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              className="md:hidden inline-flex items-center justify-center p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
-                <X className="h-6 w-6" />
+                <X className="h-5 w-5 stroke-[1.5]" />
               ) : (
-                <Menu className="h-6 w-6" />
+                <Menu className="h-5 w-5 stroke-[1.5]" />
               )}
             </button>
           </div>
@@ -72,13 +75,13 @@ export function Header() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-border/40 py-4">
-            <nav className="flex flex-col gap-3">
+          <div className="md:hidden border-t border-border py-4">
+            <nav className="flex flex-col gap-1">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors"
+                  className="px-4 py-3 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-xl transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
