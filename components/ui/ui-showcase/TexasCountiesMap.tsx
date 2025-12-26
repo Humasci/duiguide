@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState } from "react";
-import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export interface TexasCountiesMapProps {
   title?: string;
   description?: string;
   className?: string;
-  onCountyClick?: (county: string) => void;
+  onCountyClick?: (county: string, slug: string) => void;
+  navigateOnClick?: boolean;
 }
 
 // Texas counties grid - one tile per major region/county grouping
@@ -95,41 +96,45 @@ const getAbbreviation = (county: string): string => {
   return county.substring(0, 4).toUpperCase();
 };
 
+// Convert county name to URL slug
+const toSlug = (name: string): string => {
+  return name.toLowerCase().replace(/\s+/g, '-');
+};
+
 const TexasCountiesMap: React.FC<TexasCountiesMapProps> = ({
   title,
   description,
   className = "",
   onCountyClick,
+  navigateOnClick = true,
 }) => {
+  const router = useRouter();
   const [hoveredCounty, setHoveredCounty] = useState<string | null>(null);
-  const [selectedCounty, setSelectedCounty] = useState<string | null>(null);
 
   const handleCountyClick = (county: string) => {
     if (!county) return;
-    
-    setSelectedCounty(county === selectedCounty ? null : county);
-    onCountyClick?.(county);
-    toast.info(`Selected: ${countyNames[county] || county}`);
+
+    const slug = toSlug(county);
+
+    if (onCountyClick) {
+      onCountyClick(county, slug);
+    }
+
+    if (navigateOnClick) {
+      router.push(`/texas/${slug}`);
+    }
   };
 
   return (
-    <div className={`bg-card rounded-2xl p-6 md:p-8 ${className}`}>
+    <div className={`${className}`}>
       {(title || description) && (
-        <div className="mb-6">
+        <div className="mb-6 text-center">
           {title && (
             <h3 className="font-heading text-xl text-foreground mb-2">{title}</h3>
           )}
           {description && (
             <p className="text-muted-foreground text-sm">{description}</p>
           )}
-        </div>
-      )}
-      
-      {/* Selected county info */}
-      {selectedCounty && (
-        <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
-          <h4 className="font-semibold text-foreground">{countyNames[selectedCounty] || selectedCounty}</h4>
-          <p className="text-sm text-muted-foreground">Click another county to select it, or click again to deselect.</p>
         </div>
       )}
 
@@ -145,12 +150,12 @@ const TexasCountiesMap: React.FC<TexasCountiesMapProps> = ({
                 county
                   ? "hover:scale-110 hover:shadow-lg cursor-pointer"
                   : "bg-transparent"
-              } ${selectedCounty === county ? "ring-2 ring-primary ring-offset-1 ring-offset-background" : ""}`}
+              }`}
               style={{
-                backgroundColor: getCountyColor(county, hoveredCounty === county, selectedCounty === county),
+                backgroundColor: getCountyColor(county, hoveredCounty === county, false),
                 color: county ? "hsl(200 30% 15%)" : "transparent",
               }}
-              title={county ? countyNames[county] || county : undefined}
+              title={county ? `${countyNames[county] || county} - Click for DUI guide` : undefined}
               onClick={() => handleCountyClick(county)}
               onMouseEnter={() => county && setHoveredCounty(county)}
               onMouseLeave={() => setHoveredCounty(null)}
@@ -162,13 +167,14 @@ const TexasCountiesMap: React.FC<TexasCountiesMapProps> = ({
       </div>
 
       {/* Hovered county tooltip */}
-      {hoveredCounty && !selectedCounty && (
-        <div className="mt-4 text-center">
+      <div className="mt-4 text-center h-6">
+        {hoveredCounty && (
           <span className="text-sm text-muted-foreground">
-            County: <span className="font-medium text-foreground">{countyNames[hoveredCounty]}</span>
+            <span className="font-medium text-foreground">{countyNames[hoveredCounty]}</span>
+            <span className="text-primary ml-2">→ View DUI guide</span>
           </span>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
