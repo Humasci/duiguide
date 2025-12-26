@@ -1,102 +1,85 @@
 import Link from "next/link";
+import { Scale } from "lucide-react";
 import { GENERAL_DISCLAIMER } from "@/lib/constants/disclaimers";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
+  const links = {
+    "Coverage Areas": [
+      { label: "Texas", href: "/texas" },
+      { label: "Arizona", href: "/arizona" },
+      { label: "Georgia", href: "/georgia" },
+      { label: "Ohio", href: "/ohio" },
+      { label: "Colorado", href: "/colorado" },
+    ],
+    Resources: [
+      { label: "DUI Guide", href: "/guide" },
+      { label: "DMV Hearings", href: "/guide/dmv-hearing" },
+      { label: "Find Attorney", href: "/find-attorney" },
+      { label: "For Attorneys", href: "/for-attorneys" },
+    ],
+    Legal: [
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
+      { label: "Disclaimer", href: "/disclaimer" },
+    ],
+  };
+
   return (
-    <footer className="border-t bg-muted/50">
-      <div className="container py-8 md:py-12">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-          {/* About */}
-          <div className="space-y-3">
-            <h3 className="text-lg font-semibold">DUI Guide</h3>
-            <p className="text-sm text-muted-foreground">
-              Helping people understand their rights and connect with local DUI
-              attorneys.
+    <footer className="bg-card py-16">
+      <div className="container">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+          {/* Logo */}
+          <div className="col-span-2 md:col-span-1">
+            <Link href="/" className="flex items-center gap-2 mb-4">
+              <Scale className="h-6 w-6 text-primary stroke-[1.5]" />
+              <span className="font-heading text-lg font-normal text-foreground">DUI Guide</span>
+            </Link>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Helping people understand their rights and connect with local DUI attorneys.
             </p>
           </div>
 
-          {/* States */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-semibold">Coverage Areas</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <Link href="/texas" className="hover:text-foreground">
-                  Texas
-                </Link>
-              </li>
-              <li>
-                <Link href="/arizona" className="hover:text-foreground">
-                  Arizona
-                </Link>
-              </li>
-              <li>
-                <Link href="/california" className="hover:text-foreground">
-                  California
-                </Link>
-              </li>
-              <li>
-                <Link href="/florida" className="hover:text-foreground">
-                  Florida
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-semibold">Resources</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <Link href="/about" className="hover:text-foreground">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/for-attorneys" className="hover:text-foreground">
-                  For Attorneys
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-foreground">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-semibold">Legal</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <Link href="/privacy" className="hover:text-foreground">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="hover:text-foreground">
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link href="/disclaimer" className="hover:text-foreground">
-                  Disclaimer
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {/* Link columns */}
+          {Object.entries(links).map(([category, items]) => (
+            <div key={category}>
+              <h4 className="font-medium text-foreground mb-4">{category}</h4>
+              <ul className="space-y-3">
+                {items.map((item) => (
+                  <li key={item.label}>
+                    <Link
+                      href={item.href}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        <div className="mt-8 border-t pt-8">
-          <div className="mb-4 rounded-lg bg-muted p-4 text-xs text-muted-foreground">
-            <strong>Legal Disclaimer:</strong> {GENERAL_DISCLAIMER}
+        {/* Disclaimer */}
+        <div className="mt-12 pt-8 border-t border-border">
+          <div className="mb-6 rounded-2xl bg-muted p-6 text-xs text-muted-foreground leading-relaxed">
+            <strong className="text-foreground">Legal Disclaimer:</strong> {GENERAL_DISCLAIMER}
           </div>
 
-          <p className="text-center text-sm text-muted-foreground">
-            &copy; {currentYear} DUI Guide. All rights reserved.
-          </p>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-muted-foreground">
+              © {currentYear} DUI Guide. All rights reserved.
+            </p>
+            <div className="flex items-center gap-6">
+              <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Contact
+              </Link>
+              <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                About
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
