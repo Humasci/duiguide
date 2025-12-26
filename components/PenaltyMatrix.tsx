@@ -2,6 +2,16 @@
 
 import { useState } from 'react';
 import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import {
   Scale,
   Clock,
@@ -26,7 +36,7 @@ interface PenaltyData {
 interface PenaltyMatrixProps {
   state: {
     name: string;
-    legal_term: string; // DUI, DWI, or OVI
+    legal_term: string;
     first_offense_penalties?: PenaltyData;
     second_offense_penalties?: PenaltyData;
     third_offense_penalties?: PenaltyData;
@@ -122,15 +132,15 @@ export default function PenaltyMatrix({ state, className = '' }: PenaltyMatrixPr
           const Icon = row.icon;
 
           return (
-            <div key={row.key} className="bg-white border border-gray-200 rounded-lg p-4">
-              <div className="flex items-start gap-3">
+            <div key={row.key} className="bg-background border border-border rounded-2xl p-6 hover:bg-teal-50 hover:border-teal-300 transition-all duration-300">
+              <div className="flex items-start gap-4">
                 <div className="mt-1">
-                  <Icon className="h-5 w-5 text-blue-600" />
+                  <Icon className="h-6 w-6 text-primary stroke-[1.5]" />
                 </div>
                 <div className="flex-1">
-                  <div className="font-semibold text-gray-900 mb-1">{row.label}</div>
-                  <div className="text-sm text-gray-600 mb-2">{row.description}</div>
-                  <div className="text-base text-gray-900 font-medium bg-blue-50 px-3 py-2 rounded">
+                  <div className="font-heading text-lg font-normal text-foreground mb-2">{row.label}</div>
+                  <div className="text-sm text-muted-foreground mb-3 leading-relaxed">{row.description}</div>
+                  <div className="text-base text-foreground font-medium bg-blue-50/80 px-4 py-3 rounded-xl border border-blue-200">
                     {value}
                   </div>
                 </div>
@@ -146,17 +156,17 @@ export default function PenaltyMatrix({ state, className = '' }: PenaltyMatrixPr
     const penalties = getAllPenalties();
 
     return (
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="bg-gray-100 border-b-2 border-gray-300">
-              <th className="text-left p-4 font-bold text-gray-900">Penalty Type</th>
-              <th className="text-center p-4 font-bold text-gray-900 bg-blue-50">1st Offense</th>
-              <th className="text-center p-4 font-bold text-gray-900 bg-orange-50">2nd Offense</th>
-              <th className="text-center p-4 font-bold text-gray-900 bg-red-50">3rd Offense</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className="rounded-2xl border-2 border-border overflow-hidden">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted/50 border-b-2 hover:bg-muted/50">
+              <TableHead className="font-heading text-base font-normal text-foreground p-6">Penalty Type</TableHead>
+              <TableHead className="font-heading text-base font-normal text-foreground text-center p-6 bg-blue-50/80">1st Offense</TableHead>
+              <TableHead className="font-heading text-base font-normal text-foreground text-center p-6 bg-yellow-50/80">2nd Offense</TableHead>
+              <TableHead className="font-heading text-base font-normal text-foreground text-center p-6 bg-green-50/80">3rd Offense</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {PENALTY_ROWS.map((row, index) => {
               const hasAnyData = penalties['1st'][row.key] || penalties['2nd'][row.key] || penalties['3rd'][row.key];
               if (!hasAnyData) return null;
@@ -164,81 +174,81 @@ export default function PenaltyMatrix({ state, className = '' }: PenaltyMatrixPr
               const Icon = row.icon;
 
               return (
-                <tr
+                <TableRow
                   key={row.key}
-                  className={`border-b border-gray-200 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
+                  className="border-b hover:bg-teal-50 transition-colors duration-300"
                 >
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      <Icon className="h-5 w-5 text-blue-600 flex-shrink-0" />
+                  <TableCell className="p-6">
+                    <div className="flex items-center gap-4">
+                      <Icon className="h-6 w-6 text-primary flex-shrink-0 stroke-[1.5]" />
                       <div>
-                        <div className="font-semibold text-gray-900">{row.label}</div>
-                        <div className="text-xs text-gray-600">{row.description}</div>
+                        <div className="font-heading text-base font-normal text-foreground">{row.label}</div>
+                        <div className="text-sm text-muted-foreground leading-relaxed">{row.description}</div>
                       </div>
                     </div>
-                  </td>
-                  <td className="p-4 text-center bg-blue-50/50">
-                    <span className="text-gray-900 font-medium">
+                  </TableCell>
+                  <TableCell className="p-6 text-center bg-blue-50/50">
+                    <span className="text-foreground font-medium">
                       {penalties['1st'][row.key] || '—'}
                     </span>
-                  </td>
-                  <td className="p-4 text-center bg-orange-50/50">
-                    <span className="text-gray-900 font-medium">
+                  </TableCell>
+                  <TableCell className="p-6 text-center bg-yellow-50/50">
+                    <span className="text-foreground font-medium">
                       {penalties['2nd'][row.key] || '—'}
                     </span>
-                  </td>
-                  <td className="p-4 text-center bg-red-50/50">
-                    <span className="text-gray-900 font-medium">
+                  </TableCell>
+                  <TableCell className="p-6 text-center bg-green-50/50">
+                    <span className="text-foreground font-medium">
                       {penalties['3rd'][row.key] || '—'}
                     </span>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               );
             })}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     );
   };
 
   return (
     <div className={`w-full ${className}`}>
-      <Card className="p-6 md:p-8">
-        <div className="space-y-6">
+      <Card className="p-8 md:p-12 rounded-2xl">
+        <div className="space-y-8">
           {/* Header */}
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-              <Scale className="h-8 w-8 text-blue-600" />
+            <h2 className="font-heading text-3xl md:text-4xl font-normal text-foreground mb-3 flex items-center gap-3">
+              <Scale className="h-8 w-8 text-primary stroke-[1.5]" />
               {state.legal_term} Penalties in {state.name}
             </h2>
-            <p className="text-gray-600">
+            <p className="text-lg text-muted-foreground leading-relaxed">
               Understand the potential consequences for {state.legal_term} offenses in {state.name}.
               Penalties increase significantly with each subsequent offense.
             </p>
           </div>
 
           {/* Tab Buttons (Mobile Only) */}
-          <div className="flex gap-2 md:hidden">
+          <div className="flex gap-3 md:hidden">
             {(['1st', '2nd', '3rd'] as OffenseType[]).map((offense) => {
               if (!hasData(offense)) return null;
 
               const isActive = activeOffense === offense;
               const bgColors = {
-                '1st': 'bg-blue-100 text-blue-800 border-blue-300',
-                '2nd': 'bg-orange-100 text-orange-800 border-orange-300',
-                '3rd': 'bg-red-100 text-red-800 border-red-300',
+                '1st': 'bg-blue-50/80 text-blue-800 border-blue-300',
+                '2nd': 'bg-yellow-50/80 text-yellow-800 border-yellow-300',
+                '3rd': 'bg-green-50/80 text-green-800 border-green-300',
               };
               const activeBgColors = {
-                '1st': 'bg-blue-600 text-white border-blue-700',
-                '2nd': 'bg-orange-600 text-white border-orange-700',
-                '3rd': 'bg-red-600 text-white border-red-700',
+                '1st': 'bg-blue-500 text-white border-blue-600',
+                '2nd': 'bg-yellow-500 text-white border-yellow-600',
+                '3rd': 'bg-green-500 text-white border-green-600',
               };
 
               return (
                 <button
                   key={offense}
                   onClick={() => setActiveOffense(offense)}
-                  className={`flex-1 px-4 py-3 rounded-lg font-semibold border-2 transition-all ${
+                  className={`flex-1 px-6 py-4 rounded-2xl font-semibold border-2 transition-all duration-300 hover:scale-105 ${
                     isActive ? activeBgColors[offense] : bgColors[offense]
                   }`}
                 >
@@ -259,34 +269,30 @@ export default function PenaltyMatrix({ state, className = '' }: PenaltyMatrixPr
           </div>
 
           {/* Important Notice */}
-          <div className="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
-            <div className="flex items-start gap-2">
-              <AlertTriangle className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
-              <div className="text-sm text-yellow-900">
-                <p className="font-semibold mb-1">Important Legal Notice</p>
-                <p className="text-yellow-800">
-                  These are general penalty ranges. Actual penalties can vary based on aggravating factors
-                  (high BAC, accident, injury, minor in vehicle, etc.). An experienced {state.legal_term} attorney
-                  can help minimize penalties and explore alternatives like diversion programs.
-                </p>
-              </div>
-            </div>
-          </div>
+          <Alert className="border-2 rounded-2xl bg-yellow-50/80 border-yellow-300">
+            <AlertTriangle className="h-6 w-6 text-yellow-600 stroke-[1.5]" />
+            <AlertDescription className="ml-7">
+              <p className="font-bold text-foreground mb-2">Important Legal Notice</p>
+              <p className="text-muted-foreground leading-relaxed">
+                These are general penalty ranges. Actual penalties can vary based on aggravating factors
+                (high BAC, accident, injury, minor in vehicle, etc.). An experienced {state.legal_term} attorney
+                can help minimize penalties and explore alternatives like diversion programs.
+              </p>
+            </AlertDescription>
+          </Alert>
 
           {/* Escalation Warning */}
           {(hasData('2nd') || hasData('3rd')) && (
-            <div className="mt-4 p-4 bg-red-50 border-l-4 border-red-400 rounded">
-              <div className="flex items-start gap-2">
-                <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
-                <div className="text-sm text-red-900">
-                  <p className="font-semibold mb-1">Escalating Consequences</p>
-                  <p className="text-red-800">
-                    Second and third {state.legal_term} offenses carry significantly harsher penalties,
-                    including mandatory jail time in most cases. Multiple offenses may result in felony charges.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <Alert className="border-2 rounded-2xl bg-green-50/80 border-green-300">
+              <AlertTriangle className="h-6 w-6 text-green-600 stroke-[1.5]" />
+              <AlertDescription className="ml-7">
+                <p className="font-bold text-foreground mb-2">Escalating Consequences</p>
+                <p className="text-muted-foreground leading-relaxed">
+                  Second and third {state.legal_term} offenses carry significantly harsher penalties,
+                  including mandatory jail time in most cases. Multiple offenses may result in felony charges.
+                </p>
+              </AlertDescription>
+            </Alert>
           )}
         </div>
       </Card>
