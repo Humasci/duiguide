@@ -16,20 +16,32 @@ import {
 async function getCountyData() {
   const supabase = await createClient();
 
+  // First get the state
+  const { data: state } = await supabase
+    .from('states')
+    .select('*')
+    .eq('slug', 'texas')
+    .single();
+
+  if (!state) {
+    return null;
+  }
+
+  // Then get the county
   const { data: county, error } = await supabase
     .from('counties')
-    .select(`
-      *,
-      state:states(*)
-    `)
+    .select('*')
     .eq('slug', 'dallas')
-    .eq('state:states.slug', 'texas')
+    .eq('state_id', state.id)
     .single();
 
   if (error || !county) {
     console.error('Error fetching county:', error);
     return null;
   }
+
+  // Attach state data to county
+  const countyWithState = { ...county, state };
 
   // Get Gold Dust intelligence for this county
   const { data: goldDust } = await supabase
@@ -39,7 +51,7 @@ async function getCountyData() {
     .eq('priority', 10)
     .limit(3);
 
-  return { county, goldDust: goldDust || [] };
+  return { county: countyWithState, goldDust: goldDust || [] };
 }
 
 export default async function DallasCountyPage() {
