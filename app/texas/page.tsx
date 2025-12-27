@@ -59,60 +59,70 @@ export default async function TexasPage() {
 
         <div className="relative bg-card/50 border-b border-border">
           <div className="container max-w-7xl py-6 md:py-8">
-            {/* Main Hero Content */}
-            <div className="max-w-3xl mb-8">
-              {/* Urgency Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-destructive/10 text-destructive border border-destructive/20 mb-4">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-destructive"></span>
-                </span>
-                {state.dmv_deadline_days || 15}-Day Deadline
+            {/* Hero Header Row - Title + Map aligned at top */}
+            <div className="grid lg:grid-cols-[1fr,auto] gap-8 items-start mb-8">
+              {/* Left - Title and CTAs */}
+              <div>
+                {/* Urgency Badge */}
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-destructive/10 text-destructive border border-destructive/20 mb-4">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-destructive"></span>
+                  </span>
+                  {state.dmv_deadline_days || 15}-Day Deadline
+                </div>
+
+                <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-normal mb-3 text-foreground leading-[1.1] tracking-tight">
+                  {state.name} {state.legal_term} Guide
+                </h1>
+
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-5">
+                  Complete guide to {state.legal_term} laws, penalties, and procedures in {state.name}.
+                </p>
+
+                {/* CTA Buttons */}
+                <div className="flex flex-wrap gap-3">
+                  <Button
+                    asChild
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full px-5 py-5 shadow-lg hover:shadow-xl transition-all"
+                  >
+                    <Link href="/texas/dmv-hearing">
+                      Request ALR Hearing
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="rounded-full px-5 py-5 border-2 hover:bg-muted/50"
+                  >
+                    <Link href="/find-attorney/texas">
+                      Talk to Attorney
+                    </Link>
+                  </Button>
+                </div>
               </div>
 
-              <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-normal mb-3 text-foreground leading-[1.1] tracking-tight">
-                {state.name} {state.legal_term} Guide
-              </h1>
-
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-5">
-                Complete guide to {state.legal_term} laws, penalties, and procedures in {state.name}.
-              </p>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-wrap gap-3">
-                <Button
-                  asChild
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full px-5 py-5 shadow-lg hover:shadow-xl transition-all"
-                >
-                  <Link href="/texas/dmv-hearing">
-                    Request ALR Hearing
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  className="rounded-full px-5 py-5 border-2 hover:bg-muted/50"
-                >
-                  <Link href="/find-attorney/texas">
-                    Talk to Attorney
-                  </Link>
-                </Button>
+              {/* Right - County Map (Desktop Only) - Aligned with headline */}
+              <div className="hidden lg:block">
+                <div className="text-center mb-2">
+                  <p className="text-xs text-muted-foreground">Click a county on the map</p>
+                </div>
+                <TexasCountiesMap />
               </div>
             </div>
 
-            {/* Major Counties + Map Section - Hero Position */}
-            <div className="grid lg:grid-cols-[1fr,auto] gap-8 items-start">
-              {/* Left - Major Counties */}
-              <div>
-                <div className="mb-4">
-                  <h2 className="font-heading text-xl font-normal text-foreground mb-1">Major Counties</h2>
-                  <p className="text-sm text-muted-foreground">
-                    County-specific courts, impound lots, bail, and local procedures
-                  </p>
-                </div>
+            {/* Major Counties Section */}
+            <div>
+              <div className="mb-4">
+                <h2 className="font-heading text-xl font-normal text-foreground mb-1">Major Counties</h2>
+                <p className="text-sm text-muted-foreground">
+                  County-specific courts, impound lots, bail, and local procedures
+                </p>
+              </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3 mb-4">
-                  {priorityCounties.map((county) => county && (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-6">
+                {priorityCounties.length > 0 ? (
+                  priorityCounties.map((county) => county && (
                     <Link key={county.id} href={`/texas/${county.slug}`}>
                       <Card className="p-3 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl group h-full">
                         <h4 className="font-heading text-sm font-medium text-foreground group-hover:text-primary transition-colors">
@@ -123,36 +133,44 @@ export default async function TexasPage() {
                         </p>
                       </Card>
                     </Link>
-                  ))}
-                </div>
-
-                {/* All Other Counties */}
-                {otherCounties.length > 0 && (
-                  <div>
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">All {counties.length} Counties</p>
-                    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-1">
-                      {otherCounties.map((county) => (
-                        <Link
-                          key={county.id}
-                          href={`/texas/${county.slug}`}
-                          className="text-sm text-muted-foreground hover:text-primary transition-colors py-0.5 truncate"
-                          title={county.name}
-                        >
-                          {county.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
+                  ))
+                ) : (
+                  // Fallback if no counties in database
+                  PRIORITY_COUNTIES.map((name) => (
+                    <Link key={name} href={`/texas/${name.toLowerCase().replace(' ', '-')}`}>
+                      <Card className="p-3 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl group h-full">
+                        <h4 className="font-heading text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                          {name}
+                        </h4>
+                        <p className="text-xs text-muted-foreground">View info</p>
+                      </Card>
+                    </Link>
+                  ))
                 )}
               </div>
 
-              {/* Right - County Map (Desktop Only) */}
-              <div className="hidden lg:block">
-                <div className="sticky top-24">
-                  <div className="text-center mb-2">
-                    <p className="text-xs text-muted-foreground">Click a county on the map</p>
-                  </div>
-                  <TexasCountiesMap />
+              {/* All Other Counties */}
+              <div>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">
+                  {counties.length > 0 ? `All ${counties.length} Counties` : 'All 254 Counties'}
+                </p>
+                <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-1">
+                  {otherCounties.length > 0 ? (
+                    otherCounties.map((county) => (
+                      <Link
+                        key={county.id}
+                        href={`/texas/${county.slug}`}
+                        className="text-sm text-muted-foreground hover:text-primary transition-colors py-0.5 truncate"
+                        title={county.name}
+                      >
+                        {county.name}
+                      </Link>
+                    ))
+                  ) : (
+                    <p className="col-span-full text-sm text-muted-foreground">
+                      Select a county from the map above
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

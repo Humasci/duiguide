@@ -99,26 +99,26 @@ const USStatesMap: React.FC<USStatesMapProps> = ({
     const prioritized = isPrioritized(state);
 
     if (prioritized) {
-      // Prioritized states use primary color scheme with fill
+      // Prioritized states use primary color scheme with fill and border
       return {
         backgroundColor: isHovered
           ? "hsl(var(--primary))"
           : "hsl(var(--primary) / 0.85)",
         color: "hsl(var(--primary-foreground))",
         boxShadow: isHovered ? "0 4px 12px hsl(var(--primary) / 0.3)" : "none",
-        border: "none",
+        border: "1.5px solid hsl(var(--primary))",
       };
     } else {
       // Non-prioritized states - teal border only, no fill
       return {
         backgroundColor: isHovered
-          ? "hsl(var(--primary) / 0.1)"
+          ? "hsl(var(--primary) / 0.08)"
           : "transparent",
         color: isHovered
           ? "hsl(var(--primary))"
-          : "hsl(var(--primary) / 0.5)",
+          : "hsl(var(--primary) / 0.4)",
         boxShadow: "none",
-        border: `1.5px solid hsl(var(--primary) / ${isHovered ? '0.6' : '0.3'})`,
+        border: `1.5px solid hsl(var(--primary) / ${isHovered ? '0.5' : '0.25'})`,
       };
     }
   };

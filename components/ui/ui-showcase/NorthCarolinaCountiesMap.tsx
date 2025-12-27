@@ -107,7 +107,7 @@ const NorthCarolinaCountiesMap: React.FC<NorthCarolinaCountiesMapProps> = ({
   };
 
   const getTileStyles = (county: string, isHovered: boolean) => {
-    if (!county) return { backgroundColor: "transparent", color: "transparent" };
+    if (!county) return { backgroundColor: "transparent", color: "transparent", border: "none" };
 
     const isPriority = isPriorityCounty(county);
 
@@ -115,13 +115,15 @@ const NorthCarolinaCountiesMap: React.FC<NorthCarolinaCountiesMapProps> = ({
       return {
         backgroundColor: isHovered ? "hsl(var(--primary))" : "hsl(var(--primary) / 0.85)",
         color: "hsl(var(--primary-foreground))",
+        border: "1.5px solid hsl(var(--primary))",
         boxShadow: isHovered ? "0 4px 12px hsl(var(--primary) / 0.3)" : "none",
       };
     }
 
     return {
-      backgroundColor: isHovered ? "hsl(var(--primary) / 0.15)" : "hsl(var(--primary) / 0.08)",
+      backgroundColor: isHovered ? "hsl(var(--primary) / 0.1)" : "transparent",
       color: isHovered ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))",
+      border: `1.5px solid hsl(var(--primary) / ${isHovered ? '0.5' : '0.25'})`,
       boxShadow: isHovered ? "0 2px 8px hsl(var(--primary) / 0.15)" : "none",
     };
   };
