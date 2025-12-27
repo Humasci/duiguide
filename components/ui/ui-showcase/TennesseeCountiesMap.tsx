@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState } from "react";
-import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export interface TennesseeCountiesMapProps {
   title?: string;
   description?: string;
   className?: string;
-  onCountyClick?: (county: string) => void;
+  onCountyClick?: (county: string, slug: string) => void;
+  navigateOnClick?: boolean;
 }
 
 // Tennessee counties grid - simplified representation (95 counties)
@@ -56,13 +57,15 @@ const countyNames: Record<string, string> = {
   Williamson: "Williamson County", Wilson: "Wilson County",
 };
 
-// Generate consistent colors for each county
-const getCountyColor = (county: string, isHovered: boolean, isSelected: boolean) => {
+// Generate consistent colors for each county - using warm primary tones
+const getCountyColor = (county: string, isHovered: boolean) => {
   if (!county) return "transparent";
   const seed = county.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const saturation = isSelected ? 60 : isHovered ? 50 : 40 + (seed % 30);
-  const lightness = isSelected ? 40 : isHovered ? 50 : 45 + (seed % 15);
-  return `hsl(30 ${saturation}% ${lightness}%)`;
+  // Use warm hues matching theme
+  const hue = 28 + (seed % 12);
+  const saturation = isHovered ? 55 : 35 + (seed % 20);
+  const lightness = isHovered ? 55 : 50 + (seed % 12);
+  return `hsl(${hue} ${saturation}% ${lightness}%)`;
 };
 
 // Get 4-letter abbreviated name for display
@@ -75,27 +78,39 @@ const getAbbreviation = (county: string): string => {
   return county.substring(0, 4).toUpperCase();
 };
 
+// Convert county name to URL slug
+const toSlug = (name: string): string => {
+  return name.toLowerCase().replace(/\s+/g, '-');
+};
+
 const TennesseeCountiesMap: React.FC<TennesseeCountiesMapProps> = ({
   title,
   description,
   className = "",
   onCountyClick,
+  navigateOnClick = true,
 }) => {
+  const router = useRouter();
   const [hoveredCounty, setHoveredCounty] = useState<string | null>(null);
-  const [selectedCounty, setSelectedCounty] = useState<string | null>(null);
 
   const handleCountyClick = (county: string) => {
     if (!county) return;
-    
-    setSelectedCounty(county === selectedCounty ? null : county);
-    onCountyClick?.(county);
-    toast.info(`Selected: ${countyNames[county] || county}`);
+
+    const slug = toSlug(county);
+
+    if (onCountyClick) {
+      onCountyClick(county, slug);
+    }
+
+    if (navigateOnClick) {
+      router.push(`/tennessee/${slug}`);
+    }
   };
 
   return (
-    <div className={`bg-card rounded-2xl p-6 md:p-8 ${className}`}>
+    <div className={`${className}`}>
       {(title || description) && (
-        <div className="mb-6">
+        <div className="mb-6 text-center">
           {title && (
             <h3 className="font-heading text-xl text-foreground mb-2">{title}</h3>
           )}
@@ -104,51 +119,48 @@ const TennesseeCountiesMap: React.FC<TennesseeCountiesMapProps> = ({
           )}
         </div>
       )}
-      
-      {/* Selected county info */}
-      {selectedCounty && (
-        <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
-          <h4 className="font-semibold text-foreground">{countyNames[selectedCounty] || selectedCounty}</h4>
-          <p className="text-sm text-muted-foreground">Click another county to select it, or click again to deselect.</p>
-        </div>
-      )}
 
-      <div className="flex items-center justify-center overflow-x-auto">
+      <div className="flex items-center justify-center overflow-x-auto pb-2">
         <div
           className="grid gap-0.5"
           style={{ gridTemplateColumns: "repeat(19, 1fr)" }}
         >
-          {countiesGrid.flat().map((county, i) => (
-            <div
-              key={i}
-              className={`w-6 h-6 md:w-8 md:h-8 rounded-sm flex items-center justify-center text-[6px] md:text-[7px] font-medium transition-all duration-200 ${
-                county
-                  ? "hover:scale-110 hover:shadow-lg cursor-pointer"
-                  : "bg-transparent"
-              } ${selectedCounty === county ? "ring-2 ring-primary ring-offset-1 ring-offset-background" : ""}`}
-              style={{
-                backgroundColor: getCountyColor(county, hoveredCounty === county, selectedCounty === county),
-                color: county ? "hsl(30 30% 15%)" : "transparent",
-              }}
-              title={county ? countyNames[county] || county : undefined}
-              onClick={() => handleCountyClick(county)}
-              onMouseEnter={() => county && setHoveredCounty(county)}
-              onMouseLeave={() => setHoveredCounty(null)}
-            >
-              {getAbbreviation(county)}
-            </div>
-          ))}
+          {countiesGrid.flat().map((county, i) => {
+            const isHovered = hoveredCounty === county;
+            return (
+              <div
+                key={i}
+                className={`w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-md flex items-center justify-center text-[6px] sm:text-[7px] md:text-[8px] font-semibold transition-all duration-200 ease-out ${
+                  county
+                    ? "hover:scale-110 hover:-translate-y-0.5 cursor-pointer"
+                    : "bg-transparent"
+                }`}
+                style={{
+                  backgroundColor: getCountyColor(county, isHovered),
+                  color: county ? "hsl(28 40% 20%)" : "transparent",
+                  boxShadow: isHovered && county ? "0 3px 10px hsl(28 50% 50% / 0.3)" : "none",
+                }}
+                title={county ? `${countyNames[county] || county} - Click for DUI guide` : undefined}
+                onClick={() => handleCountyClick(county)}
+                onMouseEnter={() => county && setHoveredCounty(county)}
+                onMouseLeave={() => setHoveredCounty(null)}
+              >
+                {getAbbreviation(county)}
+              </div>
+            );
+          })}
         </div>
       </div>
 
       {/* Hovered county tooltip */}
-      {hoveredCounty && !selectedCounty && (
-        <div className="mt-4 text-center">
-          <span className="text-sm text-muted-foreground">
-            County: <span className="font-medium text-foreground">{countyNames[hoveredCounty]}</span>
+      <div className="mt-3 text-center h-5">
+        {hoveredCounty && (
+          <span className="text-sm">
+            <span className="font-medium text-foreground">{countyNames[hoveredCounty]}</span>
+            <span className="text-primary font-medium ml-2">→ View guide</span>
           </span>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

@@ -26,7 +26,7 @@ const TestimonialCard = ({
         className
       )}>
         <blockquote className="font-heading text-lg font-normal text-foreground leading-relaxed mb-4">
-          "{quote}"
+          &ldquo;{quote}&rdquo;
         </blockquote>
         <div className="flex items-center gap-3">
           {avatar && (
@@ -49,7 +49,7 @@ const TestimonialCard = ({
     <div className={cn("text-center", className)}>
       <p className="text-sm text-muted-foreground mb-4">{company}</p>
       <blockquote className="font-heading text-xl md:text-2xl font-normal text-foreground leading-relaxed mb-6">
-        "{quote}"
+        &ldquo;{quote}&rdquo;
       </blockquote>
       <p className="font-medium text-foreground">{author}</p>
       <p className="text-sm text-muted-foreground">{title}</p>

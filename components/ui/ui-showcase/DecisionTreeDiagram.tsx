@@ -26,10 +26,6 @@ const DecisionTreeDiagram = ({ nodes, rootId, className }: DecisionTreeDiagramPr
     return map;
   }, [nodes]);
 
-  const getNodeDepth = (nodeId: string): number => {
-    return selectedPath.indexOf(nodeId);
-  };
-
   const isNodeInPath = (nodeId: string): boolean => {
     return selectedPath.includes(nodeId);
   };
@@ -62,7 +58,7 @@ const DecisionTreeDiagram = ({ nodes, rootId, className }: DecisionTreeDiagramPr
     setSelectedPath([rootId]);
   };
 
-  const renderNode = (nodeId: string, parentId?: string, depth: number = 0, siblingIndex: number = 0, totalSiblings: number = 1) => {
+  const renderNode = (nodeId: string, parentId?: string, depth: number = 0, _siblingIndex: number = 0, _totalSiblings: number = 1) => {
     const node = nodeMap.get(nodeId);
     if (!node) return null;
 
