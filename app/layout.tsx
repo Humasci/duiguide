@@ -6,8 +6,8 @@ import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: {
-    default: "DUI Guide - What to Do After a DUI Arrest",
-    template: "%s | DUI Guide",
+    default: "DUI Arrested - DUI DWI Survival Guide",
+    template: "%s | DUI Arrested",
   },
   description:
     "Arrested for DUI? Learn your rights, understand critical deadlines, and connect with local DUI attorneys. Free consultations available 24/7.",
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: process.env.NEXT_PUBLIC_SITE_URL,
-    siteName: "DUI Guide",
-    title: "DUI Guide - What to Do After a DUI Arrest",
+    siteName: "DUI Arrested",
+    title: "DUI Arrested - DUI DWI Survival Guide",
     description:
       "Arrested for DUI? Learn your rights, understand critical deadlines, and connect with local DUI attorneys.",
   },

@@ -5,19 +5,6 @@ import Timeline from '@/components/ui/ui-showcase/Timeline';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import {
-  AlertTriangle,
-  Scale,
-  Car,
-  Shield,
-  Clock,
-  MapPin,
-  ChevronRight,
-  Phone,
-  ArrowRight,
-  FileText,
-  Calendar
-} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 async function getStateData() {
@@ -91,7 +78,6 @@ export default async function TexasPage() {
                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full px-5 py-5 shadow-lg hover:shadow-xl transition-all"
                 >
                   <Link href="/texas/dmv-hearing">
-                    <Clock className="h-4 w-4" />
                     Request ALR Hearing
                   </Link>
                 </Button>
@@ -101,7 +87,6 @@ export default async function TexasPage() {
                   className="rounded-full px-5 py-5 border-2 hover:bg-muted/50"
                 >
                   <Link href="/find-attorney/texas">
-                    <Phone className="h-4 w-4" />
                     Talk to Attorney
                   </Link>
                 </Button>
@@ -113,10 +98,7 @@ export default async function TexasPage() {
               {/* Left - County Links Grid */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <MapPin className="w-4 h-4 stroke-[1.5]" />
-                    <span>Select your county</span>
-                  </div>
+                  <span className="text-sm text-muted-foreground">Select your county</span>
                   <span className="text-xs text-muted-foreground">{counties.length} counties</span>
                 </div>
 
@@ -166,10 +148,7 @@ export default async function TexasPage() {
               <div className="hidden lg:block">
                 <div className="bg-background/80 backdrop-blur-sm rounded-2xl p-4 border border-border/50 shadow-sm">
                   <div className="text-center mb-2">
-                    <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <MapPin className="w-3.5 h-3.5 stroke-[1.5]" />
-                      <span>Or click the map</span>
-                    </div>
+                    <span className="text-xs text-muted-foreground">Or click the map</span>
                   </div>
                   <TexasCountiesMap />
                 </div>
@@ -179,18 +158,13 @@ export default async function TexasPage() {
         </div>
       </div>
 
-      {/* Critical Alert Banner - Refined */}
+      {/* Critical Alert Banner */}
       <div className="py-4 bg-gradient-to-r from-destructive/10 via-destructive/5 to-destructive/10 border-b border-destructive/10">
         <div className="container max-w-7xl">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-destructive/15 rounded-xl">
-                <AlertTriangle className="h-4 w-4 text-destructive stroke-[2]" />
-              </div>
-              <p className="text-sm font-medium text-foreground">
-                Request {state.admin_hearing_term || 'DMV Hearing'} within <span className="text-destructive font-semibold">{state.dmv_deadline_days || 15} days</span> or face automatic suspension
-              </p>
-            </div>
+            <p className="text-sm font-medium text-foreground">
+              Request {state.admin_hearing_term || 'DMV Hearing'} within <span className="text-destructive font-semibold">{state.dmv_deadline_days || 15} days</span> or face automatic suspension
+            </p>
             <Button
               asChild
               size="sm"
@@ -199,7 +173,6 @@ export default async function TexasPage() {
             >
               <Link href="/texas/dmv-hearing">
                 Learn more
-                <ArrowRight className="h-3.5 w-3.5 ml-1" />
               </Link>
             </Button>
           </div>
@@ -227,7 +200,6 @@ export default async function TexasPage() {
                   id: "alr-hearing",
                   title: "Request ALR Hearing",
                   description: "File a request for an Administrative License Revocation hearing to prevent automatic license suspension.",
-                  icon: <Clock />,
                   urgency: "critical",
                   deadline: `${state.dmv_deadline_days || 15} days from arrest`,
                   href: "/texas/dmv-hearing",
@@ -236,7 +208,6 @@ export default async function TexasPage() {
                   id: "attorney",
                   title: "Consult with DWI Attorney",
                   description: "Schedule a free consultation with an experienced attorney to understand your options.",
-                  icon: <Scale />,
                   urgency: "high",
                   deadline: "Within 48-72 hours",
                   href: "/find-attorney/texas",
@@ -245,7 +216,6 @@ export default async function TexasPage() {
                   id: "impound",
                   title: "Retrieve Your Vehicle",
                   description: "Get your car from impound to avoid daily storage fees that add up quickly.",
-                  icon: <Car />,
                   urgency: "high",
                   deadline: "Within 2-3 days",
                 },
@@ -253,7 +223,6 @@ export default async function TexasPage() {
                   id: "documents",
                   title: "Gather Documentation",
                   description: "Collect arrest report, citation, license, insurance, and witness information.",
-                  icon: <FileText />,
                   urgency: "medium",
                   deadline: "Before attorney meeting",
                 },
@@ -261,7 +230,6 @@ export default async function TexasPage() {
                   id: "court",
                   title: "Prepare for Arraignment",
                   description: "Your first court appearance. Attend on time with your attorney if possible.",
-                  icon: <Calendar />,
                   urgency: "medium",
                   deadline: "Check your citation",
                 },
@@ -276,65 +244,37 @@ export default async function TexasPage() {
               <div className="space-y-3">
                 <Link href="/texas/dmv-hearing">
                   <Card className="p-4 hover:border-destructive/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl border-destructive/20 bg-destructive/5">
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 bg-destructive/15 rounded-lg">
-                        <Clock className="h-5 w-5 text-destructive stroke-[1.5]" />
-                      </div>
-                      <div>
-                        <h4 className="font-heading text-sm font-medium text-foreground mb-0.5">ALR Hearing Guide</h4>
-                        <p className="text-xs text-muted-foreground">
-                          {state.dmv_deadline_days || 15}-day deadline • Step-by-step process
-                        </p>
-                      </div>
-                    </div>
+                    <h4 className="font-heading text-sm font-medium text-foreground mb-0.5">ALR Hearing Guide</h4>
+                    <p className="text-xs text-muted-foreground">
+                      {state.dmv_deadline_days || 15}-day deadline
+                    </p>
                   </Card>
                 </Link>
 
                 <Link href="/find-attorney/texas">
                   <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl">
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 bg-primary/10 rounded-lg">
-                        <Phone className="h-5 w-5 text-primary stroke-[1.5]" />
-                      </div>
-                      <div>
-                        <h4 className="font-heading text-sm font-medium text-foreground mb-0.5">Find a DWI Attorney</h4>
-                        <p className="text-xs text-muted-foreground">
-                          Free consultations • 24/7 available
-                        </p>
-                      </div>
-                    </div>
+                    <h4 className="font-heading text-sm font-medium text-foreground mb-0.5">Find a DWI Attorney</h4>
+                    <p className="text-xs text-muted-foreground">
+                      Free consultations available
+                    </p>
                   </Card>
                 </Link>
 
                 <Link href="/guide/after-arrest">
                   <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl">
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 bg-primary/10 rounded-lg">
-                        <Car className="h-5 w-5 text-primary stroke-[1.5]" />
-                      </div>
-                      <div>
-                        <h4 className="font-heading text-sm font-medium text-foreground mb-0.5">Get Your Car Back</h4>
-                        <p className="text-xs text-muted-foreground">
-                          Impound locations • Daily fees
-                        </p>
-                      </div>
-                    </div>
+                    <h4 className="font-heading text-sm font-medium text-foreground mb-0.5">Get Your Car Back</h4>
+                    <p className="text-xs text-muted-foreground">
+                      Impound info and fees
+                    </p>
                   </Card>
                 </Link>
 
                 <Link href="/guide/scram-bracelet">
                   <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl">
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 bg-primary/10 rounded-lg">
-                        <Shield className="h-5 w-5 text-primary stroke-[1.5]" />
-                      </div>
-                      <div>
-                        <h4 className="font-heading text-sm font-medium text-foreground mb-0.5">SCRAM Monitoring</h4>
-                        <p className="text-xs text-muted-foreground">
-                          Requirements • Local providers
-                        </p>
-                      </div>
-                    </div>
+                    <h4 className="font-heading text-sm font-medium text-foreground mb-0.5">SCRAM Monitoring</h4>
+                    <p className="text-xs text-muted-foreground">
+                      Requirements and providers
+                    </p>
                   </Card>
                 </Link>
               </div>
@@ -347,62 +287,64 @@ export default async function TexasPage() {
           <PenaltyMatrix state={state} />
         </section>
 
-        {/* Major Counties */}
+        {/* Major Counties + Map Section */}
         <section>
-          <div className="flex items-center justify-between mb-8">
+          <div className="grid lg:grid-cols-[1fr,auto] gap-8 items-start">
+            {/* Left - Major Counties */}
             <div>
-              <h2 className="font-heading text-3xl font-normal text-foreground mb-2">Major Counties</h2>
-              <p className="text-muted-foreground">
-                County-specific courts, impound lots, bail, and local procedures
-              </p>
-            </div>
-            <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-              <MapPin className="h-4 w-4 stroke-[1.5]" />
-              {counties.length} counties
-            </div>
-          </div>
+              <div className="mb-6">
+                <h2 className="font-heading text-2xl md:text-3xl font-normal text-foreground mb-2">Major Counties</h2>
+                <p className="text-muted-foreground">
+                  County-specific courts, impound lots, bail, and local procedures
+                </p>
+              </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-            {priorityCounties.map((county) => (
-              <Link key={county.id} href={`/texas/${county.slug}`}>
-                <Card className="p-5 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-2xl group h-full">
-                  <h4 className="font-heading text-base font-normal text-foreground mb-1 group-hover:text-primary transition-colors">
-                    {county.name}
-                  </h4>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    {county.impound_daily_fee && `Impound: $${county.impound_daily_fee}/day`}
-                    {!county.impound_daily_fee && 'View county info'}
-                  </p>
-                  <div className="flex items-center text-primary text-sm font-medium">
-                    View Guide
-                    <ChevronRight className="h-4 w-4 ml-1 stroke-[1.5]" />
+              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 mb-6">
+                {priorityCounties.map((county) => (
+                  <Link key={county.id} href={`/texas/${county.slug}`}>
+                    <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl group h-full">
+                      <h4 className="font-heading text-base font-normal text-foreground mb-1 group-hover:text-primary transition-colors">
+                        {county.name}
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {county.impound_daily_fee && `Impound: $${county.impound_daily_fee}/day`}
+                        {!county.impound_daily_fee && 'View county info'}
+                      </p>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+
+              {/* All Other Counties */}
+              {counties.length > 10 && (
+                <div className="bg-muted/30 rounded-xl p-4">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">All {counties.length} Counties</p>
+                  <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+                    {counties.slice(10).map((county) => (
+                      <Link
+                        key={county.id}
+                        href={`/texas/${county.slug}`}
+                        className="text-sm text-muted-foreground hover:text-primary transition-colors py-1 truncate"
+                        title={county.name}
+                      >
+                        {county.name}
+                      </Link>
+                    ))}
                   </div>
-                </Card>
-              </Link>
-            ))}
-          </div>
-
-          {counties.length > 10 && (
-            <div className="mt-8">
-              <details className="group">
-                <summary className="cursor-pointer text-primary font-medium hover:text-primary/80 transition-colors flex items-center gap-2">
-                  <ChevronRight className="h-4 w-4 group-open:rotate-90 transition-transform" />
-                  View all {counties.length} counties in {state.name}
-                </summary>
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 mt-6 pt-6 border-t border-border">
-                  {counties.slice(10).map((county) => (
-                    <Link
-                      key={county.id}
-                      href={`/texas/${county.slug}`}
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors py-1"
-                    >
-                      {county.name}
-                    </Link>
-                  ))}
                 </div>
-              </details>
+              )}
             </div>
-          )}
+
+            {/* Right - County Map (Desktop Only) */}
+            <div className="hidden lg:block">
+              <div className="bg-background rounded-2xl p-4 border border-border/50 shadow-sm sticky top-24">
+                <div className="text-center mb-3">
+                  <p className="text-xs text-muted-foreground">Click a county on the map</p>
+                </div>
+                <TexasCountiesMap />
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* State-Specific Information */}
@@ -442,19 +384,10 @@ export default async function TexasPage() {
 
                 <div>
                   <h3 className="font-heading text-xl font-normal text-foreground mb-3">Time-Sensitive Deadlines</h3>
-                  <ul className="text-muted-foreground space-y-2 leading-relaxed">
-                    <li className="flex items-start gap-2">
-                      <Clock className="h-4 w-4 text-destructive mt-1 flex-shrink-0" />
-                      <span><strong>{state.dmv_deadline_days || 15} days</strong> to request {state.admin_hearing_term || 'ALR hearing'}</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Clock className="h-4 w-4 text-muted-foreground mt-1 flex-shrink-0" />
-                      <span>Vehicle impound fees accrue daily</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Clock className="h-4 w-4 text-muted-foreground mt-1 flex-shrink-0" />
-                      <span>Court arraignment typically within 2-4 weeks</span>
-                    </li>
+                  <ul className="text-muted-foreground space-y-2 leading-relaxed list-disc list-inside">
+                    <li><strong>{state.dmv_deadline_days || 15} days</strong> to request {state.admin_hearing_term || 'ALR hearing'}</li>
+                    <li>Vehicle impound fees accrue daily</li>
+                    <li>Court arraignment typically within 2-4 weeks</li>
                   </ul>
                 </div>
               </div>
@@ -478,7 +411,6 @@ export default async function TexasPage() {
                 className="bg-background text-foreground hover:bg-background/90 rounded-full px-8 py-6 text-base font-medium"
               >
                 <Link href="/find-attorney/texas">
-                  <Phone className="h-4 w-4" />
                   Get Free Consultation
                 </Link>
               </Button>
@@ -488,7 +420,7 @@ export default async function TexasPage() {
                 className="text-background hover:bg-background/10 border-2 border-background/20 rounded-full px-8 py-6 text-base font-medium"
               >
                 <Link href="/guide">
-                  Learn More <ChevronRight className="h-4 w-4 ml-1" />
+                  Learn More
                 </Link>
               </Button>
             </div>

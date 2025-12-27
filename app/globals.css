@@ -24,7 +24,7 @@
     --secondary-foreground: 30 10% 15%;
 
     --muted: 35 15% 90%;
-    --muted-foreground: 30 10% 45%;
+    --muted-foreground: 30 10% 35%;
 
     --accent: 35 20% 93%;
     --accent-foreground: 30 10% 15%;
@@ -88,6 +88,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--body-font);
+    font-size: 1.0625rem; /* 17px - 4px larger than default 13px */
+    line-height: 1.65;
   }
 
   h1, h2, h3, h4, h5, h6 {

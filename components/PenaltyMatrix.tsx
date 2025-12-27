@@ -12,15 +12,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  Scale,
-  Clock,
-  DollarSign,
-  Ban,
-  Key,
-  AlertTriangle,
-  FileText
-} from 'lucide-react';
 
 interface PenaltyData {
   jail_time?: string;
@@ -50,43 +41,36 @@ const PENALTY_ROWS = [
   {
     key: 'jail_time',
     label: 'Jail Time',
-    icon: Clock,
     description: 'Potential incarceration period'
   },
   {
     key: 'fines',
     label: 'Fines',
-    icon: DollarSign,
     description: 'Monetary penalties'
   },
   {
     key: 'license_suspension',
     label: 'License Suspension',
-    icon: Ban,
     description: 'Driver\'s license suspension period'
   },
   {
     key: 'iid_required',
     label: 'Ignition Interlock (IID)',
-    icon: Key,
     description: 'Mandatory ignition interlock device'
   },
   {
     key: 'probation',
     label: 'Probation',
-    icon: FileText,
     description: 'Supervised probation period'
   },
   {
     key: 'community_service',
     label: 'Community Service',
-    icon: AlertTriangle,
     description: 'Required community service hours'
   },
   {
     key: 'alcohol_education',
     label: 'Alcohol Education',
-    icon: FileText,
     description: 'Mandatory education programs'
   },
 ];
@@ -124,25 +108,20 @@ export default function PenaltyMatrix({ state, className = '' }: PenaltyMatrixPr
     const currentData = getPenaltyData(activeOffense);
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-3">
         {PENALTY_ROWS.map((row) => {
           const value = currentData[row.key];
           if (!value) return null;
 
-          const Icon = row.icon;
-
           return (
-            <div key={row.key} className="bg-background border border-border rounded-2xl p-6 hover:bg-teal-50 hover:border-teal-300 transition-all duration-300">
-              <div className="flex items-start gap-4">
-                <div className="mt-1">
-                  <Icon className="h-6 w-6 text-primary stroke-[1.5]" />
+            <div key={row.key} className="bg-background border border-border rounded-xl p-4 hover:border-primary/30 transition-all duration-300">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-heading text-base font-normal text-foreground">{row.label}</div>
+                  <div className="text-xs text-muted-foreground">{row.description}</div>
                 </div>
-                <div className="flex-1">
-                  <div className="font-heading text-lg font-normal text-foreground mb-2">{row.label}</div>
-                  <div className="text-sm text-muted-foreground mb-3 leading-relaxed">{row.description}</div>
-                  <div className="text-base text-foreground font-medium bg-blue-50/80 px-4 py-3 rounded-xl border border-blue-200">
-                    {value}
-                  </div>
+                <div className="text-base text-foreground font-medium">
+                  {value}
                 </div>
               </div>
             </div>
@@ -156,49 +135,41 @@ export default function PenaltyMatrix({ state, className = '' }: PenaltyMatrixPr
     const penalties = getAllPenalties();
 
     return (
-      <div className="rounded-2xl border-2 border-border overflow-hidden">
+      <div className="rounded-xl border border-border overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted/50 border-b-2 hover:bg-muted/50">
-              <TableHead className="font-heading text-base font-normal text-foreground p-6">Penalty Type</TableHead>
-              <TableHead className="font-heading text-base font-normal text-foreground text-center p-6 bg-blue-50/80">1st Offense</TableHead>
-              <TableHead className="font-heading text-base font-normal text-foreground text-center p-6 bg-yellow-50/80">2nd Offense</TableHead>
-              <TableHead className="font-heading text-base font-normal text-foreground text-center p-6 bg-green-50/80">3rd Offense</TableHead>
+            <TableRow className="bg-muted/50 border-b hover:bg-muted/50">
+              <TableHead className="font-heading text-sm font-medium text-foreground p-4">Penalty Type</TableHead>
+              <TableHead className="font-heading text-sm font-medium text-foreground text-center p-4">1st Offense</TableHead>
+              <TableHead className="font-heading text-sm font-medium text-foreground text-center p-4">2nd Offense</TableHead>
+              <TableHead className="font-heading text-sm font-medium text-foreground text-center p-4">3rd Offense</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {PENALTY_ROWS.map((row, index) => {
+            {PENALTY_ROWS.map((row) => {
               const hasAnyData = penalties['1st'][row.key] || penalties['2nd'][row.key] || penalties['3rd'][row.key];
               if (!hasAnyData) return null;
-
-              const Icon = row.icon;
 
               return (
                 <TableRow
                   key={row.key}
-                  className="border-b hover:bg-teal-50 transition-colors duration-300"
+                  className="border-b hover:bg-primary/5 transition-colors duration-200"
                 >
-                  <TableCell className="p-6">
-                    <div className="flex items-center gap-4">
-                      <Icon className="h-6 w-6 text-primary flex-shrink-0 stroke-[1.5]" />
-                      <div>
-                        <div className="font-heading text-base font-normal text-foreground">{row.label}</div>
-                        <div className="text-sm text-muted-foreground leading-relaxed">{row.description}</div>
-                      </div>
-                    </div>
+                  <TableCell className="p-4">
+                    <div className="font-medium text-foreground">{row.label}</div>
                   </TableCell>
-                  <TableCell className="p-6 text-center bg-blue-50/50">
-                    <span className="text-foreground font-medium">
+                  <TableCell className="p-4 text-center">
+                    <span className="text-foreground">
                       {penalties['1st'][row.key] || '—'}
                     </span>
                   </TableCell>
-                  <TableCell className="p-6 text-center bg-yellow-50/50">
-                    <span className="text-foreground font-medium">
+                  <TableCell className="p-4 text-center">
+                    <span className="text-foreground">
                       {penalties['2nd'][row.key] || '—'}
                     </span>
                   </TableCell>
-                  <TableCell className="p-6 text-center bg-green-50/50">
-                    <span className="text-foreground font-medium">
+                  <TableCell className="p-4 text-center">
+                    <span className="text-foreground">
                       {penalties['3rd'][row.key] || '—'}
                     </span>
                   </TableCell>
@@ -213,17 +184,15 @@ export default function PenaltyMatrix({ state, className = '' }: PenaltyMatrixPr
 
   return (
     <div className={`w-full ${className}`}>
-      <Card className="p-8 md:p-12 rounded-2xl">
-        <div className="space-y-8">
+      <Card className="p-6 md:p-10 rounded-2xl">
+        <div className="space-y-6">
           {/* Header */}
           <div>
-            <h2 className="font-heading text-3xl md:text-4xl font-normal text-foreground mb-3 flex items-center gap-3">
-              <Scale className="h-8 w-8 text-primary stroke-[1.5]" />
+            <h2 className="font-heading text-2xl md:text-3xl font-normal text-foreground mb-2">
               {state.legal_term} Penalties in {state.name}
             </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Understand the potential consequences for {state.legal_term} offenses in {state.name}.
-              Penalties increase significantly with each subsequent offense.
+            <p className="text-muted-foreground leading-relaxed">
+              Potential consequences for {state.legal_term} offenses. Penalties increase with each subsequent offense.
             </p>
           </div>
 
@@ -269,31 +238,13 @@ export default function PenaltyMatrix({ state, className = '' }: PenaltyMatrixPr
           </div>
 
           {/* Important Notice */}
-          <Alert className="border-2 rounded-2xl bg-yellow-50/80 border-yellow-300">
-            <AlertTriangle className="h-6 w-6 text-yellow-600 stroke-[1.5]" />
-            <AlertDescription className="ml-7">
-              <p className="font-bold text-foreground mb-2">Important Legal Notice</p>
-              <p className="text-muted-foreground leading-relaxed">
-                These are general penalty ranges. Actual penalties can vary based on aggravating factors
-                (high BAC, accident, injury, minor in vehicle, etc.). An experienced {state.legal_term} attorney
-                can help minimize penalties and explore alternatives like diversion programs.
-              </p>
-            </AlertDescription>
-          </Alert>
-
-          {/* Escalation Warning */}
-          {(hasData('2nd') || hasData('3rd')) && (
-            <Alert className="border-2 rounded-2xl bg-green-50/80 border-green-300">
-              <AlertTriangle className="h-6 w-6 text-green-600 stroke-[1.5]" />
-              <AlertDescription className="ml-7">
-                <p className="font-bold text-foreground mb-2">Escalating Consequences</p>
-                <p className="text-muted-foreground leading-relaxed">
-                  Second and third {state.legal_term} offenses carry significantly harsher penalties,
-                  including mandatory jail time in most cases. Multiple offenses may result in felony charges.
-                </p>
-              </AlertDescription>
-            </Alert>
-          )}
+          <div className="text-sm text-muted-foreground bg-muted/50 rounded-lg p-4 border border-border">
+            <p className="font-medium text-foreground mb-1">Note</p>
+            <p>
+              These are general penalty ranges. Actual penalties vary based on aggravating factors.
+              An experienced {state.legal_term} attorney can help minimize penalties.
+            </p>
+          </div>
         </div>
       </Card>
     </div>

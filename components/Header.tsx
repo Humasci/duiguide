@@ -1,4 +1,4 @@
-import { ChevronDown, Scale, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -12,7 +12,7 @@ const Header = ({ pageType = "home" }: HeaderProps) => {
       case "state":
         return { label: "State Guide", showExplore: true };
       case "guide":
-        return { label: "DUI Guide", showExplore: true };
+        return { label: "Survival Guide", showExplore: true };
       default:
         return { label: "DUI Legal Help", showExplore: true };
     }
@@ -24,9 +24,13 @@ const Header = ({ pageType = "home" }: HeaderProps) => {
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <Scale className="h-6 w-6 text-primary" />
-          <span className="font-heading text-xl font-normal text-foreground">DUI Guide</span>
+        <Link href="/" className="flex flex-col">
+          <span className="font-heading text-xl font-semibold text-foreground leading-tight">
+            DUI Arrested
+          </span>
+          <span className="text-[10px] text-muted-foreground font-medium tracking-wide uppercase">
+            DUI DWI Survival Guide
+          </span>
         </Link>
 
         {/* Navigation */}
