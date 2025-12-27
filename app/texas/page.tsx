@@ -14,8 +14,7 @@ import {
   MapPin,
   ChevronRight,
   Phone,
-  ArrowRight,
-  Search
+  ArrowRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -109,42 +108,54 @@ export default async function TexasPage() {
 
             {/* County Selector + Map Grid */}
             <div className="grid lg:grid-cols-[1fr,auto] gap-6 items-start">
-              {/* Left - County Quick Select */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <MapPin className="w-4 h-4 stroke-[1.5]" />
-                  <span>Find your county for local courts, impound lots & procedures</span>
+              {/* Left - County Links Grid */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <MapPin className="w-4 h-4 stroke-[1.5]" />
+                    <span>Select your county</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground">{counties.length} counties</span>
                 </div>
 
-                {/* County Search/Select - Mobile Friendly */}
+                {/* County Links Grid */}
                 <div className="bg-background/80 backdrop-blur-sm rounded-xl border border-border/50 p-4">
-                  <div className="relative mb-3">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <select className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none cursor-pointer">
-                      <option value="">Select your county...</option>
-                      {counties.map((county) => (
-                        <option key={county.id} value={county.slug}>
-                          {county.name} County
-                        </option>
-                      ))}
-                    </select>
+                  {/* Popular Counties - Highlighted */}
+                  <div className="mb-4">
+                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2 block">Major Counties</span>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+                      {['Harris', 'Dallas', 'Tarrant', 'Bexar', 'Travis', 'Collin', 'El Paso', 'Fort Bend', 'Denton', 'Hidalgo'].map((name) => {
+                        const county = counties.find(c => c.name === name);
+                        return county ? (
+                          <Link
+                            key={county.id}
+                            href={`/texas/${county.slug}`}
+                            className="px-3 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-sm font-medium text-center"
+                          >
+                            {county.name}
+                          </Link>
+                        ) : null;
+                      })}
+                    </div>
                   </div>
 
-                  {/* Popular Counties Quick Links */}
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs text-muted-foreground">Popular:</span>
-                    {['Harris', 'Dallas', 'Tarrant', 'Bexar', 'Travis'].map((name) => {
-                      const county = counties.find(c => c.name === name);
-                      return county ? (
-                        <Link
-                          key={county.id}
-                          href={`/texas/${county.slug}`}
-                          className="text-xs px-2.5 py-1 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium"
-                        >
-                          {county.name}
-                        </Link>
-                      ) : null;
-                    })}
+                  {/* All Counties - Scrollable Grid */}
+                  <div>
+                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2 block">All Counties</span>
+                    <div className="max-h-48 overflow-y-auto pr-2 scrollbar-thin">
+                      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-1.5">
+                        {counties.map((county) => (
+                          <Link
+                            key={county.id}
+                            href={`/texas/${county.slug}`}
+                            className="px-2 py-1.5 rounded-md text-xs text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors truncate"
+                            title={county.name}
+                          >
+                            {county.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -155,7 +166,7 @@ export default async function TexasPage() {
                   <div className="text-center mb-2">
                     <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                       <MapPin className="w-3.5 h-3.5 stroke-[1.5]" />
-                      <span>Click to select county</span>
+                      <span>Or click the map</span>
                     </div>
                   </div>
                   <TexasCountiesMap />
