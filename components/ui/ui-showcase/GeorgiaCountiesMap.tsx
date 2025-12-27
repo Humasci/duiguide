@@ -83,13 +83,15 @@ const countyNames: Record<string, string> = {
   Charlton: "Charlton County", Camden: "Camden County", Glynn: "Glynn County",
 };
 
-// Generate consistent colors for each county
+// Generate consistent colors for each county - using warm primary tones
 const getCountyColor = (county: string, isHovered: boolean) => {
   if (!county) return "transparent";
   const seed = county.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const saturation = isHovered ? 50 : 40 + (seed % 30);
-  const lightness = isHovered ? 50 : 45 + (seed % 15);
-  return `hsl(280 ${saturation}% ${lightness}%)`;
+  // Use warm hues matching theme
+  const hue = 26 + (seed % 14);
+  const saturation = isHovered ? 55 : 35 + (seed % 20);
+  const lightness = isHovered ? 55 : 50 + (seed % 12);
+  return `hsl(${hue} ${saturation}% ${lightness}%)`;
 };
 
 // Get 4-letter abbreviated name for display
@@ -149,35 +151,39 @@ const GeorgiaCountiesMap: React.FC<GeorgiaCountiesMapProps> = ({
           className="grid gap-0.5"
           style={{ gridTemplateColumns: "repeat(8, 1fr)" }}
         >
-          {countiesGrid.flat().map((county, i) => (
-            <div
-              key={i}
-              className={`w-8 h-8 md:w-10 md:h-10 rounded-sm flex items-center justify-center text-[9px] md:text-[10px] font-medium transition-all duration-200 ${
-                county
-                  ? "hover:scale-110 hover:shadow-lg cursor-pointer"
-                  : "bg-transparent"
-              }`}
-              style={{
-                backgroundColor: getCountyColor(county, hoveredCounty === county),
-                color: county ? "hsl(280 30% 15%)" : "transparent",
-              }}
-              title={county ? `${countyNames[county] || county} - Click for DUI guide` : undefined}
-              onClick={() => handleCountyClick(county)}
-              onMouseEnter={() => county && setHoveredCounty(county)}
-              onMouseLeave={() => setHoveredCounty(null)}
-            >
-              {getAbbreviation(county)}
-            </div>
-          ))}
+          {countiesGrid.flat().map((county, i) => {
+            const isHovered = hoveredCounty === county;
+            return (
+              <div
+                key={i}
+                className={`w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center text-[9px] md:text-[10px] font-semibold transition-all duration-200 ease-out ${
+                  county
+                    ? "hover:scale-110 hover:-translate-y-0.5 cursor-pointer"
+                    : "bg-transparent"
+                }`}
+                style={{
+                  backgroundColor: getCountyColor(county, isHovered),
+                  color: county ? "hsl(26 40% 20%)" : "transparent",
+                  boxShadow: isHovered && county ? "0 4px 12px hsl(26 50% 50% / 0.3)" : "none",
+                }}
+                title={county ? `${countyNames[county] || county} - Click for DUI guide` : undefined}
+                onClick={() => handleCountyClick(county)}
+                onMouseEnter={() => county && setHoveredCounty(county)}
+                onMouseLeave={() => setHoveredCounty(null)}
+              >
+                {getAbbreviation(county)}
+              </div>
+            );
+          })}
         </div>
       </div>
 
       {/* Hovered county tooltip */}
-      <div className="mt-4 text-center h-6">
+      <div className="mt-3 text-center h-5">
         {hoveredCounty && (
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm">
             <span className="font-medium text-foreground">{countyNames[hoveredCounty]}</span>
-            <span className="text-primary ml-2">→ View DUI guide</span>
+            <span className="text-primary font-medium ml-2">→ View guide</span>
           </span>
         )}
       </div>

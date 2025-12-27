@@ -99,22 +99,24 @@ const USStatesMap: React.FC<USStatesMapProps> = ({
     const prioritized = isPrioritized(state);
 
     if (prioritized) {
-      // Prioritized states use primary color scheme
+      // Prioritized states use primary color scheme with enhanced styling
       return {
         backgroundColor: isHovered
           ? "hsl(var(--primary))"
-          : "hsl(var(--primary) / 0.8)",
+          : "hsl(var(--primary) / 0.85)",
         color: "hsl(var(--primary-foreground))",
+        boxShadow: isHovered ? "0 4px 12px hsl(var(--primary) / 0.3)" : "none",
       };
     } else {
       // Non-prioritized states are muted
       return {
         backgroundColor: isHovered
-          ? "hsl(var(--muted-foreground) / 0.3)"
-          : "hsl(var(--muted) / 0.8)",
+          ? "hsl(var(--muted-foreground) / 0.25)"
+          : "hsl(var(--muted) / 0.6)",
         color: isHovered
           ? "hsl(var(--foreground))"
-          : "hsl(var(--muted-foreground))",
+          : "hsl(var(--muted-foreground) / 0.7)",
+        boxShadow: "none",
       };
     }
   };
@@ -161,12 +163,12 @@ const USStatesMap: React.FC<USStatesMapProps> = ({
                 key={i}
                 className={`
                   w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10
-                  rounded-md flex items-center justify-center
-                  text-[10px] sm:text-xs font-medium
-                  transition-all duration-200
+                  rounded-lg flex items-center justify-center
+                  text-[10px] sm:text-xs font-semibold
+                  transition-all duration-200 ease-out
                   ${state ? "cursor-pointer" : ""}
-                  ${state && prioritized ? "hover:scale-110 hover:shadow-lg" : ""}
-                  ${state && !prioritized ? "hover:scale-105 opacity-60 hover:opacity-80" : ""}
+                  ${state && prioritized ? "hover:scale-110 hover:-translate-y-0.5" : ""}
+                  ${state && !prioritized ? "hover:scale-105" : ""}
                 `}
                 style={styles}
                 title={state ? `${stateData[state]?.name || state}${prioritized ? " - Click to view DUI info" : " - Coming soon"}` : undefined}
@@ -182,18 +184,18 @@ const USStatesMap: React.FC<USStatesMapProps> = ({
       </div>
 
       {/* Hovered state tooltip */}
-      <div className="mt-4 text-center h-6">
+      <div className="mt-3 text-center h-5">
         {hoveredState && (
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm">
             {isPrioritized(hoveredState) ? (
               <>
                 <span className="font-medium text-foreground">{stateData[hoveredState]?.name}</span>
-                <span className="text-primary ml-2">→ View DUI guide</span>
+                <span className="text-primary font-medium ml-2">→ View guide</span>
               </>
             ) : (
               <>
-                <span className="font-medium text-foreground">{stateData[hoveredState]?.name}</span>
-                <span className="ml-2">— Coming soon</span>
+                <span className="text-muted-foreground">{stateData[hoveredState]?.name}</span>
+                <span className="text-muted-foreground/70 ml-1.5 text-xs">• Coming soon</span>
               </>
             )}
           </span>

@@ -12,7 +12,8 @@ import {
   Clock,
   MapPin,
   ChevronRight,
-  Phone
+  Phone,
+  ArrowRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -55,89 +56,94 @@ export default async function TexasPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section - 2 Column Layout for Vertical State */}
-      <div className="bg-card border-b border-border">
-        <div className="container max-w-7xl py-6 md:py-8">
-          <div className="grid lg:grid-cols-[1fr,auto] gap-6 lg:gap-8 items-center">
-            {/* Left Column - Content */}
-            <div>
-              {/* Urgency Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-destructive/10 text-destructive border border-destructive/20 mb-4">
-                <Clock className="h-3.5 w-3.5 stroke-[1.5]" />
-                {state.dmv_deadline_days || 15}-Day DMV Deadline
-              </div>
+      <div className="relative overflow-hidden">
+        {/* Subtle gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-destructive/5 pointer-events-none" />
 
-              <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-normal mb-4 text-foreground leading-tight">
-                {state.name} {state.legal_term} Guide
-              </h1>
+        <div className="relative bg-card/50 border-b border-border">
+          <div className="container max-w-7xl py-6 md:py-8">
+            <div className="grid lg:grid-cols-[1fr,auto] gap-6 lg:gap-10 items-start">
+              {/* Left Column - Content */}
+              <div className="max-w-xl">
+                {/* Urgency Badge with pulse */}
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-destructive/10 text-destructive border border-destructive/20 mb-4">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-destructive"></span>
+                  </span>
+                  {state.dmv_deadline_days || 15}-Day Deadline
+                </div>
 
-              <p className="text-base text-muted-foreground leading-relaxed mb-6 max-w-lg">
-                Complete guide to {state.legal_term} laws, penalties, and procedures in {state.name}.
-              </p>
+                <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-normal mb-3 text-foreground leading-[1.1] tracking-tight">
+                  {state.name} {state.legal_term} Guide
+                </h1>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-wrap gap-3">
-                <Button
-                  asChild
-                  size="sm"
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full px-6"
-                >
-                  <Link href="/texas/dmv-hearing">
-                    <Clock className="h-4 w-4" />
-                    Request DMV Hearing
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  size="sm"
-                  className="rounded-full px-6"
-                >
-                  <Link href="/find-attorney/texas">
-                    <Phone className="h-4 w-4" />
-                    Talk to Attorney
-                  </Link>
-                </Button>
-              </div>
-            </div>
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-5">
+                  Complete guide to {state.legal_term} laws, penalties, and procedures in {state.name}.
+                </p>
 
-            {/* Right Column - County Map */}
-            <div className="bg-background rounded-2xl p-4 border border-border">
-              <div className="text-center mb-2">
-                <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <MapPin className="w-3.5 h-3.5 stroke-[1.5]" />
-                  <span>Select your county</span>
+                {/* CTA Buttons */}
+                <div className="flex flex-wrap gap-3">
+                  <Button
+                    asChild
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full px-5 py-5 shadow-lg hover:shadow-xl transition-all"
+                  >
+                    <Link href="/texas/dmv-hearing">
+                      <Clock className="h-4 w-4" />
+                      Request DMV Hearing
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="rounded-full px-5 py-5 border-2 hover:bg-muted/50"
+                  >
+                    <Link href="/find-attorney/texas">
+                      <Phone className="h-4 w-4" />
+                      Talk to Attorney
+                    </Link>
+                  </Button>
                 </div>
               </div>
-              <TexasCountiesMap />
+
+              {/* Right Column - County Map */}
+              <div className="lg:flex-shrink-0">
+                <div className="bg-background/80 backdrop-blur-sm rounded-2xl p-4 border border-border/50 shadow-sm">
+                  <div className="text-center mb-2">
+                    <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <MapPin className="w-3.5 h-3.5 stroke-[1.5]" />
+                      <span>Select your county for local info</span>
+                    </div>
+                  </div>
+                  <TexasCountiesMap />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Critical Alert Banner */}
-      <div className="bg-destructive/10 border-b border-destructive/20 py-6">
+      {/* Critical Alert Banner - Refined */}
+      <div className="py-4 bg-gradient-to-r from-destructive/10 via-destructive/5 to-destructive/10 border-b border-destructive/10">
         <div className="container max-w-7xl">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="p-2 bg-destructive/20 rounded-full">
-                <AlertTriangle className="h-5 w-5 text-destructive stroke-[1.5]" />
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-destructive/15 rounded-xl">
+                <AlertTriangle className="h-4 w-4 text-destructive stroke-[2]" />
               </div>
-              <div>
-                <p className="font-heading text-lg font-normal text-foreground">
-                  Request Your {state.admin_hearing_term || 'DMV Hearing'} Within {state.dmv_deadline_days || 15} Days
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Missing this deadline results in automatic license suspension
-                </p>
-              </div>
+              <p className="text-sm font-medium text-foreground">
+                Request {state.admin_hearing_term || 'DMV Hearing'} within <span className="text-destructive font-semibold">{state.dmv_deadline_days || 15} days</span> or face automatic suspension
+              </p>
             </div>
             <Button
               asChild
-              variant="outline"
-              className="border-destructive/30 text-destructive hover:bg-destructive/10 rounded-full whitespace-nowrap"
+              size="sm"
+              variant="ghost"
+              className="text-destructive hover:text-destructive hover:bg-destructive/10 rounded-full px-4 font-medium"
             >
               <Link href="/texas/dmv-hearing">
-                Learn More <ChevronRight className="h-4 w-4 ml-1" />
+                Learn more
+                <ArrowRight className="h-3.5 w-3.5 ml-1" />
               </Link>
             </Button>
           </div>
