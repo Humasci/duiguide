@@ -10,14 +10,18 @@ import {
   Link as LinkIcon,
   LogOut,
   Menu,
-  X
+  X,
+  Upload,
+  DollarSign
 } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { name: 'Upload', href: '/admin/upload', icon: Upload },
   { name: 'Processing Status', href: '/admin/processing', icon: FileText },
+  { name: 'Monetization', href: '/admin/monetization', icon: DollarSign },
   { name: 'Coverage Map', href: '/admin/coverage', icon: MapPin },
   { name: 'Gold Dust Intel', href: '/admin/gold-dust', icon: Sparkles },
   { name: 'County Sources', href: '/admin/sources', icon: LinkIcon },
