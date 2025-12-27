@@ -56,30 +56,30 @@ export default async function TexasPage() {
     <div className="min-h-screen bg-background">
       {/* Hero Section - 2 Column Layout for Vertical State */}
       <div className="bg-card border-b border-border">
-        <div className="container max-w-7xl py-12 md:py-16">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+        <div className="container max-w-7xl py-6 md:py-8">
+          <div className="grid lg:grid-cols-[1fr,auto] gap-6 lg:gap-8 items-center">
             {/* Left Column - Content */}
             <div>
               {/* Urgency Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-destructive/10 text-destructive border border-destructive/20 mb-6">
-                <Clock className="h-4 w-4 stroke-[1.5]" />
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-destructive/10 text-destructive border border-destructive/20 mb-4">
+                <Clock className="h-3.5 w-3.5 stroke-[1.5]" />
                 {state.dmv_deadline_days || 15}-Day DMV Deadline
               </div>
 
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-5xl font-normal mb-6 text-foreground leading-tight">
+              <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-normal mb-4 text-foreground leading-tight">
                 {state.name} {state.legal_term} Guide
               </h1>
 
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+              <p className="text-base text-muted-foreground leading-relaxed mb-6 max-w-lg">
                 Complete guide to {state.legal_term} laws, penalties, and procedures in {state.name}.
-                Know your rights and deadlines after a {state.legal_term} arrest.
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-3">
                 <Button
                   asChild
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full px-8 py-6 text-base font-medium"
+                  size="sm"
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full px-6"
                 >
                   <Link href="/texas/dmv-hearing">
                     <Clock className="h-4 w-4" />
@@ -89,7 +89,8 @@ export default async function TexasPage() {
                 <Button
                   asChild
                   variant="outline"
-                  className="rounded-full px-8 py-6 text-base font-medium border-2"
+                  size="sm"
+                  className="rounded-full px-6"
                 >
                   <Link href="/find-attorney/texas">
                     <Phone className="h-4 w-4" />
@@ -100,15 +101,12 @@ export default async function TexasPage() {
             </div>
 
             {/* Right Column - County Map */}
-            <div className="bg-background rounded-3xl p-6 border border-border">
-              <div className="text-center mb-4">
-                <div className="inline-flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                  <MapPin className="w-4 h-4 stroke-[1.5]" />
+            <div className="bg-background rounded-2xl p-4 border border-border">
+              <div className="text-center mb-2">
+                <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <MapPin className="w-3.5 h-3.5 stroke-[1.5]" />
                   <span>Select your county</span>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Click any county for local DUI information
-                </p>
               </div>
               <TexasCountiesMap />
             </div>
