@@ -106,12 +106,9 @@ export default async function TennesseePage() {
             </div>
 
             {/* Full-Width County Map - Horizontal State Layout */}
-            <div className="bg-background/80 backdrop-blur-sm rounded-2xl p-4 border border-border/50 shadow-sm">
+            <div className="mb-2">
               <div className="text-center mb-2">
-                <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <MapPin className="w-3.5 h-3.5 stroke-[1.5]" />
-                  <span>Select your county for local DUI information</span>
-                </div>
+                <span className="text-xs text-muted-foreground">Select your county for local DUI information</span>
               </div>
               <TennesseeCountiesMap />
             </div>

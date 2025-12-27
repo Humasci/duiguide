@@ -77,16 +77,11 @@ const countyNames: Record<string, string> = {
   Refugio: "Refugio County", Aransas: "Aransas County", "San Patricio": "San Patricio County",
 };
 
-// Generate consistent colors for each county - using primary color scheme
-const getCountyColor = (county: string, isHovered: boolean) => {
-  if (!county) return "transparent";
-  const seed = county.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  // Use primary hue (around 25-35 for warm tones matching the theme)
-  const hue = 25 + (seed % 15);
-  const saturation = isHovered ? 55 : 35 + (seed % 20);
-  const lightness = isHovered ? 55 : 50 + (seed % 12);
-  return `hsl(${hue} ${saturation}% ${lightness}%)`;
-};
+// Priority counties for Texas
+const priorityCounties = ['Harris', 'Dallas', 'Tarrant', 'Bexar', 'Travis', 'Collin', 'Denton', 'Hidalgo', 'Fort Bend', 'El Paso'];
+
+// Check if county is a priority county
+const isPriorityCounty = (county: string) => priorityCounties.includes(county);
 
 // Get 4-letter abbreviated name for display
 const getAbbreviation = (county: string): string => {
@@ -127,6 +122,28 @@ const TexasCountiesMap: React.FC<TexasCountiesMapProps> = ({
     }
   };
 
+  const getTileStyles = (county: string, isHovered: boolean) => {
+    if (!county) return { backgroundColor: "transparent", color: "transparent", border: "none" };
+
+    const isPriority = isPriorityCounty(county);
+
+    if (isPriority) {
+      return {
+        backgroundColor: isHovered ? "hsl(var(--primary))" : "hsl(var(--primary) / 0.85)",
+        color: "hsl(var(--primary-foreground))",
+        border: "1.5px solid hsl(var(--primary))",
+        boxShadow: isHovered ? "0 4px 12px hsl(var(--primary) / 0.3)" : "none",
+      };
+    }
+
+    return {
+      backgroundColor: isHovered ? "hsl(var(--primary) / 0.1)" : "transparent",
+      color: isHovered ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))",
+      border: `1.5px solid hsl(var(--primary) / ${isHovered ? '0.5' : '0.25'})`,
+      boxShadow: isHovered ? "0 2px 8px hsl(var(--primary) / 0.15)" : "none",
+    };
+  };
+
   return (
     <div className={`${className}`}>
       {(title || description) && (
@@ -142,24 +159,21 @@ const TexasCountiesMap: React.FC<TexasCountiesMapProps> = ({
 
       <div className="flex items-center justify-center overflow-x-auto">
         <div
-          className="grid gap-0.5"
+          className="grid gap-1"
           style={{ gridTemplateColumns: "repeat(7, 1fr)" }}
         >
           {countiesGrid.flat().map((county, i) => {
             const isHovered = hoveredCounty === county;
+            const styles = getTileStyles(county, isHovered);
             return (
               <div
                 key={i}
-                className={`w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center text-[9px] md:text-[10px] font-semibold transition-all duration-200 ease-out ${
+                className={`w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center text-[10px] md:text-xs font-bold transition-all duration-200 ease-out ${
                   county
                     ? "hover:scale-110 hover:-translate-y-0.5 cursor-pointer"
-                    : "bg-transparent"
+                    : ""
                 }`}
-                style={{
-                  backgroundColor: getCountyColor(county, isHovered),
-                  color: county ? "hsl(25 40% 20%)" : "transparent",
-                  boxShadow: isHovered && county ? "0 4px 12px hsl(25 50% 50% / 0.3)" : "none",
-                }}
+                style={styles}
                 title={county ? `${countyNames[county] || county} - Click for DWI guide` : undefined}
                 onClick={() => handleCountyClick(county)}
                 onMouseEnter={() => county && setHoveredCounty(county)}
@@ -177,7 +191,7 @@ const TexasCountiesMap: React.FC<TexasCountiesMapProps> = ({
         {hoveredCounty && (
           <span className="text-sm">
             <span className="font-medium text-foreground">{countyNames[hoveredCounty]}</span>
-            <span className="text-primary font-medium ml-2">→ View guide</span>
+            <span className="text-primary font-medium ml-2">View guide</span>
           </span>
         )}
       </div>

@@ -17,7 +17,7 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        heading: ['Libre Baskerville', 'Georgia', 'serif'],
+        heading: ['Merriweather', 'Georgia', 'serif'],
         body: ['Source Sans 3', 'system-ui', 'sans-serif'],
       },
       colors: {

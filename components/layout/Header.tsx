@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { Phone, Menu, X, Scale } from "lucide-react";
+import { Phone, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -19,13 +19,15 @@ export function Header() {
       <div className="container max-w-7xl">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="p-1.5 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-              <Scale className="h-5 w-5 text-primary stroke-[1.5]" />
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="flex flex-col">
+              <span className="font-heading text-xl font-semibold text-foreground leading-tight">
+                DUI Arrested
+              </span>
+              <span className="text-[10px] text-muted-foreground font-medium tracking-wide uppercase">
+                DUI DWI Survival Guide
+              </span>
             </div>
-            <span className="font-heading text-xl font-normal text-foreground">
-              DUI Guide
-            </span>
           </Link>
 
           {/* Desktop Navigation */}

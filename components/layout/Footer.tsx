@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Scale } from "lucide-react";
 import { GENERAL_DISCLAIMER } from "@/lib/constants/disclaimers";
 
 export function Footer() {
@@ -32,9 +31,13 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           {/* Logo */}
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <Scale className="h-6 w-6 text-primary stroke-[1.5]" />
-              <span className="font-heading text-lg font-normal text-foreground">DUI Guide</span>
+            <Link href="/" className="flex flex-col mb-4">
+              <span className="font-heading text-lg font-semibold text-foreground leading-tight">
+                DUI Arrested
+              </span>
+              <span className="text-[10px] text-muted-foreground font-medium tracking-wide uppercase">
+                DUI DWI Survival Guide
+              </span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Helping people understand their rights and connect with local DUI attorneys.
@@ -69,7 +72,7 @@ export function Footer() {
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
-              © {currentYear} DUI Guide. All rights reserved.
+              © {currentYear} DUI Arrested. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
