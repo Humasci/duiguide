@@ -7,6 +7,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 
+// Texas priority counties
+const PRIORITY_COUNTIES = ['Harris', 'Dallas', 'Tarrant', 'Bexar', 'Travis', 'Collin', 'Denton', 'Hidalgo', 'Fort Bend', 'El Paso'];
+
 async function getStateData() {
   const supabase = await createClient();
 
@@ -40,21 +43,25 @@ export default async function TexasPage() {
 
   const { state, counties } = data;
 
-  // Priority counties (top 10)
-  const priorityCounties = counties.slice(0, 10);
+  // Get priority counties from the database that match our list
+  const priorityCounties = PRIORITY_COUNTIES
+    .map(name => counties.find(c => c.name === name))
+    .filter(Boolean);
+
+  // Get remaining counties (excluding priority ones)
+  const otherCounties = counties.filter(c => !PRIORITY_COUNTIES.includes(c.name));
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section - Improved Layout */}
+      {/* Hero Section */}
       <div className="relative overflow-hidden">
-        {/* Subtle gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-destructive/5 pointer-events-none" />
 
         <div className="relative bg-card/50 border-b border-border">
           <div className="container max-w-7xl py-6 md:py-8">
             {/* Main Hero Content */}
-            <div className="max-w-3xl mb-6">
-              {/* Urgency Badge with pulse */}
+            <div className="max-w-3xl mb-8">
+              {/* Urgency Badge */}
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-destructive/10 text-destructive border border-destructive/20 mb-4">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75"></span>
@@ -72,7 +79,7 @@ export default async function TexasPage() {
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-wrap gap-3 mb-6">
+              <div className="flex flex-wrap gap-3">
                 <Button
                   asChild
                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full px-5 py-5 shadow-lg hover:shadow-xl transition-all"
@@ -93,62 +100,57 @@ export default async function TexasPage() {
               </div>
             </div>
 
-            {/* County Selector + Map Grid */}
-            <div className="grid lg:grid-cols-[1fr,auto] gap-6 items-start">
-              {/* Left - County Links Grid */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Select your county</span>
-                  <span className="text-xs text-muted-foreground">{counties.length} counties</span>
+            {/* Major Counties + Map Section - Hero Position */}
+            <div className="grid lg:grid-cols-[1fr,auto] gap-8 items-start">
+              {/* Left - Major Counties */}
+              <div>
+                <div className="mb-4">
+                  <h2 className="font-heading text-xl font-normal text-foreground mb-1">Major Counties</h2>
+                  <p className="text-sm text-muted-foreground">
+                    County-specific courts, impound lots, bail, and local procedures
+                  </p>
                 </div>
 
-                {/* County Links Grid */}
-                <div className="bg-background/80 backdrop-blur-sm rounded-xl border border-border/50 p-4">
-                  {/* Popular Counties - Highlighted */}
-                  <div className="mb-4">
-                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2 block">Major Counties</span>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
-                      {['Harris', 'Dallas', 'Tarrant', 'Bexar', 'Travis', 'Collin', 'El Paso', 'Fort Bend', 'Denton', 'Hidalgo'].map((name) => {
-                        const county = counties.find(c => c.name === name);
-                        return county ? (
-                          <Link
-                            key={county.id}
-                            href={`/texas/${county.slug}`}
-                            className="px-3 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-sm font-medium text-center"
-                          >
-                            {county.name}
-                          </Link>
-                        ) : null;
-                      })}
-                    </div>
-                  </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3 mb-4">
+                  {priorityCounties.map((county) => county && (
+                    <Link key={county.id} href={`/texas/${county.slug}`}>
+                      <Card className="p-3 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl group h-full">
+                        <h4 className="font-heading text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                          {county.name}
+                        </h4>
+                        <p className="text-xs text-muted-foreground">
+                          {county.impound_daily_fee ? `$${county.impound_daily_fee}/day` : 'View info'}
+                        </p>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
 
-                  {/* All Counties - Scrollable Grid */}
+                {/* All Other Counties */}
+                {otherCounties.length > 0 && (
                   <div>
-                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2 block">All Counties</span>
-                    <div className="max-h-48 overflow-y-auto pr-2 scrollbar-thin">
-                      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-1.5">
-                        {counties.map((county) => (
-                          <Link
-                            key={county.id}
-                            href={`/texas/${county.slug}`}
-                            className="px-2 py-1.5 rounded-md text-xs text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors truncate"
-                            title={county.name}
-                          >
-                            {county.name}
-                          </Link>
-                        ))}
-                      </div>
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">All {counties.length} Counties</p>
+                    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-1">
+                      {otherCounties.map((county) => (
+                        <Link
+                          key={county.id}
+                          href={`/texas/${county.slug}`}
+                          className="text-sm text-muted-foreground hover:text-primary transition-colors py-0.5 truncate"
+                          title={county.name}
+                        >
+                          {county.name}
+                        </Link>
+                      ))}
                     </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Right - County Map (Desktop Only) */}
               <div className="hidden lg:block">
-                <div className="bg-background/80 backdrop-blur-sm rounded-2xl p-4 border border-border/50 shadow-sm">
+                <div className="sticky top-24">
                   <div className="text-center mb-2">
-                    <span className="text-xs text-muted-foreground">Or click the map</span>
+                    <p className="text-xs text-muted-foreground">Click a county on the map</p>
                   </div>
                   <TexasCountiesMap />
                 </div>
@@ -285,66 +287,6 @@ export default async function TexasPage() {
         {/* Penalty Matrix */}
         <section>
           <PenaltyMatrix state={state} />
-        </section>
-
-        {/* Major Counties + Map Section */}
-        <section>
-          <div className="grid lg:grid-cols-[1fr,auto] gap-8 items-start">
-            {/* Left - Major Counties */}
-            <div>
-              <div className="mb-6">
-                <h2 className="font-heading text-2xl md:text-3xl font-normal text-foreground mb-2">Major Counties</h2>
-                <p className="text-muted-foreground">
-                  County-specific courts, impound lots, bail, and local procedures
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 mb-6">
-                {priorityCounties.map((county) => (
-                  <Link key={county.id} href={`/texas/${county.slug}`}>
-                    <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl group h-full">
-                      <h4 className="font-heading text-base font-normal text-foreground mb-1 group-hover:text-primary transition-colors">
-                        {county.name}
-                      </h4>
-                      <p className="text-sm text-muted-foreground">
-                        {county.impound_daily_fee && `Impound: $${county.impound_daily_fee}/day`}
-                        {!county.impound_daily_fee && 'View county info'}
-                      </p>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-
-              {/* All Other Counties */}
-              {counties.length > 10 && (
-                <div className="bg-muted/30 rounded-xl p-4">
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">All {counties.length} Counties</p>
-                  <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-                    {counties.slice(10).map((county) => (
-                      <Link
-                        key={county.id}
-                        href={`/texas/${county.slug}`}
-                        className="text-sm text-muted-foreground hover:text-primary transition-colors py-1 truncate"
-                        title={county.name}
-                      >
-                        {county.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Right - County Map (Desktop Only) */}
-            <div className="hidden lg:block">
-              <div className="bg-background rounded-2xl p-4 border border-border/50 shadow-sm sticky top-24">
-                <div className="text-center mb-3">
-                  <p className="text-xs text-muted-foreground">Click a county on the map</p>
-                </div>
-                <TexasCountiesMap />
-              </div>
-            </div>
-          </div>
         </section>
 
         {/* State-Specific Information */}

@@ -57,16 +57,11 @@ const countyNames: Record<string, string> = {
   Williamson: "Williamson County", Wilson: "Wilson County",
 };
 
-// Generate consistent colors for each county - using warm primary tones
-const getCountyColor = (county: string, isHovered: boolean) => {
-  if (!county) return "transparent";
-  const seed = county.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  // Use warm hues matching theme
-  const hue = 28 + (seed % 12);
-  const saturation = isHovered ? 55 : 35 + (seed % 20);
-  const lightness = isHovered ? 55 : 50 + (seed % 12);
-  return `hsl(${hue} ${saturation}% ${lightness}%)`;
-};
+// Priority counties for Tennessee
+const priorityCounties = ['Shelby', 'Davidson', 'Knox', 'Hamilton', 'Rutherford', 'Williamson', 'Sumner', 'Montgomery', 'Wilson', 'Blount'];
+
+// Check if county is a priority county
+const isPriorityCounty = (county: string) => priorityCounties.includes(county);
 
 // Get 4-letter abbreviated name for display
 const getAbbreviation = (county: string): string => {
@@ -107,6 +102,26 @@ const TennesseeCountiesMap: React.FC<TennesseeCountiesMapProps> = ({
     }
   };
 
+  const getTileStyles = (county: string, isHovered: boolean) => {
+    if (!county) return { backgroundColor: "transparent", color: "transparent" };
+
+    const isPriority = isPriorityCounty(county);
+
+    if (isPriority) {
+      return {
+        backgroundColor: isHovered ? "hsl(var(--primary))" : "hsl(var(--primary) / 0.85)",
+        color: "hsl(var(--primary-foreground))",
+        boxShadow: isHovered ? "0 4px 12px hsl(var(--primary) / 0.3)" : "none",
+      };
+    }
+
+    return {
+      backgroundColor: isHovered ? "hsl(var(--primary) / 0.15)" : "hsl(var(--primary) / 0.08)",
+      color: isHovered ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))",
+      boxShadow: isHovered ? "0 2px 8px hsl(var(--primary) / 0.15)" : "none",
+    };
+  };
+
   return (
     <div className={`${className}`}>
       {(title || description) && (
@@ -122,24 +137,21 @@ const TennesseeCountiesMap: React.FC<TennesseeCountiesMapProps> = ({
 
       <div className="flex items-center justify-center overflow-x-auto pb-2">
         <div
-          className="grid gap-0.5"
+          className="grid gap-1"
           style={{ gridTemplateColumns: "repeat(19, 1fr)" }}
         >
           {countiesGrid.flat().map((county, i) => {
             const isHovered = hoveredCounty === county;
+            const styles = getTileStyles(county, isHovered);
             return (
               <div
                 key={i}
-                className={`w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-md flex items-center justify-center text-[6px] sm:text-[7px] md:text-[8px] font-semibold transition-all duration-200 ease-out ${
+                className={`w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-md flex items-center justify-center text-[7px] sm:text-[8px] md:text-[10px] font-bold transition-all duration-200 ease-out ${
                   county
                     ? "hover:scale-110 hover:-translate-y-0.5 cursor-pointer"
-                    : "bg-transparent"
+                    : ""
                 }`}
-                style={{
-                  backgroundColor: getCountyColor(county, isHovered),
-                  color: county ? "hsl(28 40% 20%)" : "transparent",
-                  boxShadow: isHovered && county ? "0 3px 10px hsl(28 50% 50% / 0.3)" : "none",
-                }}
+                style={styles}
                 title={county ? `${countyNames[county] || county} - Click for DUI guide` : undefined}
                 onClick={() => handleCountyClick(county)}
                 onMouseEnter={() => county && setHoveredCounty(county)}
@@ -157,7 +169,7 @@ const TennesseeCountiesMap: React.FC<TennesseeCountiesMapProps> = ({
         {hoveredCounty && (
           <span className="text-sm">
             <span className="font-medium text-foreground">{countyNames[hoveredCounty]}</span>
-            <span className="text-primary font-medium ml-2">→ View guide</span>
+            <span className="text-primary font-medium ml-2">View guide</span>
           </span>
         )}
       </div>

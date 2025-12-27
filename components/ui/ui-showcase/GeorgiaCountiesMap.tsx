@@ -81,18 +81,14 @@ const countyNames: Record<string, string> = {
   Lanier: "Lanier County", Atkinson: "Atkinson County", Ware: "Ware County",
   McIntosh: "McIntosh County", Echols: "Echols County", Clinch: "Clinch County",
   Charlton: "Charlton County", Camden: "Camden County", Glynn: "Glynn County",
+  Richmond: "Richmond County",
 };
 
-// Generate consistent colors for each county - using warm primary tones
-const getCountyColor = (county: string, isHovered: boolean) => {
-  if (!county) return "transparent";
-  const seed = county.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  // Use warm hues matching theme
-  const hue = 26 + (seed % 14);
-  const saturation = isHovered ? 55 : 35 + (seed % 20);
-  const lightness = isHovered ? 55 : 50 + (seed % 12);
-  return `hsl(${hue} ${saturation}% ${lightness}%)`;
-};
+// Priority counties for Georgia
+const priorityCounties = ['Fulton', 'Gwinnett', 'Cobb', 'DeKalb', 'Clayton', 'Cherokee', 'Forsyth', 'Henry', 'Chatham', 'Richmond'];
+
+// Check if county is a priority county
+const isPriorityCounty = (county: string) => priorityCounties.includes(county);
 
 // Get 4-letter abbreviated name for display
 const getAbbreviation = (county: string): string => {
@@ -133,6 +129,26 @@ const GeorgiaCountiesMap: React.FC<GeorgiaCountiesMapProps> = ({
     }
   };
 
+  const getTileStyles = (county: string, isHovered: boolean) => {
+    if (!county) return { backgroundColor: "transparent", color: "transparent" };
+
+    const isPriority = isPriorityCounty(county);
+
+    if (isPriority) {
+      return {
+        backgroundColor: isHovered ? "hsl(var(--primary))" : "hsl(var(--primary) / 0.85)",
+        color: "hsl(var(--primary-foreground))",
+        boxShadow: isHovered ? "0 4px 12px hsl(var(--primary) / 0.3)" : "none",
+      };
+    }
+
+    return {
+      backgroundColor: isHovered ? "hsl(var(--primary) / 0.15)" : "hsl(var(--primary) / 0.08)",
+      color: isHovered ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))",
+      boxShadow: isHovered ? "0 2px 8px hsl(var(--primary) / 0.15)" : "none",
+    };
+  };
+
   return (
     <div className={`${className}`}>
       {(title || description) && (
@@ -148,24 +164,21 @@ const GeorgiaCountiesMap: React.FC<GeorgiaCountiesMapProps> = ({
 
       <div className="flex items-center justify-center overflow-x-auto">
         <div
-          className="grid gap-0.5"
+          className="grid gap-1"
           style={{ gridTemplateColumns: "repeat(8, 1fr)" }}
         >
           {countiesGrid.flat().map((county, i) => {
             const isHovered = hoveredCounty === county;
+            const styles = getTileStyles(county, isHovered);
             return (
               <div
                 key={i}
-                className={`w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center text-[9px] md:text-[10px] font-semibold transition-all duration-200 ease-out ${
+                className={`w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center text-[10px] md:text-xs font-bold transition-all duration-200 ease-out ${
                   county
                     ? "hover:scale-110 hover:-translate-y-0.5 cursor-pointer"
-                    : "bg-transparent"
+                    : ""
                 }`}
-                style={{
-                  backgroundColor: getCountyColor(county, isHovered),
-                  color: county ? "hsl(26 40% 20%)" : "transparent",
-                  boxShadow: isHovered && county ? "0 4px 12px hsl(26 50% 50% / 0.3)" : "none",
-                }}
+                style={styles}
                 title={county ? `${countyNames[county] || county} - Click for DUI guide` : undefined}
                 onClick={() => handleCountyClick(county)}
                 onMouseEnter={() => county && setHoveredCounty(county)}
@@ -183,7 +196,7 @@ const GeorgiaCountiesMap: React.FC<GeorgiaCountiesMapProps> = ({
         {hoveredCounty && (
           <span className="text-sm">
             <span className="font-medium text-foreground">{countyNames[hoveredCounty]}</span>
-            <span className="text-primary font-medium ml-2">→ View guide</span>
+            <span className="text-primary font-medium ml-2">View guide</span>
           </span>
         )}
       </div>

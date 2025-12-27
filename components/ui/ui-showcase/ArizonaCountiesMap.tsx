@@ -38,14 +38,11 @@ const countyNames: Record<string, string> = {
   Yuma: "Yuma County",
 };
 
-// Generate consistent colors for each county
-const getCountyColor = (county: string, isHovered: boolean) => {
-  if (!county) return "transparent";
-  const seed = county.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const saturation = isHovered ? 50 : 40 + (seed % 30);
-  const lightness = isHovered ? 50 : 45 + (seed % 15);
-  return `hsl(160 ${saturation}% ${lightness}%)`;
-};
+// Priority counties for Arizona
+const priorityCounties = ['Maricopa', 'Pima', 'Pinal', 'Yavapai', 'Yuma', 'Mohave', 'Coconino', 'Cochise', 'Navajo', 'Apache'];
+
+// Check if county is a priority county
+const isPriorityCounty = (county: string) => priorityCounties.includes(county);
 
 // Get 4-letter abbreviated name for display
 const getAbbreviation = (county: string): string => {
@@ -99,6 +96,26 @@ const ArizonaCountiesMap: React.FC<ArizonaCountiesMapProps> = ({
     }
   };
 
+  const getTileStyles = (county: string, isHovered: boolean) => {
+    if (!county) return { backgroundColor: "transparent", color: "transparent" };
+
+    const isPriority = isPriorityCounty(county);
+
+    if (isPriority) {
+      return {
+        backgroundColor: isHovered ? "hsl(var(--primary))" : "hsl(var(--primary) / 0.85)",
+        color: "hsl(var(--primary-foreground))",
+        boxShadow: isHovered ? "0 4px 12px hsl(var(--primary) / 0.3)" : "none",
+      };
+    }
+
+    return {
+      backgroundColor: isHovered ? "hsl(var(--primary) / 0.15)" : "hsl(var(--primary) / 0.08)",
+      color: isHovered ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))",
+      boxShadow: isHovered ? "0 2px 8px hsl(var(--primary) / 0.15)" : "none",
+    };
+  };
+
   return (
     <div className={`${className}`}>
       {(title || description) && (
@@ -117,35 +134,36 @@ const ArizonaCountiesMap: React.FC<ArizonaCountiesMapProps> = ({
           className="grid gap-1"
           style={{ gridTemplateColumns: "repeat(4, 1fr)" }}
         >
-          {countiesGrid.flat().map((county, i) => (
-            <div
-              key={i}
-              className={`w-12 h-12 md:w-14 md:h-14 rounded-md flex items-center justify-center text-[11px] md:text-sm font-medium transition-all duration-200 ${
-                county
-                  ? "hover:scale-110 hover:shadow-lg cursor-pointer"
-                  : "bg-transparent"
-              }`}
-              style={{
-                backgroundColor: getCountyColor(county, hoveredCounty === county),
-                color: county ? "hsl(160 30% 15%)" : "transparent",
-              }}
-              title={county ? `${countyNames[county] || county} - Click for DUI guide` : undefined}
-              onClick={() => handleCountyClick(county)}
-              onMouseEnter={() => county && setHoveredCounty(county)}
-              onMouseLeave={() => setHoveredCounty(null)}
-            >
-              {getAbbreviation(county)}
-            </div>
-          ))}
+          {countiesGrid.flat().map((county, i) => {
+            const isHovered = hoveredCounty === county;
+            const styles = getTileStyles(county, isHovered);
+            return (
+              <div
+                key={i}
+                className={`w-14 h-14 md:w-16 md:h-16 rounded-lg flex items-center justify-center text-xs md:text-sm font-bold transition-all duration-200 ease-out ${
+                  county
+                    ? "hover:scale-110 hover:-translate-y-0.5 cursor-pointer"
+                    : ""
+                }`}
+                style={styles}
+                title={county ? `${countyNames[county] || county} - Click for DUI guide` : undefined}
+                onClick={() => handleCountyClick(county)}
+                onMouseEnter={() => county && setHoveredCounty(county)}
+                onMouseLeave={() => setHoveredCounty(null)}
+              >
+                {getAbbreviation(county)}
+              </div>
+            );
+          })}
         </div>
       </div>
 
       {/* Hovered county tooltip */}
       <div className="mt-4 text-center h-6">
         {hoveredCounty && (
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm">
             <span className="font-medium text-foreground">{countyNames[hoveredCounty]}</span>
-            <span className="text-primary ml-2">→ View DUI guide</span>
+            <span className="text-primary font-medium ml-2">View guide</span>
           </span>
         )}
       </div>

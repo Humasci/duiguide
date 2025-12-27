@@ -61,14 +61,11 @@ const countyNames: Record<string, string> = {
   Wilson: "Wilson County", Yadkin: "Yadkin County", Yancey: "Yancey County",
 };
 
-// Generate consistent colors for each county
-const getCountyColor = (county: string, isHovered: boolean) => {
-  if (!county) return "transparent";
-  const seed = county.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const saturation = isHovered ? 50 : 40 + (seed % 30);
-  const lightness = isHovered ? 50 : 45 + (seed % 15);
-  return `hsl(340 ${saturation}% ${lightness}%)`;
-};
+// Priority counties for North Carolina
+const priorityCounties = ['Mecklenburg', 'Wake', 'Guilford', 'Forsyth', 'Cumberland', 'Durham', 'Buncombe', 'Gaston', 'New Hanover', 'Union'];
+
+// Check if county is a priority county
+const isPriorityCounty = (county: string) => priorityCounties.includes(county);
 
 // Get 4-letter abbreviated name for display
 const getAbbreviation = (county: string): string => {
@@ -109,6 +106,26 @@ const NorthCarolinaCountiesMap: React.FC<NorthCarolinaCountiesMapProps> = ({
     }
   };
 
+  const getTileStyles = (county: string, isHovered: boolean) => {
+    if (!county) return { backgroundColor: "transparent", color: "transparent" };
+
+    const isPriority = isPriorityCounty(county);
+
+    if (isPriority) {
+      return {
+        backgroundColor: isHovered ? "hsl(var(--primary))" : "hsl(var(--primary) / 0.85)",
+        color: "hsl(var(--primary-foreground))",
+        boxShadow: isHovered ? "0 4px 12px hsl(var(--primary) / 0.3)" : "none",
+      };
+    }
+
+    return {
+      backgroundColor: isHovered ? "hsl(var(--primary) / 0.15)" : "hsl(var(--primary) / 0.08)",
+      color: isHovered ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))",
+      boxShadow: isHovered ? "0 2px 8px hsl(var(--primary) / 0.15)" : "none",
+    };
+  };
+
   return (
     <div className={`${className}`}>
       {(title || description) && (
@@ -124,38 +141,39 @@ const NorthCarolinaCountiesMap: React.FC<NorthCarolinaCountiesMapProps> = ({
 
       <div className="flex items-center justify-center overflow-x-auto">
         <div
-          className="grid gap-0.5"
+          className="grid gap-1"
           style={{ gridTemplateColumns: "repeat(14, 1fr)" }}
         >
-          {countiesGrid.flat().map((county, i) => (
-            <div
-              key={i}
-              className={`w-7 h-7 md:w-9 md:h-9 rounded-sm flex items-center justify-center text-[8px] md:text-[9px] font-medium transition-all duration-200 ${
-                county
-                  ? "hover:scale-110 hover:shadow-lg cursor-pointer"
-                  : "bg-transparent"
-              }`}
-              style={{
-                backgroundColor: getCountyColor(county, hoveredCounty === county),
-                color: county ? "hsl(340 30% 15%)" : "transparent",
-              }}
-              title={county ? `${countyNames[county] || county} - Click for DUI guide` : undefined}
-              onClick={() => handleCountyClick(county)}
-              onMouseEnter={() => county && setHoveredCounty(county)}
-              onMouseLeave={() => setHoveredCounty(null)}
-            >
-              {getAbbreviation(county)}
-            </div>
-          ))}
+          {countiesGrid.flat().map((county, i) => {
+            const isHovered = hoveredCounty === county;
+            const styles = getTileStyles(county, isHovered);
+            return (
+              <div
+                key={i}
+                className={`w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-md flex items-center justify-center text-[8px] sm:text-[9px] md:text-[10px] font-bold transition-all duration-200 ease-out ${
+                  county
+                    ? "hover:scale-110 hover:-translate-y-0.5 cursor-pointer"
+                    : ""
+                }`}
+                style={styles}
+                title={county ? `${countyNames[county] || county} - Click for DUI guide` : undefined}
+                onClick={() => handleCountyClick(county)}
+                onMouseEnter={() => county && setHoveredCounty(county)}
+                onMouseLeave={() => setHoveredCounty(null)}
+              >
+                {getAbbreviation(county)}
+              </div>
+            );
+          })}
         </div>
       </div>
 
       {/* Hovered county tooltip */}
       <div className="mt-4 text-center h-6">
         {hoveredCounty && (
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm">
             <span className="font-medium text-foreground">{countyNames[hoveredCounty]}</span>
-            <span className="text-primary ml-2">→ View DUI guide</span>
+            <span className="text-primary font-medium ml-2">View guide</span>
           </span>
         )}
       </div>
