@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState } from "react";
-import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export interface ArizonaCountiesMapProps {
   title?: string;
   description?: string;
   className?: string;
-  onCountyClick?: (county: string) => void;
+  onCountyClick?: (county: string, slug: string) => void;
+  navigateOnClick?: boolean;
 }
 
 // Arizona counties grid - one tile per county, approximating the state shape
@@ -38,11 +39,11 @@ const countyNames: Record<string, string> = {
 };
 
 // Generate consistent colors for each county
-const getCountyColor = (county: string, isHovered: boolean, isSelected: boolean) => {
+const getCountyColor = (county: string, isHovered: boolean) => {
   if (!county) return "transparent";
   const seed = county.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const saturation = isSelected ? 60 : isHovered ? 50 : 40 + (seed % 30);
-  const lightness = isSelected ? 40 : isHovered ? 50 : 45 + (seed % 15);
+  const saturation = isHovered ? 50 : 40 + (seed % 30);
+  const lightness = isHovered ? 50 : 45 + (seed % 15);
   return `hsl(160 ${saturation}% ${lightness}%)`;
 };
 
@@ -69,41 +70,45 @@ const getAbbreviation = (county: string): string => {
   return abbrevMap[county] || county.substring(0, 4).toUpperCase();
 };
 
+// Convert county name to URL slug
+const toSlug = (name: string): string => {
+  return name.toLowerCase().replace(/\s+/g, '-');
+};
+
 const ArizonaCountiesMap: React.FC<ArizonaCountiesMapProps> = ({
   title,
   description,
   className = "",
   onCountyClick,
+  navigateOnClick = true,
 }) => {
+  const router = useRouter();
   const [hoveredCounty, setHoveredCounty] = useState<string | null>(null);
-  const [selectedCounty, setSelectedCounty] = useState<string | null>(null);
 
   const handleCountyClick = (county: string) => {
     if (!county) return;
-    
-    setSelectedCounty(county === selectedCounty ? null : county);
-    onCountyClick?.(county);
-    toast.info(`Selected: ${countyNames[county] || county}`);
+
+    const slug = toSlug(county);
+
+    if (onCountyClick) {
+      onCountyClick(county, slug);
+    }
+
+    if (navigateOnClick) {
+      router.push(`/arizona/${slug}`);
+    }
   };
 
   return (
-    <div className={`bg-card rounded-2xl p-6 md:p-8 ${className}`}>
+    <div className={`${className}`}>
       {(title || description) && (
-        <div className="mb-6">
+        <div className="mb-6 text-center">
           {title && (
             <h3 className="font-heading text-xl text-foreground mb-2">{title}</h3>
           )}
           {description && (
             <p className="text-muted-foreground text-sm">{description}</p>
           )}
-        </div>
-      )}
-      
-      {/* Selected county info */}
-      {selectedCounty && (
-        <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
-          <h4 className="font-semibold text-foreground">{countyNames[selectedCounty] || selectedCounty}</h4>
-          <p className="text-sm text-muted-foreground">Click another county to select it, or click again to deselect.</p>
         </div>
       )}
 
@@ -115,16 +120,16 @@ const ArizonaCountiesMap: React.FC<ArizonaCountiesMapProps> = ({
           {countiesGrid.flat().map((county, i) => (
             <div
               key={i}
-              className={`w-9 h-9 md:w-11 md:h-11 rounded-md flex items-center justify-center text-[10px] md:text-xs font-medium transition-all duration-200 ${
+              className={`w-12 h-12 md:w-14 md:h-14 rounded-md flex items-center justify-center text-[11px] md:text-sm font-medium transition-all duration-200 ${
                 county
                   ? "hover:scale-110 hover:shadow-lg cursor-pointer"
                   : "bg-transparent"
-              } ${selectedCounty === county ? "ring-2 ring-primary ring-offset-2 ring-offset-background" : ""}`}
+              }`}
               style={{
-                backgroundColor: getCountyColor(county, hoveredCounty === county, selectedCounty === county),
+                backgroundColor: getCountyColor(county, hoveredCounty === county),
                 color: county ? "hsl(160 30% 15%)" : "transparent",
               }}
-              title={county ? countyNames[county] || county : undefined}
+              title={county ? `${countyNames[county] || county} - Click for DUI guide` : undefined}
               onClick={() => handleCountyClick(county)}
               onMouseEnter={() => county && setHoveredCounty(county)}
               onMouseLeave={() => setHoveredCounty(null)}
@@ -136,13 +141,14 @@ const ArizonaCountiesMap: React.FC<ArizonaCountiesMapProps> = ({
       </div>
 
       {/* Hovered county tooltip */}
-      {hoveredCounty && !selectedCounty && (
-        <div className="mt-4 text-center">
+      <div className="mt-4 text-center h-6">
+        {hoveredCounty && (
           <span className="text-sm text-muted-foreground">
-            County: <span className="font-medium text-foreground">{countyNames[hoveredCounty]}</span>
+            <span className="font-medium text-foreground">{countyNames[hoveredCounty]}</span>
+            <span className="text-primary ml-2">→ View DUI guide</span>
           </span>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

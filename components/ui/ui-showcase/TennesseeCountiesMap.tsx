@@ -126,7 +126,7 @@ const TennesseeCountiesMap: React.FC<TennesseeCountiesMapProps> = ({
           {countiesGrid.flat().map((county, i) => (
             <div
               key={i}
-              className={`w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-sm flex items-center justify-center text-[5px] sm:text-[6px] md:text-[7px] font-medium transition-all duration-200 ${
+              className={`w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-sm flex items-center justify-center text-[6px] sm:text-[7px] md:text-[8px] font-medium transition-all duration-200 ${
                 county
                   ? "hover:scale-110 hover:shadow-lg cursor-pointer"
                   : "bg-transparent"

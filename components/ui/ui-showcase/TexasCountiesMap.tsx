@@ -146,7 +146,7 @@ const TexasCountiesMap: React.FC<TexasCountiesMapProps> = ({
           {countiesGrid.flat().map((county, i) => (
             <div
               key={i}
-              className={`w-8 h-8 md:w-10 md:h-10 rounded-sm flex items-center justify-center text-[8px] md:text-[9px] font-medium transition-all duration-200 ${
+              className={`w-8 h-8 md:w-10 md:h-10 rounded-sm flex items-center justify-center text-[9px] md:text-[10px] font-medium transition-all duration-200 ${
                 county
                   ? "hover:scale-110 hover:shadow-lg cursor-pointer"
                   : "bg-transparent"
