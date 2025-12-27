@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import PenaltyMatrix from '@/components/PenaltyMatrix';
 import TexasCountiesMap from '@/components/ui/ui-showcase/TexasCountiesMap';
+import DUIActionTimeline from '@/components/DUIActionTimeline';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -13,7 +14,8 @@ import {
   MapPin,
   ChevronRight,
   Phone,
-  ArrowRight
+  ArrowRight,
+  Search
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -55,64 +57,105 @@ export default async function TexasPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section - 2 Column Layout for Vertical State */}
+      {/* Hero Section - Improved Layout */}
       <div className="relative overflow-hidden">
         {/* Subtle gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-destructive/5 pointer-events-none" />
 
         <div className="relative bg-card/50 border-b border-border">
           <div className="container max-w-7xl py-6 md:py-8">
-            <div className="grid lg:grid-cols-[1fr,auto] gap-6 lg:gap-10 items-start">
-              {/* Left Column - Content */}
-              <div className="max-w-xl">
-                {/* Urgency Badge with pulse */}
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-destructive/10 text-destructive border border-destructive/20 mb-4">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-destructive"></span>
-                  </span>
-                  {state.dmv_deadline_days || 15}-Day Deadline
+            {/* Main Hero Content */}
+            <div className="max-w-3xl mb-6">
+              {/* Urgency Badge with pulse */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-destructive/10 text-destructive border border-destructive/20 mb-4">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-destructive"></span>
+                </span>
+                {state.dmv_deadline_days || 15}-Day Deadline
+              </div>
+
+              <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-normal mb-3 text-foreground leading-[1.1] tracking-tight">
+                {state.name} {state.legal_term} Guide
+              </h1>
+
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-5">
+                Complete guide to {state.legal_term} laws, penalties, and procedures in {state.name}.
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-wrap gap-3 mb-6">
+                <Button
+                  asChild
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full px-5 py-5 shadow-lg hover:shadow-xl transition-all"
+                >
+                  <Link href="/texas/dmv-hearing">
+                    <Clock className="h-4 w-4" />
+                    Request ALR Hearing
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="rounded-full px-5 py-5 border-2 hover:bg-muted/50"
+                >
+                  <Link href="/find-attorney/texas">
+                    <Phone className="h-4 w-4" />
+                    Talk to Attorney
+                  </Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* County Selector + Map Grid */}
+            <div className="grid lg:grid-cols-[1fr,auto] gap-6 items-start">
+              {/* Left - County Quick Select */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <MapPin className="w-4 h-4 stroke-[1.5]" />
+                  <span>Find your county for local courts, impound lots & procedures</span>
                 </div>
 
-                <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-normal mb-3 text-foreground leading-[1.1] tracking-tight">
-                  {state.name} {state.legal_term} Guide
-                </h1>
+                {/* County Search/Select - Mobile Friendly */}
+                <div className="bg-background/80 backdrop-blur-sm rounded-xl border border-border/50 p-4">
+                  <div className="relative mb-3">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <select className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none cursor-pointer">
+                      <option value="">Select your county...</option>
+                      {counties.map((county) => (
+                        <option key={county.id} value={county.slug}>
+                          {county.name} County
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-                <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-5">
-                  Complete guide to {state.legal_term} laws, penalties, and procedures in {state.name}.
-                </p>
-
-                {/* CTA Buttons */}
-                <div className="flex flex-wrap gap-3">
-                  <Button
-                    asChild
-                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full px-5 py-5 shadow-lg hover:shadow-xl transition-all"
-                  >
-                    <Link href="/texas/dmv-hearing">
-                      <Clock className="h-4 w-4" />
-                      Request DMV Hearing
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="rounded-full px-5 py-5 border-2 hover:bg-muted/50"
-                  >
-                    <Link href="/find-attorney/texas">
-                      <Phone className="h-4 w-4" />
-                      Talk to Attorney
-                    </Link>
-                  </Button>
+                  {/* Popular Counties Quick Links */}
+                  <div className="flex flex-wrap gap-2">
+                    <span className="text-xs text-muted-foreground">Popular:</span>
+                    {['Harris', 'Dallas', 'Tarrant', 'Bexar', 'Travis'].map((name) => {
+                      const county = counties.find(c => c.name === name);
+                      return county ? (
+                        <Link
+                          key={county.id}
+                          href={`/texas/${county.slug}`}
+                          className="text-xs px-2.5 py-1 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium"
+                        >
+                          {county.name}
+                        </Link>
+                      ) : null;
+                    })}
+                  </div>
                 </div>
               </div>
 
-              {/* Right Column - County Map */}
-              <div className="lg:flex-shrink-0">
+              {/* Right - County Map (Desktop Only) */}
+              <div className="hidden lg:block">
                 <div className="bg-background/80 backdrop-blur-sm rounded-2xl p-4 border border-border/50 shadow-sm">
                   <div className="text-center mb-2">
                     <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                       <MapPin className="w-3.5 h-3.5 stroke-[1.5]" />
-                      <span>Select your county for local info</span>
+                      <span>Click to select county</span>
                     </div>
                   </div>
                   <TexasCountiesMap />
@@ -150,58 +193,70 @@ export default async function TexasPage() {
         </div>
       </div>
 
-      <div className="container max-w-7xl py-16 space-y-16">
-        {/* Quick Actions */}
-        <section>
-          <h2 className="font-heading text-3xl font-normal text-foreground mb-8">What You Need to Do Now</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Link href="/texas/dmv-hearing">
-              <Card className="p-6 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-2xl h-full">
-                <div className="p-3 bg-destructive/10 rounded-xl w-fit mb-4">
-                  <Clock className="h-6 w-6 text-destructive stroke-[1.5]" />
-                </div>
-                <h3 className="font-heading text-lg font-normal text-foreground mb-2">Request DMV Hearing</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {state.dmv_deadline_days || 15}-day deadline to save your license
-                </p>
-              </Card>
-            </Link>
+      <div className="container max-w-7xl py-12 md:py-16 space-y-12 md:space-y-16">
+        {/* Action Timeline - Time Sensitive Steps */}
+        <section className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+          <div>
+            <DUIActionTimeline
+              stateName="Texas"
+              dmvDeadlineDays={state.dmv_deadline_days || 15}
+            />
+          </div>
 
-            <Link href="/find-attorney/texas">
-              <Card className="p-6 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-2xl h-full">
-                <div className="p-3 bg-primary/10 rounded-xl w-fit mb-4">
-                  <Scale className="h-6 w-6 text-primary stroke-[1.5]" />
-                </div>
-                <h3 className="font-heading text-lg font-normal text-foreground mb-2">Find an Attorney</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Connect with experienced {state.legal_term} lawyers
-                </p>
-              </Card>
-            </Link>
+          {/* Quick Resource Cards */}
+          <div className="space-y-4">
+            <h3 className="font-heading text-lg font-normal text-foreground mb-4">
+              Quick Resources
+            </h3>
+            <div className="grid grid-cols-2 gap-3">
+              <Link href="/texas/dmv-hearing">
+                <Card className="p-4 hover:border-destructive/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl h-full border-destructive/20 bg-destructive/5">
+                  <div className="p-2 bg-destructive/15 rounded-lg w-fit mb-3">
+                    <Clock className="h-5 w-5 text-destructive stroke-[1.5]" />
+                  </div>
+                  <h4 className="font-heading text-sm font-medium text-foreground mb-1">ALR Hearing</h4>
+                  <p className="text-xs text-muted-foreground">
+                    {state.dmv_deadline_days || 15}-day deadline
+                  </p>
+                </Card>
+              </Link>
 
-            <Link href="/guide/after-arrest">
-              <Card className="p-6 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-2xl h-full">
-                <div className="p-3 bg-primary/10 rounded-xl w-fit mb-4">
-                  <Car className="h-6 w-6 text-primary stroke-[1.5]" />
-                </div>
-                <h3 className="font-heading text-lg font-normal text-foreground mb-2">Get Your Car</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Retrieve vehicle from impound lots
-                </p>
-              </Card>
-            </Link>
+              <Link href="/find-attorney/texas">
+                <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl h-full">
+                  <div className="p-2 bg-primary/10 rounded-lg w-fit mb-3">
+                    <Scale className="h-5 w-5 text-primary stroke-[1.5]" />
+                  </div>
+                  <h4 className="font-heading text-sm font-medium text-foreground mb-1">Find Attorney</h4>
+                  <p className="text-xs text-muted-foreground">
+                    Free consultations
+                  </p>
+                </Card>
+              </Link>
 
-            <Link href="/guide/scram-bracelet">
-              <Card className="p-6 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-2xl h-full">
-                <div className="p-3 bg-primary/10 rounded-xl w-fit mb-4">
-                  <Shield className="h-6 w-6 text-primary stroke-[1.5]" />
-                </div>
-                <h3 className="font-heading text-lg font-normal text-foreground mb-2">SCRAM Monitoring</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Ankle monitor requirements & providers
-                </p>
-              </Card>
-            </Link>
+              <Link href="/guide/after-arrest">
+                <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl h-full">
+                  <div className="p-2 bg-primary/10 rounded-lg w-fit mb-3">
+                    <Car className="h-5 w-5 text-primary stroke-[1.5]" />
+                  </div>
+                  <h4 className="font-heading text-sm font-medium text-foreground mb-1">Get Your Car</h4>
+                  <p className="text-xs text-muted-foreground">
+                    Impound retrieval
+                  </p>
+                </Card>
+              </Link>
+
+              <Link href="/guide/scram-bracelet">
+                <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl h-full">
+                  <div className="p-2 bg-primary/10 rounded-lg w-fit mb-3">
+                    <Shield className="h-5 w-5 text-primary stroke-[1.5]" />
+                  </div>
+                  <h4 className="font-heading text-sm font-medium text-foreground mb-1">SCRAM Monitor</h4>
+                  <p className="text-xs text-muted-foreground">
+                    Requirements & providers
+                  </p>
+                </Card>
+              </Link>
+            </div>
           </div>
         </section>
 

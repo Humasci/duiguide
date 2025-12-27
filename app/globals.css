@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    /* Claude Skills warm cream palette */
+    /* Claude Skills warm cream palette - Updated with Teal primary */
     --background: 40 20% 96%;
     --foreground: 30 10% 15%;
 
@@ -16,7 +16,8 @@
     --popover: 40 20% 96%;
     --popover-foreground: 30 10% 15%;
 
-    --primary: 15 80% 55%;
+    /* Teal primary color */
+    --primary: 175 60% 40%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 35 25% 88%;
@@ -28,19 +29,20 @@
     --accent: 35 20% 93%;
     --accent-foreground: 30 10% 15%;
 
-    --destructive: 0 84% 60%;
+    /* Orange for alerts/critical (was red) */
+    --destructive: 25 95% 55%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 35 15% 85%;
     --input: 35 15% 85%;
-    --ring: 15 80% 55%;
+    --ring: 175 60% 40%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --heading-font: 'Libre Baskerville', Georgia, serif;
+    --heading-font: 'Merriweather', Georgia, serif;
     --body-font: 'Source Sans 3', system-ui, sans-serif;
-    
+
     --surface-warm: 38 25% 91%;
     --surface-code: 30 10% 20%;
   }
@@ -55,7 +57,8 @@
     --popover: 30 10% 10%;
     --popover-foreground: 40 20% 95%;
 
-    --primary: 15 80% 55%;
+    /* Teal primary color */
+    --primary: 175 60% 45%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 30 10% 20%;
@@ -67,12 +70,13 @@
     --accent: 30 10% 20%;
     --accent-foreground: 40 20% 95%;
 
-    --destructive: 0 62% 30%;
+    /* Orange for alerts/critical */
+    --destructive: 25 90% 45%;
     --destructive-foreground: 40 20% 95%;
 
     --border: 30 10% 20%;
     --input: 30 10% 20%;
-    --ring: 15 80% 55%;
+    --ring: 175 60% 45%;
   }
 }
 
