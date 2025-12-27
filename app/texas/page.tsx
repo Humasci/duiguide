@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import PenaltyMatrix from '@/components/PenaltyMatrix';
 import TexasCountiesMap from '@/components/ui/ui-showcase/TexasCountiesMap';
-import DUIActionTimeline from '@/components/DUIActionTimeline';
+import Timeline from '@/components/ui/ui-showcase/Timeline';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -14,7 +14,9 @@ import {
   MapPin,
   ChevronRight,
   Phone,
-  ArrowRight
+  ArrowRight,
+  FileText,
+  Calendar
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -206,67 +208,136 @@ export default async function TexasPage() {
 
       <div className="container max-w-7xl py-12 md:py-16 space-y-12 md:space-y-16">
         {/* Action Timeline - Time Sensitive Steps */}
-        <section className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-          <div>
-            <DUIActionTimeline
-              stateName="Texas"
-              dmvDeadlineDays={state.dmv_deadline_days || 15}
-            />
+        <section>
+          <div className="mb-6">
+            <h2 className="font-heading text-2xl md:text-3xl font-normal text-foreground mb-2">
+              What You Need to Do
+            </h2>
+            <p className="text-muted-foreground">
+              Follow these steps in order of urgency after a {state.legal_term} arrest
+            </p>
           </div>
 
-          {/* Quick Resource Cards */}
-          <div className="space-y-4">
-            <h3 className="font-heading text-lg font-normal text-foreground mb-4">
-              Quick Resources
-            </h3>
-            <div className="grid grid-cols-2 gap-3">
-              <Link href="/texas/dmv-hearing">
-                <Card className="p-4 hover:border-destructive/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl h-full border-destructive/20 bg-destructive/5">
-                  <div className="p-2 bg-destructive/15 rounded-lg w-fit mb-3">
-                    <Clock className="h-5 w-5 text-destructive stroke-[1.5]" />
-                  </div>
-                  <h4 className="font-heading text-sm font-medium text-foreground mb-1">ALR Hearing</h4>
-                  <p className="text-xs text-muted-foreground">
-                    {state.dmv_deadline_days || 15}-day deadline
-                  </p>
-                </Card>
-              </Link>
+          <div className="grid lg:grid-cols-[1fr,320px] gap-8 lg:gap-12">
+            <Timeline
+              orientation="vertical"
+              showUrgency={true}
+              phases={[
+                {
+                  id: "alr-hearing",
+                  title: "Request ALR Hearing",
+                  description: "File a request for an Administrative License Revocation hearing to prevent automatic license suspension.",
+                  icon: <Clock />,
+                  urgency: "critical",
+                  deadline: `${state.dmv_deadline_days || 15} days from arrest`,
+                  href: "/texas/dmv-hearing",
+                },
+                {
+                  id: "attorney",
+                  title: "Consult with DWI Attorney",
+                  description: "Schedule a free consultation with an experienced attorney to understand your options.",
+                  icon: <Scale />,
+                  urgency: "high",
+                  deadline: "Within 48-72 hours",
+                  href: "/find-attorney/texas",
+                },
+                {
+                  id: "impound",
+                  title: "Retrieve Your Vehicle",
+                  description: "Get your car from impound to avoid daily storage fees that add up quickly.",
+                  icon: <Car />,
+                  urgency: "high",
+                  deadline: "Within 2-3 days",
+                },
+                {
+                  id: "documents",
+                  title: "Gather Documentation",
+                  description: "Collect arrest report, citation, license, insurance, and witness information.",
+                  icon: <FileText />,
+                  urgency: "medium",
+                  deadline: "Before attorney meeting",
+                },
+                {
+                  id: "court",
+                  title: "Prepare for Arraignment",
+                  description: "Your first court appearance. Attend on time with your attorney if possible.",
+                  icon: <Calendar />,
+                  urgency: "medium",
+                  deadline: "Check your citation",
+                },
+              ]}
+            />
 
-              <Link href="/find-attorney/texas">
-                <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl h-full">
-                  <div className="p-2 bg-primary/10 rounded-lg w-fit mb-3">
-                    <Scale className="h-5 w-5 text-primary stroke-[1.5]" />
-                  </div>
-                  <h4 className="font-heading text-sm font-medium text-foreground mb-1">Find Attorney</h4>
-                  <p className="text-xs text-muted-foreground">
-                    Free consultations
-                  </p>
-                </Card>
-              </Link>
+            {/* Quick Resource Cards */}
+            <div className="space-y-4">
+              <h3 className="font-heading text-lg font-normal text-foreground">
+                Quick Resources
+              </h3>
+              <div className="space-y-3">
+                <Link href="/texas/dmv-hearing">
+                  <Card className="p-4 hover:border-destructive/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl border-destructive/20 bg-destructive/5">
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 bg-destructive/15 rounded-lg">
+                        <Clock className="h-5 w-5 text-destructive stroke-[1.5]" />
+                      </div>
+                      <div>
+                        <h4 className="font-heading text-sm font-medium text-foreground mb-0.5">ALR Hearing Guide</h4>
+                        <p className="text-xs text-muted-foreground">
+                          {state.dmv_deadline_days || 15}-day deadline • Step-by-step process
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
 
-              <Link href="/guide/after-arrest">
-                <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl h-full">
-                  <div className="p-2 bg-primary/10 rounded-lg w-fit mb-3">
-                    <Car className="h-5 w-5 text-primary stroke-[1.5]" />
-                  </div>
-                  <h4 className="font-heading text-sm font-medium text-foreground mb-1">Get Your Car</h4>
-                  <p className="text-xs text-muted-foreground">
-                    Impound retrieval
-                  </p>
-                </Card>
-              </Link>
+                <Link href="/find-attorney/texas">
+                  <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl">
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 bg-primary/10 rounded-lg">
+                        <Phone className="h-5 w-5 text-primary stroke-[1.5]" />
+                      </div>
+                      <div>
+                        <h4 className="font-heading text-sm font-medium text-foreground mb-0.5">Find a DWI Attorney</h4>
+                        <p className="text-xs text-muted-foreground">
+                          Free consultations • 24/7 available
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
 
-              <Link href="/guide/scram-bracelet">
-                <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl h-full">
-                  <div className="p-2 bg-primary/10 rounded-lg w-fit mb-3">
-                    <Shield className="h-5 w-5 text-primary stroke-[1.5]" />
-                  </div>
-                  <h4 className="font-heading text-sm font-medium text-foreground mb-1">SCRAM Monitor</h4>
-                  <p className="text-xs text-muted-foreground">
-                    Requirements & providers
-                  </p>
-                </Card>
-              </Link>
+                <Link href="/guide/after-arrest">
+                  <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl">
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 bg-primary/10 rounded-lg">
+                        <Car className="h-5 w-5 text-primary stroke-[1.5]" />
+                      </div>
+                      <div>
+                        <h4 className="font-heading text-sm font-medium text-foreground mb-0.5">Get Your Car Back</h4>
+                        <p className="text-xs text-muted-foreground">
+                          Impound locations • Daily fees
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+
+                <Link href="/guide/scram-bracelet">
+                  <Card className="p-4 hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer rounded-xl">
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 bg-primary/10 rounded-lg">
+                        <Shield className="h-5 w-5 text-primary stroke-[1.5]" />
+                      </div>
+                      <div>
+                        <h4 className="font-heading text-sm font-medium text-foreground mb-0.5">SCRAM Monitoring</h4>
+                        <p className="text-xs text-muted-foreground">
+                          Requirements • Local providers
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
